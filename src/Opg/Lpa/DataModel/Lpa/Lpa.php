@@ -11,7 +11,7 @@ class Lpa extends AbstractData implements CompleteInterface {
     /**
      * @var int The LPA identifier.
      */
-    protected $id = 'abc5';
+    protected $id;
 
     /**
      * @var DateTime the LPA was created.
@@ -26,7 +26,7 @@ class Lpa extends AbstractData implements CompleteInterface {
     /**
      * @var string LPS's owner User identifier.
      */
-    protected $user = 'ad353da6b73ceee2201cee2f9936c509';
+    protected $user;
 
     /**
      * @var Payment status.
@@ -57,30 +57,86 @@ class Lpa extends AbstractData implements CompleteInterface {
 
     public function __construct(){
 
+        # TEMPORARY TEST DATA ------------
+
+        $this->id = 1234;
         $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+        $this->user = 'ad353da6b73ceee2201cee2f9936c509';
+        $this->payment = null;
+        $this->whoAreYouAnswered = false;
+        $this->locked = false;
+        $this->seed = null;
+        $this->document = new Document();
+
+        //-----------------------------------------------------
+        // Validators (wrapped in Closures for lazy loading)
 
         $this->validators['id'] = function(){
             return (new Validator)->addRules([
-                (new Rules\Int),
-                (new Rules\Between( 0, 99999999999, true )),
+                new Rules\Int,
+                new Rules\Between( 0, 99999999999, true ),
+            ]);
+        };
+
+        $this->validators['createdAt'] = function(){
+            return (new Validator)->addRules([
+                new Rules\Instance( 'DateTime' ),
+                new Rules\Call(function($input){
+                    return ( $input instanceof \DateTime ) ? $input->gettimezone()->getName() : 'UTC';
+                }),
+            ]);
+        };
+
+        $this->validators['updatedAt'] = function(){
+            return (new Validator)->addRules([
+                new Rules\Instance( 'DateTime' ),
+                new Rules\Call(function($input){
+                    return ( $input instanceof \DateTime ) ? $input->gettimezone()->getName() : 'UTC';
+                }),
             ]);
         };
 
         $this->validators['user'] = function(){
             return (new Validator)->addRules([
-                (new Rules\Xdigit),
-                (new Rules\Length( 32, 32, true ))->setTemplate('not-in-range/32-32'),
-            ])->setTemplate('invalid-group');
+                new Rules\Xdigit,
+                new Rules\Length( 32, 32, true ),
+            ]);
         };
 
-        $this->validators['createdAt'] = function(){
-            return (new Validator)->addRules([
-                (new Rules\Instance( 'DateTime' ))->setTemplate('not-datetime'),
-                (new Rules\Call(function($input){
-                    return ( $input instanceof \DateTime ) ? $input->gettimezone()->getName() : 'UTC';
-                }))->setTemplate('not-utc'),
-            ])->setTemplate('invalid-group');
+        $this->validators['payment'] = function(){
+            return (new Validator)->addRule((new Rules\OneOf)->addRules([
+                new Rules\Instance( 'Opg\Lpa\DataModel\Lpa\Payment\Payment' ),
+                new Rules\NullValue,
+            ]));
         };
+
+        $this->validators['whoAreYouAnswered'] = function(){
+            return (new Validator)->addRules([
+                new Rules\Bool,
+            ]);
+        };
+
+        $this->validators['locked'] = function(){
+            return (new Validator)->addRules([
+                new Rules\Bool,
+            ]);
+        };
+
+        $this->validators['seed'] = function(){
+            return (new Validator)->addRule((new Rules\OneOf)->addRules([
+                new Rules\Int,
+                new Rules\NullValue,
+            ]));
+        };
+
+        $this->validators['document'] = function(){
+            return (new Validator)->addRule((new Rules\OneOf)->addRules([
+                new Rules\Instance( 'Opg\Lpa\DataModel\Lpa\Document\Document' ),
+                new Rules\NullValue,
+            ]));
+        };
+
 
     } // function
 
@@ -93,7 +149,7 @@ class Lpa extends AbstractData implements CompleteInterface {
      */
     public function isComplete(){
 
-        return false;
+        return true;
 
     } // function
 
