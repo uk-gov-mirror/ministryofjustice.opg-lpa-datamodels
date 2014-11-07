@@ -10,7 +10,7 @@ use Opg\Lpa\DataModel\Validator\Errors as ValidatorErrors;
 use Respect\Validation\Validatable;
 use Respect\Validation\Exceptions;
 
-abstract class AbstractData {
+abstract class AbstractData implements AccessorInterface, ValidatableInterface {
 
     protected $validators = array();
 
@@ -36,9 +36,12 @@ abstract class AbstractData {
             throw new InvalidArgumentException("$property is not a valid property");
         }
 
+        // VALIDATE THEN SET VALUE
+
     } // function
 
     public function validate( $property = null ){
+
 
         $errors = new ValidatorErrors();
 
@@ -57,6 +60,7 @@ abstract class AbstractData {
 
                 $validator->assert( $value );
 
+
             } catch( Exceptions\AbstractNestedException $e) {
 
                 $error = new ValidatorError();
@@ -65,7 +69,7 @@ abstract class AbstractData {
                 $error->value = $value;
 
                 foreach( $e->getIterator() as $exception ){
-                    $error->messages[] = $exception->getMessage();
+                    $error->messages[] = $exception->getMainMessage();
                 }
 
                 $errors->addError( $error );
@@ -77,6 +81,8 @@ abstract class AbstractData {
         return $errors;
 
     } // function
+
+    //--------------------------------------------------------------------
 
     protected function getValidator( $property ){
 

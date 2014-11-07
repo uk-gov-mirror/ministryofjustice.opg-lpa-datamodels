@@ -1,19 +1,17 @@
 <?php
 namespace Opg\Lpa\DataModel\Lpa;
 
-use Exception;
-use InvalidArgumentException;
-
 use Opg\Lpa\DataModel\Lpa\Document\Document;
 
-use Respect\Validation\Validator;
+use Respect\Validation\Rules;
+use Opg\Lpa\DataModel\Validator\Validator; // Extended instance of Respect\Validation\Validator
 
-class Lpa extends AbstractData {
+class Lpa extends AbstractData implements CompleteInterface {
 
     /**
      * @var int The LPA identifier.
      */
-    protected $id = 1234;
+    protected $id = 'abc5';
 
     /**
      * @var DateTime the LPA was created.
@@ -60,35 +58,42 @@ class Lpa extends AbstractData {
     public function __construct(){
 
         $this->createdAt = new \DateTime();
-        //$this->updatedAt = new \DateTime();
-
-        $this->document = new Document();
-
-        //---
 
         $this->validators['id'] = function(){
-            return Validator::int()->between(0, 99999999999);
+            return (new Validator)->addRules([
+                (new Rules\Int),
+                (new Rules\Between( 0, 99999999999, true )),
+            ]);
         };
 
         $this->validators['user'] = function(){
-            return Validator::xdigit()->length(32,32);
+            return (new Validator)->addRules([
+                (new Rules\Xdigit),
+                (new Rules\Length( 32, 32, true ))->setTemplate('not-in-range/32-32'),
+            ])->setTemplate('invalid-group');
         };
 
         $this->validators['createdAt'] = function(){
-            return Validator::instance('DateTime')->call( function($input){
-                return ( $input instanceof \DateTime ) ? $input->gettimezone()->getName() : null;
-            }, Validator::equals('UTC') );
+            return (new Validator)->addRules([
+                (new Rules\Instance( 'DateTime' ))->setTemplate('not-datetime'),
+                (new Rules\Call(function($input){
+                    return ( $input instanceof \DateTime ) ? $input->gettimezone()->getName() : 'UTC';
+                }))->setTemplate('not-utc'),
+            ])->setTemplate('invalid-group');
         };
 
-        $this->validators['updatedAt'] = function(){
-            return Validator::instance('DateTime')->call( function($input){
-                return ( $input instanceof \DateTime ) ? $input->gettimezone()->getName() : null;
-            }, Validator::equals('UTC') );
-        };
+    } // function
 
-        $this->validators['document'] = function(){
-            return Validator::instance('Opg\Lpa\DataModel\Lpa\Document\Document')->addOr( Validator::nullValue() );
-        };
+    //--------------------------------------------------------------------
+
+    /**
+     * Check whether the LPA document is complete and valid at the business level.
+     *
+     * @return bool
+     */
+    public function isComplete(){
+
+        return false;
 
     } // function
 

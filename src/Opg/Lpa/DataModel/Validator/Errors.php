@@ -3,7 +3,7 @@ namespace Opg\Lpa\DataModel\Validator;
 
 use ArrayAccess;
 
-class Errors implements ArrayAccess {
+class Errors implements ArrayAccess, ErrorsInterface {
 
     private $container = array();
 
@@ -31,6 +31,10 @@ class Errors implements ArrayAccess {
 
     public function offsetGet($offset) {
         return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    public function hasError(){
+        return ( count($this->container) > 0 );
     }
 
 } // class
