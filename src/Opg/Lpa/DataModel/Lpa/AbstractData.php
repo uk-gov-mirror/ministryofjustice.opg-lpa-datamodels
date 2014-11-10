@@ -3,11 +3,12 @@ namespace Opg\Lpa\DataModel\Lpa;
 
 use InvalidArgumentException;
 
+use Respect\Validation\Validatable;
+use Respect\Validation\Exceptions;
+
 use Opg\Lpa\DataModel\Validator\ValidatorException;
 use Opg\Lpa\DataModel\Validator\ValidatorResponse;
 
-use Respect\Validation\Validatable;
-use Respect\Validation\Exceptions;
 
 abstract class AbstractData implements AccessorInterface, ValidatableInterface {
 
