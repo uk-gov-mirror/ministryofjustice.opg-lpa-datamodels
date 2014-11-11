@@ -14,6 +14,8 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface {
 
     protected $validators = array();
 
+    public function __construct(){}
+
     //--------------------------------------
     // Getter
 

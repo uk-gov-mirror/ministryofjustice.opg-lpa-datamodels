@@ -56,6 +56,7 @@ class Lpa extends AbstractData implements CompleteInterface {
     //------------------------------------------------
 
     public function __construct(){
+        parent::__construct();
 
         # TEMPORARY TEST DATA ------------
 
@@ -99,6 +100,7 @@ class Lpa extends AbstractData implements CompleteInterface {
 
         $this->validators['user'] = function(){
             return (new Validator)->addRules([
+                new Rules\NotEmpty,
                 new Rules\Xdigit,
                 new Rules\Length( 32, 32, true ),
             ]);

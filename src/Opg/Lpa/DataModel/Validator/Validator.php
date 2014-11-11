@@ -60,6 +60,17 @@ class Validator extends RespectValidator {
 
         //-------
 
+        Exceptions\EmailException::$defaultTemplates = array(
+            Exceptions\EmailException::MODE_DEFAULT => array(
+                Exceptions\EmailException::STANDARD => 'not-email-address',
+            ),
+            Exceptions\EmailException::MODE_NEGATIVE => array(
+                Exceptions\EmailException::STANDARD => 'is-email-address',
+            )
+        );
+
+        //-------
+
         Exceptions\InstanceException::$defaultTemplates = array(
             Exceptions\InstanceException::MODE_DEFAULT => array(
                 Exceptions\InstanceException::STANDARD => 'not-instance-type/{{instanceName}}',
@@ -110,12 +121,47 @@ class Validator extends RespectValidator {
 
         //-------
 
+        Exceptions\NotEmptyException::$defaultTemplates = array(
+            Exceptions\NotEmptyException::MODE_DEFAULT => array(
+                Exceptions\NotEmptyException::STANDARD => 'is-empty',
+                Exceptions\NotEmptyException::NAMED => 'is-empty',
+            ),
+            Exceptions\NotEmptyException::MODE_NEGATIVE => array(
+                Exceptions\NotEmptyException::STANDARD => 'not-empty',
+                Exceptions\NotEmptyException::NAMED => 'not-empty',
+            )
+        );
+
+        //-------
+
         Exceptions\NullValueException::$defaultTemplates = array(
             Exceptions\NullValueException::MODE_DEFAULT => array(
                 Exceptions\NullValueException::STANDARD => 'not-null',
             ),
             Exceptions\NullValueException::MODE_NEGATIVE => array(
                 Exceptions\NullValueException::STANDARD => 'is-null',
+            )
+        );
+
+        //-------
+
+        Exceptions\PhoneException::$defaultTemplates = array(
+            Exceptions\PhoneException::MODE_DEFAULT => array(
+                Exceptions\PhoneException::STANDARD => 'not-phone-number',
+            ),
+            Exceptions\PhoneException::MODE_NEGATIVE => array(
+                Exceptions\PhoneException::STANDARD => 'is-phone-number',
+            )
+        );
+
+        //-------
+
+        Exceptions\StringException::$defaultTemplates = array(
+            Exceptions\StringException::MODE_DEFAULT => array(
+                Exceptions\StringException::STANDARD => 'not-string',
+            ),
+            Exceptions\StringException::MODE_NEGATIVE => array(
+                Exceptions\StringException::STANDARD => 'is-string',
             )
         );
 

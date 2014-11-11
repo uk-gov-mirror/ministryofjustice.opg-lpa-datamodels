@@ -7,36 +7,32 @@ use Opg\Lpa\DataModel\Lpa\Document\Elements;
 use Respect\Validation\Rules;
 use Opg\Lpa\DataModel\Validator\Validator;
 
-class Donor extends AbstractData {
+class Correspondence extends AbstractData {
 
+    const WHO_DONOR = 'xxx';
+    const WHO_ATTORNEY = 'xxx';
+    const WHO_OTHER = 'xxx';
+
+    protected $who;
     protected $name;
-    protected $otherNames;
+    protected $company;
     protected $address;
-    protected $dob;
     protected $email;
+    protected $phone;
 
     public function __construct(){
         parent::__construct();
 
+        $this->who = 'other';
         $this->name = new Elements\Name();
-        $this->otherNames = 'Fred';
+        $this->company = 'My Company Limited';
         $this->address = new Elements\Address();
-        $this->dob = new Elements\Dob();
         $this->email = new Elements\EmailAddress();
+        $this->phone = new Elements\PhoneNumber();
 
         //-----------------------------------------------------
         // Validators (wrapped in Closures for lazy loading)
 
-        $this->validators['otherNames'] = function(){
-            return (new Validator)->addRule((new Rules\OneOf)->addRules([
-                (new Rules\AllOf)->addRules([
-                    new Rules\String,
-                    new Rules\NotEmpty,
-                    new Rules\Length( 1, 50, true ),
-                ]),
-                new Rules\NullValue,
-            ]));
-        };
 
     } // function
 

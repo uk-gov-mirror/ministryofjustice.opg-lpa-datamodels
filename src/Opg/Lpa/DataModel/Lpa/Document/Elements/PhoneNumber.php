@@ -6,26 +6,23 @@ use Opg\Lpa\DataModel\Lpa\AbstractData;
 use Respect\Validation\Rules;
 use Opg\Lpa\DataModel\Validator\Validator;
 
-class Dob extends AbstractData {
+class PhoneNumber extends AbstractData {
 
-    protected $date;
+    protected $number;
 
     public function __construct(){
         parent::__construct();
 
         # TEMPORARY TEST DATA ------------
 
-        $this->date = new \DateTime( '1980-12-17' );
+        $this->number = '020 1234 5678';
 
         //-----------------------------------------------------
         // Validators (wrapped in Closures for lazy loading)
 
-        $this->validators['date'] = function(){
+        $this->validators['number'] = function(){
             return (new Validator)->addRules([
-                new Rules\Instance( 'DateTime' ),
-                new Rules\Call(function($input){
-                    return ( $input instanceof \DateTime ) ? $input->gettimezone()->getName() : 'UTC';
-                }),
+                new Rules\Phone,
             ]);
         };
 
