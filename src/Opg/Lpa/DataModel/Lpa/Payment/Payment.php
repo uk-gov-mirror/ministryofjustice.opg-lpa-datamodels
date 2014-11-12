@@ -5,7 +5,7 @@ use Opg\Lpa\DataModel\Lpa\AbstractData;
 
 use Respect\Validation\Rules;
 use Opg\Lpa\DataModel\Validator\Validator;
-use Opg\Lpa\DataModel\Lpa\Document\Elements;
+use Opg\Lpa\DataModel\Lpa\Elements;
 
 class Payment extends AbstractData {
 
