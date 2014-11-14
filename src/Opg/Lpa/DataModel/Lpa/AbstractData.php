@@ -130,7 +130,7 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
 
         // Check if this $property should by type mapped...
 
-        if( $this->typeMap[$property] ){
+        if( isset($this->typeMap[$property]) ){
             $value = $this->typeMap[$property]( $value );
         }
 
