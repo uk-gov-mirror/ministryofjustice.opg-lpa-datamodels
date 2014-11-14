@@ -9,17 +9,17 @@ Installation with Composer
 Add teh following into your composer.json, then call `php composer.phar install`. 
 
 ```json
-    {
-        "repositories": [
-        	{
-            	"type": "vcs",
-            	"url": "https://github.com/ministryofjustice/opg-lpa-datamodels"
-        	}
-    	],
-        "require": {
-            "ministryofjustice/opg-lpa-datamodels": "dev-develop",
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ministryofjustice/opg-lpa-datamodels"
         }
+    ],
+    "require": {
+        "ministryofjustice/opg-lpa-datamodels": "dev-develop",
     }
+}
 ```
  
 
