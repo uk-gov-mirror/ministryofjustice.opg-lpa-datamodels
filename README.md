@@ -8,7 +8,7 @@ Installation with Composer
 
 Add teh following into your composer.json, then call `php composer.phar install`. 
 
-    ``` json
+```json
     {
         "repositories": [
         	{
@@ -20,7 +20,7 @@ Add teh following into your composer.json, then call `php composer.phar install`
             "ministryofjustice/opg-lpa-datamodels": "dev-develop",
         }
     }
-    ```
+```
  
 
 License
