@@ -14,7 +14,7 @@ class ReplacementAttorneyDecisions extends AbstractDecisions {
 
 
     /**
-     * @var string Additional free text details relating to this decision.
+     * @var string Additional free text details relating to this 'when' decision.
      */
     protected $whenDetails;
 
