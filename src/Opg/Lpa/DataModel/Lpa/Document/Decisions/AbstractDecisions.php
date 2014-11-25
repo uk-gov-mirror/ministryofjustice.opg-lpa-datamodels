@@ -30,7 +30,7 @@ abstract class AbstractDecisions extends AbstractData {
     protected $when;
 
     /**
-     * @var string Additional free text details relating to this decision.
+     * @var string Additional free text details relating to this 'how' decision.
      */
     protected $howDetails;
 
