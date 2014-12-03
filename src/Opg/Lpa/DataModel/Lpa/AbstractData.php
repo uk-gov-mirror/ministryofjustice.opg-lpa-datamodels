@@ -320,6 +320,15 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
     } // function
 
     /**
+     * Returns $this as an array suitable for inserting into MongoDB.
+     *
+     * @return array
+     */
+    public function toMongoArray(){
+        return $this->toArray();
+    }
+
+    /**
      * Return the array to use whenever json_encode() is called on this instance.
      *
      * @return array
