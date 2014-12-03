@@ -166,8 +166,9 @@ class Lpa extends AbstractData implements CompleteInterface {
     public function toMongoArray(){
         $data = parent::toMongoArray();
 
-        // Rename 'id' to '_id'.
-        $data['_id'] = $data['id'];
+        // Rename 'id' to '_id' (keeping it at the beginning of the array)
+        $data = [ '_id'=>$data['id'] ] + $data;
+
         unset($data['id']);
 
         return $data;
