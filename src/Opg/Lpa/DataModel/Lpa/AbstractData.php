@@ -316,7 +316,7 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
                         break;
                     case 'mongo':
                         //Convert to MongoDate, including microseconds...
-                        $values[$k] = new MongoDate( $v->$date->getTimestamp(), (int)$v->format('u') );
+                        $values[$k] = new MongoDate( $v->getTimestamp(), (int)$v->format('u') );
                         break;
                     default:
                 } // switch
