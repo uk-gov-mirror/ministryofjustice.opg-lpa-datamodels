@@ -298,7 +298,7 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
      *
      * @return array
      */
-    public function toArray( $dateFormat = null ){
+    public function toArray( $dateFormat = 'string' ){
 
         $values = get_object_vars( $this );
 
