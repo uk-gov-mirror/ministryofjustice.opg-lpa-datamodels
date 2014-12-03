@@ -159,6 +159,21 @@ class Lpa extends AbstractData implements CompleteInterface {
     //--------------------------------------------------------------------
 
     /**
+     * Returns $this as an array suitable for inserting into MongoDB.
+     *
+     * @return array
+     */
+    public function toMongoArray(){
+        $data = $this->toArray();
+
+        // Rename 'id' to '_id'.
+        $data['_id'] = $data['id'];
+        unset($data['id']);
+
+        return $data;
+    }
+
+    /**
      * Check whether the LPA document is complete and valid at the business level.
      *
      * @return bool
