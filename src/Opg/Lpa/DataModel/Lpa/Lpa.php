@@ -164,7 +164,7 @@ class Lpa extends AbstractData implements CompleteInterface {
      * @return array
      */
     public function toMongoArray(){
-        $data = $this->toArray();
+        $data = parent::toMongoArray();
 
         // Rename 'id' to '_id'.
         $data['_id'] = $data['id'];
