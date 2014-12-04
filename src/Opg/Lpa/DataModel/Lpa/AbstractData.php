@@ -125,10 +125,10 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
 
         /**
          * MongoDates should be converted to Datatime.
+         * Once we have ext-mongo >= 1.6, we can use $value->toDateTime()
          */
         if( class_exists('\MongoDate') && $value instanceof \MongoDate ){
-            $value = $value->toDateTime();
-            var_dump( $value  ); exit();
+            $value = new DateTime( date( 'Y-m-d\TH:i:s', $value->sec ).".{$value->usec}+0000" );
         }
 
         //---
