@@ -1,7 +1,7 @@
 <?php
 namespace Opg\Lpa\DataModel\Lpa;
 
-use DateTime, InvalidArgumentException, JsonSerializable, MongoDate;
+use DateTime, InvalidArgumentException, JsonSerializable;
 
 use Respect\Validation\Validatable;
 use Respect\Validation\Exceptions;
@@ -119,6 +119,16 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
 
         if( !property_exists( $this, $property ) ){
             throw new InvalidArgumentException("$property is not a valid property");
+        }
+
+        //---
+
+        /**
+         * MongoDates should be converted to Datatime.
+         */
+        if( class_exists('\MongoDate') && $value instanceof \MongoDate ){
+            $value = $value->toDateTime();
+            var_dump( $value  ); exit();
         }
 
         //---
@@ -316,7 +326,7 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
                         break;
                     case 'mongo':
                         //Convert to MongoDate, including microseconds...
-                        $values[$k] = new MongoDate( $v->getTimestamp(), (int)$v->format('u') );
+                        $values[$k] = new \MongoDate( $v->getTimestamp(), (int)$v->format('u') );
                         break;
                     default:
                 } // switch
@@ -327,6 +337,16 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
             if( $v instanceof AccessorInterface ) {
                 $values[$k] = $v->toArray( $dateFormat );
             }
+
+            // If the value is an array, check if it contains instances of AccessorInterface...
+            if( is_array($v) ){
+                // If so, map them...
+                foreach( $v as $a=>$b ){
+                    if( $b instanceof AccessorInterface ) {
+                        $values[$k][$a] = $b->toArray( $dateFormat );
+                    }
+                }
+            } // if
 
         } // foreach
 
