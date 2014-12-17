@@ -49,7 +49,7 @@ class Name extends AbstractData {
                 (new Rules\AllOf)->addRules([
                     new Rules\String,
                     new Rules\NotEmpty,
-                    new Rules\Length( 1, 6, true ),
+                    new Rules\Length( 1, 5, true ),
                 ]),
                 new Rules\NullValue,
             ]));
