@@ -31,6 +31,8 @@ class Name extends AbstractData {
 
     public function extractForPdf(){
 
+        throw new \Exception( 'This method ('.__METHOD__.') has been deprecated.' );
+
         return [
             'title' => $this->title,
             'first-names' => $this->first,
