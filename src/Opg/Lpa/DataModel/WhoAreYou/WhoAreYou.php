@@ -85,6 +85,10 @@ class WhoAreYou extends AbstractData {
             ]);
         };
 
+        //---
+
+        parent::__construct( $data );
+
     } // function
 
     /**
