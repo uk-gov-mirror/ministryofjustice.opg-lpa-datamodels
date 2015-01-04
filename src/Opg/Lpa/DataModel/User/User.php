@@ -1,6 +1,8 @@
 <?php
 namespace Opg\Lpa\DataModel\User;
 
+use DateTime;
+
 use Opg\Lpa\DataModel\AbstractData;
 use Respect\Validation\Rules;
 use Opg\Lpa\DataModel\Validator\Validator;
@@ -16,6 +18,16 @@ class User extends AbstractData {
      * @var string The user's internal ID.
      */
     protected $id;
+
+    /**
+     * @var DateTime the user was created.
+     */
+    protected $createdAt;
+
+    /**
+     * @var DateTime the user was last updated.
+     */
+    protected $updatedAt;
 
     /**
      * @var Name Their name.
@@ -44,6 +56,10 @@ class User extends AbstractData {
         //-----------------------------------------------------
         // Type mappers
 
+        $this->typeMap['updatedAt'] = $this->typeMap['createdAt'] = function($v){
+            return ($v instanceof DateTime) ? $v : new DateTime( $v );
+        };
+
         $this->typeMap['name'] = function($v){
             return ($v instanceof Name || is_null($v)) ? $v : new Name( $v );
         };
@@ -68,6 +84,24 @@ class User extends AbstractData {
                 new Rules\NotEmpty,
                 new Rules\Xdigit,
                 new Rules\Length( 32, 32, true ),
+            ]);
+        };
+
+        $this->validators['createdAt'] = function(){
+            return (new Validator)->addRules([
+                new Rules\Instance( 'DateTime' ),
+                new Rules\Call(function($input){
+                    return ( $input instanceof \DateTime ) ? $input->gettimezone()->getName() : 'UTC';
+                }),
+            ]);
+        };
+
+        $this->validators['updatedAt'] = function(){
+            return (new Validator)->addRules([
+                new Rules\Instance( 'DateTime' ),
+                new Rules\Call(function($input){
+                    return ( $input instanceof \DateTime ) ? $input->gettimezone()->getName() : 'UTC';
+                }),
             ]);
         };
 
