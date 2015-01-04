@@ -138,4 +138,22 @@ class User extends AbstractData {
 
     } // function
 
+    //--------------------------------------------------------------------
+
+    /**
+     * Returns $this as an array suitable for inserting into MongoDB.
+     *
+     * @return array
+     */
+    public function toMongoArray(){
+        $data = parent::toMongoArray();
+
+        // Rename 'id' to '_id' (keeping it at the beginning of the array)
+        $data = [ '_id'=>$data['id'] ] + $data;
+
+        unset($data['id']);
+
+        return $data;
+    }
+
 } // class
