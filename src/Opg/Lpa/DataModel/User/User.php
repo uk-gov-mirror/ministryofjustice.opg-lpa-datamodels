@@ -112,15 +112,17 @@ class User extends AbstractData {
         };
 
         $this->validators['address'] = function(){
-            return (new Validator)->addRules([
+            return (new Validator)->addRule((new Rules\OneOf)->addRules([
                 new Rules\Instance( 'Opg\Lpa\DataModel\User\Address' ),
-            ]);
+                new Rules\NullValue,
+            ]));
         };
 
         $this->validators['dob'] = function(){
-            return (new Validator)->addRules([
+            return (new Validator)->addRule((new Rules\OneOf)->addRules([
                 new Rules\Instance( 'Opg\Lpa\DataModel\User\Dob' ),
-            ]);
+                new Rules\NullValue,
+            ]));
         };
 
         $this->validators['email'] = function(){
