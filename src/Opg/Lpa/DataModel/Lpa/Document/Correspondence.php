@@ -1,7 +1,7 @@
 <?php
 namespace Opg\Lpa\DataModel\Lpa\Document;
 
-use Opg\Lpa\DataModel\Lpa\AbstractData;
+use Opg\Lpa\DataModel\AbstractData;
 use Opg\Lpa\DataModel\Lpa\Elements;
 
 use Respect\Validation\Rules;
@@ -98,9 +98,10 @@ class Correspondence extends AbstractData {
         };
 
         $this->validators['name'] = function(){
-            return (new Validator)->addRules([
+            return (new Validator)->addRule((new Rules\OneOf)->addRules([
                 new Rules\Instance( 'Opg\Lpa\DataModel\Lpa\Elements\Name' ),
-            ]);
+                new Rules\NullValue,
+            ]));
         };
 
         $this->validators['company'] = function(){

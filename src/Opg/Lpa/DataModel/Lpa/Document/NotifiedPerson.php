@@ -1,7 +1,7 @@
 <?php
 namespace Opg\Lpa\DataModel\Lpa\Document;
 
-use Opg\Lpa\DataModel\Lpa\AbstractData;
+use Opg\Lpa\DataModel\AbstractData;
 use Opg\Lpa\DataModel\Lpa\Elements;
 
 use Respect\Validation\Rules;
@@ -14,6 +14,11 @@ use Opg\Lpa\DataModel\Validator\Validator;
  * @package Opg\Lpa\DataModel\Lpa\Document
  */
 class NotifiedPerson extends AbstractData {
+
+    /**
+     * @var int The person's internal ID.
+     */
+    protected $id;
 
     /**
      * @var Elements\Name Their name.
@@ -41,6 +46,12 @@ class NotifiedPerson extends AbstractData {
 
         //-----------------------------------------------------
         // Validators (wrapped in Closures for lazy loading)
+
+        $this->validators['id'] = function(){
+            return (new Validator)->addRules([
+                new Rules\Int,
+            ]);
+        };
 
         $this->validators['name'] = function(){
             return (new Validator)->addRules([

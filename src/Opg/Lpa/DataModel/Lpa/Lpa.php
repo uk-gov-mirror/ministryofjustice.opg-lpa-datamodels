@@ -3,6 +3,8 @@ namespace Opg\Lpa\DataModel\Lpa;
 
 use DateTime;
 
+use Opg\Lpa\DataModel\AbstractData;
+
 use Opg\Lpa\DataModel\Lpa\Document\Document;
 use Opg\Lpa\DataModel\Lpa\Payment\Payment;
 
@@ -58,6 +60,11 @@ class Lpa extends AbstractData implements CompleteInterface {
     protected $seed;
 
     /**
+     * @var int|null If this is a repeat LPA application, the relevant case number.
+     */
+    protected $repeatCaseNumber;
+
+    /**
      * @var Document All the details making up the LPA document.
      */
     protected $document;
@@ -74,11 +81,11 @@ class Lpa extends AbstractData implements CompleteInterface {
         };
 
         $this->typeMap['payment'] = function($v){
-            return ($v instanceof Payment) ? $v : new Payment( $v );
+            return ($v instanceof Payment || is_null($v)) ? $v : new Payment( $v );
         };
 
         $this->typeMap['document'] = function($v){
-            return ($v instanceof Document) ? $v : new Document( $v );
+            return ($v instanceof Document || is_null($v)) ? $v : new Document( $v );
         };
 
         //-----------------------------------------------------
@@ -143,6 +150,13 @@ class Lpa extends AbstractData implements CompleteInterface {
             ]));
         };
 
+        $this->validators['repeatCaseNumber'] = function(){
+            return (new Validator)->addRule((new Rules\OneOf)->addRules([
+                new Rules\Int,
+                new Rules\NullValue,
+            ]));
+        };
+
         $this->validators['document'] = function(){
             return (new Validator)->addRule((new Rules\OneOf)->addRules([
                 new Rules\Instance( 'Opg\Lpa\DataModel\Lpa\Document\Document' ),
@@ -157,6 +171,22 @@ class Lpa extends AbstractData implements CompleteInterface {
     } // function
 
     //--------------------------------------------------------------------
+
+    /**
+     * Returns $this as an array suitable for inserting into MongoDB.
+     *
+     * @return array
+     */
+    public function toMongoArray(){
+        $data = parent::toMongoArray();
+
+        // Rename 'id' to '_id' (keeping it at the beginning of the array)
+        $data = [ '_id'=>$data['id'] ] + $data;
+
+        unset($data['id']);
+
+        return $data;
+    }
 
     /**
      * Check whether the LPA document is complete and valid at the business level.

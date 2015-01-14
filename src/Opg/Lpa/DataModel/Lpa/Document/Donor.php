@@ -1,7 +1,7 @@
 <?php
 namespace Opg\Lpa\DataModel\Lpa\Document;
 
-use Opg\Lpa\DataModel\Lpa\AbstractData;
+use Opg\Lpa\DataModel\AbstractData;
 use Opg\Lpa\DataModel\Lpa\Elements;
 
 use Respect\Validation\Rules;
@@ -40,6 +40,8 @@ class Donor extends AbstractData {
      */
     protected $email;
 
+
+    protected $canSign;
 
 
     public function __construct( $data = null ){
@@ -83,7 +85,6 @@ class Donor extends AbstractData {
             ]));
         };
 
-
         $this->validators['address'] = function(){
             return (new Validator)->addRules([
                 new Rules\Instance( 'Opg\Lpa\DataModel\Lpa\Elements\Address' ),
@@ -101,6 +102,12 @@ class Donor extends AbstractData {
                 new Rules\Instance( 'Opg\Lpa\DataModel\Lpa\Elements\EmailAddress' ),
                 new Rules\NullValue,
             ]));
+        };
+
+        $this->validators['canSign'] = function(){
+            return (new Validator)->addRules([
+                new Rules\Bool
+            ]);
         };
 
         //---

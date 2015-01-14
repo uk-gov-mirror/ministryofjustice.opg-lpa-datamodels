@@ -3,7 +3,7 @@ namespace Opg\Lpa\DataModel\Lpa\Payment;
 
 use DateTime;
 
-use Opg\Lpa\DataModel\Lpa\AbstractData;
+use Opg\Lpa\DataModel\AbstractData;
 
 use Respect\Validation\Rules;
 use Opg\Lpa\DataModel\Validator\Validator;
@@ -45,6 +45,26 @@ class Payment extends AbstractData {
      */
     protected $date;
 
+    /**
+     * @var bool Does the donor receive any qualifying benefits.
+     */
+    protected $reducedFeeReceivesBenefits;
+
+    /**
+     * @var bool Has the donor received a personal injury payout, less then the required threshold.
+     */
+    protected $reducedFeeAwardedDamages;
+
+    /**
+     * @var bool Does the donor have what is considered a low income.
+     */
+    protected $reducedFeeLowIncome;
+
+    /**
+     * @var bool Does the donor receive Universal Credit.
+     */
+    protected $reducedFeeUniversalCredit;
+
 
     public function __construct( $data = null ){
 
@@ -63,10 +83,13 @@ class Payment extends AbstractData {
         // Validators (wrapped in Closures for lazy loading)
 
         $this->validators['method'] = function(){
-            return (new Validator)->addRules([
-                new Rules\String,
-                new Rules\In( [ self::PAYMENT_TYPE_CARD, self::PAYMENT_TYPE_CHEQUE ], true ),
-            ]);
+            return (new Validator)->addRule((new Rules\OneOf)->addRules([
+                (new Rules\AllOf)->addRules([
+                    new Rules\String,
+                    new Rules\In( [ self::PAYMENT_TYPE_CARD, self::PAYMENT_TYPE_CHEQUE ], true ),
+                ]),
+                new Rules\NullValue,
+            ]));
         };
 
         $this->validators['reference'] = function(){
@@ -77,9 +100,10 @@ class Payment extends AbstractData {
         };
 
         $this->validators['amount'] = function(){
-            return (new Validator)->addRules([
+            return (new Validator)->addRule((new Rules\OneOf)->addRules([
                 new Rules\Float,
-            ]);
+                new Rules\NullValue,
+            ]));
         };
 
         $this->validators['reference'] = function(){
@@ -97,6 +121,34 @@ class Payment extends AbstractData {
                         return ( $input instanceof \DateTime ) ? $input->gettimezone()->getName() : 'UTC';
                     }),
                 ]),
+                new Rules\NullValue,
+            ]));
+        };
+
+        $this->validators['reducedFeeReceivesBenefits'] = function(){
+            return (new Validator)->addRule((new Rules\OneOf)->addRules([
+                new Rules\Bool,
+                new Rules\NullValue,
+            ]));
+        };
+
+        $this->validators['reducedFeeAwardedDamages'] = function(){
+            return (new Validator)->addRule((new Rules\OneOf)->addRules([
+                new Rules\Bool,
+                new Rules\NullValue,
+            ]));
+        };
+
+        $this->validators['reducedFeeLowIncome'] = function(){
+            return (new Validator)->addRule((new Rules\OneOf)->addRules([
+                new Rules\Bool,
+                new Rules\NullValue,
+            ]));
+        };
+
+        $this->validators['reducedFeeUniversalCredit'] = function(){
+            return (new Validator)->addRule((new Rules\OneOf)->addRules([
+                new Rules\Bool,
                 new Rules\NullValue,
             ]));
         };

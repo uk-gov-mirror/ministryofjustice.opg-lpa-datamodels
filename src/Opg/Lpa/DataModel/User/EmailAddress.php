@@ -1,5 +1,5 @@
 <?php
-namespace Opg\Lpa\DataModel\Lpa\Elements;
+namespace Opg\Lpa\DataModel\User;
 
 use Opg\Lpa\DataModel\AbstractData;
 
@@ -7,26 +7,26 @@ use Respect\Validation\Rules;
 use Opg\Lpa\DataModel\Validator\Validator;
 
 /**
- * Represents a phone number.
+ * Represents an email address.
  *
- * Class PhoneNumber
+ * Class EmailAddress
  * @package Opg\Lpa\DataModel\Lpa\Elements
  */
-class PhoneNumber extends AbstractData {
+class EmailAddress extends AbstractData {
 
     /**
-     * @var string A phone number.
+     * @var string An email address.
      */
-    protected $number;
+    protected $address;
 
     public function __construct( $data = null ){
 
         //-----------------------------------------------------
         // Validators (wrapped in Closures for lazy loading)
 
-        $this->validators['number'] = function(){
+        $this->validators['address'] = function(){
             return (new Validator)->addRules([
-                new Rules\Phone,
+                new Rules\Email,
             ]);
         };
 

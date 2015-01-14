@@ -1,5 +1,5 @@
 <?php
-namespace Opg\Lpa\DataModel\Lpa\Elements;
+namespace Opg\Lpa\DataModel\User;
 
 use Opg\Lpa\DataModel\AbstractData;
 
@@ -33,6 +33,12 @@ class Address extends AbstractData {
      * @var string A UK postcode.
      */
     protected $postcode;
+
+    /**
+     * @var string ISO 3166-1 alpha-2 country code
+     */
+    protected $country;
+
 
     public function __construct( $data = null ){
 
@@ -75,6 +81,14 @@ class Address extends AbstractData {
                 ]),
                 new Rules\NullValue,
             ]));
+        };
+
+        $this->validators['country'] = function(){
+            return (new Validator)->addRules([
+                new Rules\String,
+                new Rules\NotEmpty,
+                new Rules\Length( 2, 2, true ),
+            ]);
         };
 
         //---

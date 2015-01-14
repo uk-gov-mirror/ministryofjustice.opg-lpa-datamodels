@@ -2,7 +2,7 @@
 namespace Opg\Lpa\DataModel\Lpa\Document\Attorneys;
 
 use Opg\Lpa\DataModel\Lpa\Elements;
-use Opg\Lpa\DataModel\Lpa\AbstractData;
+use Opg\Lpa\DataModel\AbstractData;
 
 use Respect\Validation\Rules;
 use Opg\Lpa\DataModel\Validator\Validator;
@@ -14,6 +14,11 @@ use Opg\Lpa\DataModel\Validator\Validator;
  * @package Opg\Lpa\DataModel\Lpa\Document\Attorneys
  */
 abstract class AbstractAttorney extends AbstractData {
+
+    /**
+     * @var int The attorney's internal ID.
+     */
+    protected $id;
 
     /**
      * @var Elements\Address Their postal address.
@@ -41,6 +46,12 @@ abstract class AbstractAttorney extends AbstractData {
 
         //-----------------------------------------------------
         // Validators (wrapped in Closures for lazy loading)
+
+        $this->validators['id'] = function(){
+            return (new Validator)->addRules([
+                new Rules\Int,
+            ]);
+        };
 
         $this->validators['address'] = function(){
             return (new Validator)->addRules([
