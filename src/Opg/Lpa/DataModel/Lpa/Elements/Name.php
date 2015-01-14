@@ -29,17 +29,6 @@ class Name extends AbstractData {
      */
     protected $last;
 
-    public function extractForPdf(){
-
-        throw new \Exception( 'This method ('.__METHOD__.') has been deprecated.' );
-
-        return [
-            'title' => $this->title,
-            'first-names' => $this->first,
-            'last-name' => $this->last,
-        ];
-
-    }
 
     public function __construct( $data = null ){
 

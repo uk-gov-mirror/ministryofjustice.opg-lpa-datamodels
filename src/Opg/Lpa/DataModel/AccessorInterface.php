@@ -49,6 +49,13 @@ interface AccessorInterface {
     public function toArray();
 
     /**
+     * Returns an array representation of $this instance suitable to be saved to Mongo.
+     *
+     * @return array
+     */
+    public function toMongoArray();
+
+    /**
      * Returns an JSON representation of $this instance.
      *
      * @return string
