@@ -3,8 +3,11 @@ namespace Opg\Lpa\DataModel\User;
 
 use Opg\Lpa\DataModel\AbstractData;
 
-use Respect\Validation\Rules;
-use Opg\Lpa\DataModel\Validator\Validator;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
+use Opg\Lpa\DataModel\Validator\Constraints\DateTimeUTC;
 
 /**
  * Represents a date of birth.
@@ -19,26 +22,27 @@ class Dob extends AbstractData {
      */
     protected $date;
 
+    //------------------------------------------------
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata){
+
+        // As there is only 1 property, include NotBlank as there is no point this object existing without it.
+
+        $metadata->addPropertyConstraints('date', [
+            new Assert\NotBlank,
+            new DateTimeUTC(),
+            new Assert\LessThanOrEqual( [ 'value' => new \DateTime('today') ] ),
+        ]);
+
+    }
+
     public function __construct( $data = null ){
 
         //-----------------------------------------------------
         // Type mappers
 
         $this->typeMap['date'] = function($v){
-            return ($v instanceof \DateTime) ? $v : new \DateTime( $v );
-        };
-
-        //-----------------------------------------------------
-        // Validators (wrapped in Closures for lazy loading)
-
-        $this->validators['date'] = function(){
-            return (new Validator)->addRules([
-                new Rules\Instance( 'DateTime' ),
-                new Rules\Call(function($input){
-                    return ( $input instanceof \DateTime ) ? $input->gettimezone()->getName() : 'UTC';
-                }),
-                new Rules\Max( new \DateTime('today'), true ),
-            ]);
+            return ($v instanceof \DateTime || is_null($v)) ? $v : new \DateTime( $v );
         };
 
         //---
