@@ -4,8 +4,6 @@ namespace Opg\Lpa\DataModel\User;
 use DateTime;
 
 use Opg\Lpa\DataModel\AbstractData;
-use Respect\Validation\Rules;
-use Opg\Lpa\DataModel\Validator\Validator;
 
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -96,38 +94,37 @@ class User extends AbstractData {
 
     } // function
 
-    public function __construct( $data = null ){
+    //------------------------------------------------
 
-        //-----------------------------------------------------
-        // Type mappers
+    /**
+     * Map property values to their correct type.
+     *
+     * @param string $property string Property name
+     * @param mixed $v mixed Value to map.
+     * @return mixed Mapped value.
+     */
+    protected function map( $property, $v ){
 
-        $this->typeMap['updatedAt'] = $this->typeMap['createdAt'] = function($v){
-            return ($v instanceof DateTime) ? $v : new DateTime( $v );
-        };
+        switch( $property ){
+            case 'updatedAt':
+            case 'createdAt':
+                return ($v instanceof \DateTime || is_null($v)) ? $v : new \DateTime( $v );
+            case 'name':
+                return ($v instanceof Name || is_null($v)) ? $v : new Name( $v );
+            case 'address':
+                return ($v instanceof Address || is_null($v)) ? $v : new Address( $v );
+            case 'dob':
+                return ($v instanceof Dob || is_null($v)) ? $v : new Dob( $v );
+            case 'email':
+                return ($v instanceof EmailAddress || is_null($v)) ? $v : new EmailAddress( $v );
+        }
 
-        $this->typeMap['name'] = function($v){
-            return ($v instanceof Name || is_null($v)) ? $v : new Name( $v );
-        };
-
-        $this->typeMap['address'] = function($v){
-            return ($v instanceof Address || is_null($v)) ? $v : new Address( $v );
-        };
-
-        $this->typeMap['dob'] = function($v){
-            return ($v instanceof Dob || is_null($v)) ? $v : new Dob( $v );
-        };
-
-        $this->typeMap['email'] = function($v){
-            return ($v instanceof EmailAddress || is_null($v)) ? $v : new EmailAddress( $v );
-        };
-
-        //---
-
-        parent::__construct( $data );
+        // else...
+        return parent::map( $property, $v );
 
     } // function
 
-    //--------------------------------------------------------------------
+    //------------------------------------------------
 
     /**
      * Returns $this as an array suitable for inserting into MongoDB.

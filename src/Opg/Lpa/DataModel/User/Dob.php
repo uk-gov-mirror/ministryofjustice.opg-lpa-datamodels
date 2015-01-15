@@ -41,13 +41,30 @@ class Dob extends AbstractData {
         //-----------------------------------------------------
         // Type mappers
 
-        $this->typeMap['date'] = function($v){
-            return ($v instanceof \DateTime || is_null($v)) ? $v : new \DateTime( $v );
-        };
+        //$this->typeMap['date'] = function($v){
+        //    return ($v instanceof \DateTime || is_null($v)) ? $v : new \DateTime( $v );
+        //};
 
         //---
 
         parent::__construct( $data );
+
+    } // function
+
+    /**
+     * @param string $property string Property name
+     * @param mixed $v mixed Value to map.
+     * @return mixed Mapped value.
+     */
+    protected function map( $property, $v ){
+
+        switch( $property ){
+            case 'date':
+                return ($v instanceof \DateTime || is_null($v)) ? $v : new \DateTime( $v );
+        }
+
+        // else...
+        return parent::map( $property, $v );
 
     } // function
 

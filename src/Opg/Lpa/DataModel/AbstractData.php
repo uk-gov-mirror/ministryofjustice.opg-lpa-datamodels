@@ -31,6 +31,7 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
     /**
      * @var array Array of mappers
      */
+    # TODO - remove this.
     protected $typeMap = array();
 
     /**
@@ -44,6 +45,10 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
      * @param null|string|array $data
      */
     public function __construct( $data = null ){
+
+        # TODO - remove this.
+        unset($this->typeMap);
+        unset($this->validators);
 
         // If it's a string, assume it's JSON...
         if( is_string( $data ) ){
@@ -130,11 +135,8 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
 
         //---
 
-        // Check if this $property should by type mapped...
-
-        if( isset($this->typeMap[$property]) ){
-            $value = $this->typeMap[$property]( $value );
-        }
+        // Map the value (if needed)...
+        $value = $this->map( $property, $value );
 
         //---
 
@@ -191,7 +193,11 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
 
                     } elseif ($value instanceof DateTime) {
 
-                        $value = get_class($this) . ' / ' . $value->format(DateTime::ISO8601);
+                        $value = $value->format(DateTime::ISO8601);
+
+                    } else {
+
+                        $value = get_class($this);
 
                     }
 
@@ -282,6 +288,11 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
 
     } // function
 
+    public function getArrayCopy(){
+        throw new \Exception( 'Is this used anywhere? If not I am going to remove it.' );
+        return $this->toArray();
+    }
+
     /**
      * Returns $this as an array suitable for inserting into MongoDB.
      *
@@ -349,6 +360,11 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
     //-------------------
     // Hydrator methods
 
+    /**
+     * Populates the concrete class' properties with the array.
+     *
+     * @param array $data
+     */
     public function populate( Array $data ){
 
         // Foreach each passed property...
@@ -356,15 +372,24 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
 
             // Only include known properties during the import...
             if( property_exists( $this, $k ) && !is_null($v) ){
-                $this->set( $k, $v, false );
+                $this->set( $k, $v );
             }
 
         } // foreach
 
     } // function
 
-    public function getArrayCopy(){
-        return $this->toArray();
-    }
+    /**
+     * Basic mapper. This should be overridden in the concrete class if needed.
+     * This is included here to ensure the method is always available
+     * and - by default - returns the original value it was passed.
+     *
+     * @param $property string The property name.
+     * @param $value mixed The value we've been passed.
+     * @return mixed The potentially updated value.
+     */
+    protected function map( $property, $value ){
+        return $value;
+    } // function
 
 } // abstract class
