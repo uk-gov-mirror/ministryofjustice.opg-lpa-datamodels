@@ -6,12 +6,8 @@ use Opg\Lpa\DataModel\AbstractData;
 use Opg\Lpa\DataModel\Lpa\Document\Document;
 use Opg\Lpa\DataModel\Lpa\Payment\Payment;
 
-use Respect\Validation\Rules;
-use Opg\Lpa\DataModel\Validator\Validator; // Extended instance of Respect\Validation\Validator
-
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
-
 use Opg\Lpa\DataModel\Validator\Constraints\DateTimeUTC;
 
 /**

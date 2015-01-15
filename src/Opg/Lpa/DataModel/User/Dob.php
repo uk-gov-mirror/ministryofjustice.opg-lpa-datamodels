@@ -5,8 +5,6 @@ use Opg\Lpa\DataModel\AbstractData;
 
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-
 use Opg\Lpa\DataModel\Validator\Constraints\DateTimeUTC;
 
 /**
@@ -36,20 +34,7 @@ class Dob extends AbstractData {
 
     }
 
-    public function __construct( $data = null ){
-
-        //-----------------------------------------------------
-        // Type mappers
-
-        //$this->typeMap['date'] = function($v){
-        //    return ($v instanceof \DateTime || is_null($v)) ? $v : new \DateTime( $v );
-        //};
-
-        //---
-
-        parent::__construct( $data );
-
-    } // function
+    //------------------------------------------------
 
     /**
      * @param string $property string Property name
