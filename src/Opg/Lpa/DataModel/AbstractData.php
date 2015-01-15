@@ -3,11 +3,9 @@ namespace Opg\Lpa\DataModel;
 
 use DateTime, InvalidArgumentException, JsonSerializable;
 
-use Respect\Validation\Validatable;
-use Respect\Validation\Exceptions;
-
-use Opg\Lpa\DataModel\Validator\ValidatorException;
 use Opg\Lpa\DataModel\Validator\ValidatorResponse;
+
+use Symfony\Component\Validator\Validation;
 
 /**
  * This class is extended by all entities that make up an LPA, including the LPA object itself.
@@ -27,6 +25,7 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
     /**
      * @var array Array of Validators (or a function reference that return a Validator)
      */
+    # TODO - remove this.
     protected $validators = array();
 
     /**
@@ -100,22 +99,19 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
      * @param string $property The property name to set.
      * @return AbstractData Returns $this to allow chaining.
      * @throws InvalidArgumentException If the property name is invalid.
-     * @throws ValidatorException If the property value does not validate.
      */
     public function __set( $property, $value ){
-        return $this->set( $property, $value, false );
+        return $this->set( $property, $value );
     }
 
     /**
      * Sets a property's value.
      *
-     * @param string $property The property name to set.
-     * @param bool $validate Should the value be validated before being set.
-     * @return AbstractData Returns $this to allow chaining.
-     * @throws InvalidArgumentException If the property name is invalid.
-     * @throws ValidatorException If the property value does not validate.
+     * @param string $property The property name.
+     * @param mixed $value The value to set the property to.
+     * @return mixed
      */
-    public function set( $property, $value, $validate = true ){
+    public function set( $property, $value ){
 
         if( !property_exists( $this, $property ) ){
             throw new InvalidArgumentException("$property is not a valid property");
@@ -142,21 +138,7 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
 
         //---
 
-        // Stored so we can restore it should the new value not validate.
-        $originalValue = $this->{$property};
-
         $this->{$property} = $value;
-
-        if( $validate && isset($this->validators[$property]) ) {
-
-            $response = $this->validate($property);
-
-            if ($response->hasErrors()) {
-                $this->{$property} = $originalValue;
-                throw (new ValidatorException("Unable to set invalid value for {$property}."))->setValidatorResponse($response);
-            }
-
-        }
 
         return $this;
 
@@ -166,133 +148,72 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
     // Validation
 
     /**
-     * Validates one or more values.
+     * Validates the concrete class which this method is called on.
      *
-     * If:
-     *  $propertiesToCheck == null: All defined validators are applied.
-     *  $propertiesToCheck == string: The passed property name is validated.
-     *  $propertiesToCheck == array: All passed property names are applied.
-     *
-     * @param null $property
      * @return ValidatorResponse
      * @throws InvalidArgumentException
      */
-    public function validate( $propertiesToCheck = null ){
+    public function validate(){
 
-        $response = new ValidatorResponse();
+        $validator = Validation::createValidatorBuilder()
+            ->setApiVersion( Validation::API_VERSION_2_5 )
+            ->addMethodMapping('loadValidatorMetadata')->getValidator();
+
+        // Perform the validation...
+        $violations = $validator->validate( $this );
 
         //---
 
-        // If a property was passed, create an array containing only it.
-        // Otherwise include all properties for which there is a validator.
-        if( isset($propertiesToCheck) && is_array($propertiesToCheck) ){
+        $response = new ValidatorResponse();
 
-            $properties = $propertiesToCheck;
-
-        } elseif( isset($propertiesToCheck) && is_string($propertiesToCheck) ){
-
-            $properties = $propertiesToCheck = [ $propertiesToCheck ];
-
-        } else {
-
-            $properties = array_keys($this->validators);
-
+        // If there no errors, we can return straight away.
+        if( count($violations) == 0 ){
+            return $response;
         }
 
-        //--------------------------------------------
-        // Run validators for each property.
+        //---
 
-        // For each property we're going to validate...
-        foreach( $properties as $name ) {
+        foreach($violations as $violation){
 
-            // false here prevents the value being formatted.
-            $value = $this->get( $name, false );
+            $field = $violation->getPropertyPath();
 
-            // Retrieve the relevant validator instance.
-            $validator = $this->getValidator( $name );
+            // If this is the first time we've seen an error for this field...
+            if( !isset($response[$field]) ){
 
-            try {
+                $value = $violation->getInvalidValue();
 
-                // Validate the value. Exceptions\AbstractNestedException is thrown on failure.
-                $validator->assert( $value );
-
-            } catch( Exceptions\AbstractNestedException $e) {
-
-                // If we're there the value failed one or more validation rules.
-
-                $response[$name] = array();
-
-                //----------------------------------------
-                // Store the value in the response.
-                // Changes depending on the value type.
-
+                // If the value is an object...
                 if( is_object($value) ) {
-
-                    $response[$name]['value'] = get_class($this);
 
                     if (method_exists($value, '__toString')) {
 
-                        $response[$name]['value'] = $response[$name]['value'] . ' / ' . (string)$value;
+                        $value = get_class($this) . ' / ' . (string)$value;
 
                     } elseif ($value instanceof DateTime) {
 
-                        $response[$name]['value'] = $response[$name]['value'] . ' / ' . $value->format(DateTime::ISO8601);
+                        $value = get_class($this) . ' / ' . $value->format(DateTime::ISO8601);
 
                     }
 
                 } elseif( is_array($value) ){
 
-                    $response[$name]['value'] = implode(', ', array_map(function($v){
+                    $value = implode(', ', array_map(function($v){
                         return get_class($v);
                     }, $value) );
 
-                } else {
-                    $response[$name]['value'] = $value;
                 }
 
-                //-------
-
-                $response[$name]['messages'] = array();
-
-                // Add each message. There should be one message per rule the value failed.
-                foreach( $e->getIterator() as $exception ){
-                    $response[$name]['messages'][] = $exception->getMainMessage();
-                }
-
-            } // catch
-
-        } // foreach
-
-        //---------------------------------------------------------------
-        // Propagate the validation request down to property values that
-        // implement ValidatableInterface.
-
-        // Gets a list of all properties this class has...
-        $reflectedProperties = (new \ReflectionClass( $this ))->getProperties();
-
-        foreach( $reflectedProperties as $property ){
-
-            $name = $property->getName();
-
-            // If this property is currently being validated...
-            if( is_null($propertiesToCheck) || in_array( $name, $properties ) ) {
-
-                // And it implements ValidatableInterface...
-                if ($this->{$name} instanceof ValidatableInterface) {
-
-                    // Call validate on this property...
-                    $result = $this->{$name}->validate();
-
-                    if ($result->hasErrors()) {
-                        if (!isset($response[$name])) {
-                            $response[$name] = array();
-                        }
-                        $response[$name]['errors'] = $result;
-                    } // if
-
-                } // if
+                $response[$field] = [
+                    'value' => $value,
+                    'messages' => array()
+                ];
 
             } // if
+
+            //---
+
+            // Include the error message
+            $response[$field]['messages'][] = $violation->getMessage();
 
         } // foreach
 
@@ -310,6 +231,12 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
      * @return array
      */
     public function toArray( $dateFormat = 'string' ){
+
+        if( $dateFormat == 'mongo' && !class_exists('\MongoDate') ){
+            throw new InvalidArgumentException('You not have the PHP Mongo extension installed');
+        }
+
+        //---
 
         $values = get_object_vars( $this );
 
@@ -405,7 +332,6 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
     /**
      * Method for recursively walking over our array, flattening it.
      * To trigger it, call $this->flatten()
-     *
      */
     private function flattenArray($array, $prefix = 'lpa-') {
         $result = array();
@@ -440,34 +366,5 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
     public function getArrayCopy(){
         return $this->toArray();
     }
-
-    //-------------------
-
-    /**
-     * Lazy loads the validator for the passed property name.
-     *
-     * @param string $property The property name.
-     * @return \Respect\Validation\Validator Instance of a validator.
-     * @throws InvalidArgumentException If there is no validator for the requested property.
-     */
-    protected function getValidator( $property ){
-
-        if( !isset($this->validators[$property]) ){
-            throw new InvalidArgumentException("No validator for $property found");
-        }
-
-        $validator = $this->validators[$property];
-
-        if( is_object($validator) && ($validator instanceof \Closure) ) {
-            $validator = $validator();
-        }
-
-        if( !($validator instanceof Validatable) ){
-            throw new InvalidArgumentException("No validator for $property found");
-        }
-
-        return $validator;
-
-    } // function
 
 } // abstract class
