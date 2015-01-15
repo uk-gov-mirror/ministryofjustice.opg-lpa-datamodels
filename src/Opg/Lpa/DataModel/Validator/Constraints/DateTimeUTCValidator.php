@@ -33,7 +33,7 @@ class DateTimeUTCValidator extends ConstraintValidator {
                     ->addViolation();
             }
 
-        } elseif( $value->gettimezone()->getName() != 'UTC' ){
+        } elseif( $value->getOffset() !== 0 ){ // i.e. ensure there's no offset from UTC
 
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->notUtcMessage)
