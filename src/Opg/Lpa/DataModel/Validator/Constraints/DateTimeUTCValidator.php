@@ -17,6 +17,10 @@ class DateTimeUTCValidator extends ConstraintValidator {
 
     public function validate( $value, Constraint $constraint ){
 
+        if (null === $value) {
+            return;
+        }
+
         if( !( $value instanceof DateTime ) ){
 
             if ($this->context instanceof ExecutionContextInterface) {
