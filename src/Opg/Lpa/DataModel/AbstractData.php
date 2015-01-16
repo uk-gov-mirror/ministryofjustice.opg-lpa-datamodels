@@ -23,18 +23,6 @@ use Symfony\Component\Validator\Validation;
 abstract class AbstractData implements AccessorInterface, ValidatableInterface, JsonSerializable {
 
     /**
-     * @var array Array of Validators (or a function reference that return a Validator)
-     */
-    # TODO - remove this.
-    protected $validators = array();
-
-    /**
-     * @var array Array of mappers
-     */
-    # TODO - remove this.
-    protected $typeMap = array();
-
-    /**
      * Builds and populates $this chunk of the LPA.
      *
      * If $data is:
@@ -45,10 +33,6 @@ abstract class AbstractData implements AccessorInterface, ValidatableInterface, 
      * @param null|string|array $data
      */
     public function __construct( $data = null ){
-
-        # TODO - remove this.
-        unset($this->typeMap);
-        unset($this->validators);
 
         // If it's a string, assume it's JSON...
         if( is_string( $data ) ){
