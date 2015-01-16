@@ -23,6 +23,7 @@ class ReplacementAttorneyDecisions extends AbstractDecisions {
     public static function loadValidatorMetadata(ClassMetadata $metadata){
 
         $metadata->addPropertyConstraints('when', [
+            // Can be null
             new Assert\Type([ 'type' => 'string' ]),
             new Assert\Choice([ 'choices' => [
                 self::LPA_DECISION_WHEN_FIRST,
