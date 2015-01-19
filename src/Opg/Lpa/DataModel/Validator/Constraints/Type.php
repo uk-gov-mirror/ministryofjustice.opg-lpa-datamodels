@@ -25,7 +25,7 @@ class Type extends SymfonyConstraints\Type
 {
     use ValidatorPathTrait;
 
-    public $message = 'This value should be of type {{ type }}.';
+    public $message = 'incorrect-type|{{ type }}';
     public $type;
 
     /**
