@@ -7,8 +7,7 @@ use Opg\Lpa\DataModel\Lpa\Document\Document;
 use Opg\Lpa\DataModel\Lpa\Payment\Payment;
 
 use Symfony\Component\Validator\Mapping\ClassMetadata;
-use Symfony\Component\Validator\Constraints as Assert;
-use Opg\Lpa\DataModel\Validator\Constraints\Custom\DateTimeUTC;
+use Opg\Lpa\DataModel\Validator\Constraints as Assert;
 
 /**
  * Represents a full LPA document, plus associated metadata.
@@ -80,12 +79,12 @@ class Lpa extends AbstractData implements CompleteInterface {
 
         $metadata->addPropertyConstraints('createdAt', [
             new Assert\NotBlank,
-            new DateTimeUTC,
+            new Assert\Custom\DateTimeUTC,
         ]);
 
         $metadata->addPropertyConstraints('updatedAt', [
             new Assert\NotBlank,
-            new DateTimeUTC,
+            new Assert\Custom\DateTimeUTC,
         ]);
 
         $metadata->addPropertyConstraints('user', [
