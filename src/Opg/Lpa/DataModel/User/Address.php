@@ -4,8 +4,8 @@ namespace Opg\Lpa\DataModel\User;
 use Opg\Lpa\DataModel\AbstractData;
 
 use Symfony\Component\Validator\Mapping\ClassMetadata;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Opg\Lpa\DataModel\Validator\Constraints as Assert;
 
 /**
  * Represents a postal address.
