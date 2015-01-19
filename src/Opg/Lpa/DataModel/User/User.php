@@ -8,7 +8,7 @@ use Opg\Lpa\DataModel\AbstractData;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
 
-use Opg\Lpa\DataModel\Validator\Constraints\DateTimeUTC;
+use Opg\Lpa\DataModel\Validator\Constraints\Custom\DateTimeUTC;
 
 /**
  * Represents a user of the LPA platform.
