@@ -10,24 +10,29 @@ If a value cannot be blank/null, you'll receive the response:
 - For Null: ``cannot-be-null``
 - For Blank: ``cannot-be-blank``
 
+It's also possible for one of two fields must not be null. In this instance you'll receive ``cannot-be-null``, however the path will refer to both fields. For example ``cannot-be-null`` with a path of ``address2/postcode`` means only one of address2 or postcode can be null.
+
+
+
+
 Type Validation
 ---------------
 If a supplied value is the incorrect type, you'll receive the response:
 
-`incorrect-type|{type}`
+`expected-type|{type}`
 
 where ``{type}`` is the expected data type or class. For example:
 
-- ``incorrect-type|int``
-- ``incorrect-type|xdigit`` (i.e. must be a hax value)
-- ``incorrect-type|\Opg\Lpa\DataModel\Lpa\Payment\Payment``
+- ``expected-type|int``
+- ``expected-type|xdigit`` (i.e. must be a hexadecimal value)
+- ``expected-type|\Opg\Lpa\DataModel\Lpa\Payment\Payment``
 
 Invalid value size (range or length)
 --------------------------------------
 If a supplied value is the too big or small, you'll receive the response:
 
-- For too small: ``must-be-greater-than-or-equal|{value}``
-- For too big: ``must-be-less-than-or-equal|{value}``
+- For too small: ``must-be-greater-than-or-equal|{limit}``
+- For too big: ``must-be-less-than-or-equal|{limit}``
 
 if a string much be exactly _N_ characters long, an invalid value will result in:
 
@@ -38,4 +43,37 @@ DateTime
 ---------
 All dates and times should be stored as a ``DateTime`` object with a UTC time zone. If they're not, you'll receive the response:
 
-``timezone-not-utc`` or ``incorrect-type|DateTime``
+``timezone-not-utc`` or ``expected-type|DateTime``
+
+
+Choice Values
+--------------
+Some properties require a string containing one of a set of predefined values. If an invalid value is passed, you'll receive the response:
+
+``expected-values|{value0},{value1},{valueN}``
+
+If a minimum number of values need selecting you'll receive:
+
+`minimum-number-of-values|{limit}`
+
+And if a maximum number of values need selecting you'll receive:
+
+`maximum-number-of-values|{limit}`
+
+Email Addresses
+---------------
+If a passed email address is invalid, you'll get:
+
+`invalid-email-address`
+
+Phone Number
+------------
+If a passed phone number is invalid, you'll get:
+
+`invalid-phone-number`
+
+Country
+-------
+If a passed country (code) is invalid, you'll get:
+
+`invalid-country-code`

@@ -25,7 +25,7 @@ class Regex extends SymfonyConstraints\Regex
 {
     use ValidatorPathTrait;
 
-    public $message = 'This value is not valid.';
+    public $message = 'invalid-regex-match';
     public $pattern;
     public $htmlPattern;
     public $match = true;

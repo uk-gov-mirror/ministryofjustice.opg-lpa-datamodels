@@ -26,11 +26,4 @@ class Valid extends SymfonyConstraints\Valid
 {
     use ValidatorPathTrait;
 
-    public $traverse = true;
-
-    /**
-     * @deprecated since version 2.5, to be removed in Symfony 3.0.
-     */
-    public $deep = true;
-
 }

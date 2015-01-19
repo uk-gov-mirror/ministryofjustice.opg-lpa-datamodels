@@ -116,10 +116,8 @@ class Document extends AbstractData {
 
         // whoIsRegistering should (if set) be either an array, or the string 'donor'.
         $metadata->addPropertyConstraint('whoIsRegistering', new Assert\Callback(function ($value, ExecutionContextInterface $context){
-
             if( empty($value) || is_array($value) || $value == 'donor' ){ return; }
-
-            $context->buildViolation( (new Assert\Choice())->message )->addViolation();
+            $context->buildViolation( 'allowed-values|donor,Array' )->addViolation();
 
         }));
 
@@ -140,13 +138,13 @@ class Document extends AbstractData {
 
         // instruction should be string or boolean false.
         $metadata->addPropertyConstraint('instruction', new Assert\Callback(function ($value, ExecutionContextInterface $context){
-            if( is_string($value) || $value === false ){ return; }
+            if( is_null($value) || is_string($value) || $value === false ){ return; }
             $context->buildViolation( 'expected-type|string-or-bool=false' )->addViolation();
         }));
 
         // preference should be string or boolean false.
         $metadata->addPropertyConstraint('preference', new Assert\Callback(function ($value, ExecutionContextInterface $context){
-            if( is_string($value) || $value === false ){ return; }
+            if( is_null($value) || is_string($value) || $value === false ){ return; }
             $context->buildViolation( 'expected-type|string-or-bool=false' )->addViolation();
         }));
 

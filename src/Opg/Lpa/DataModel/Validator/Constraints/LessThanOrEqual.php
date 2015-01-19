@@ -19,5 +19,5 @@ namespace Opg\Lpa\DataModel\Validator\Constraints;
  */
 class LessThanOrEqual extends AbstractComparison
 {
-    public $message = 'This value should be less than or equal to {{ compared_value }}.';
+    public $message = 'must-be-less-than-or-equal|{{ compared_value }}';
 }

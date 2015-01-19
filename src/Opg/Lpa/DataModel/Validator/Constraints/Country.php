@@ -25,5 +25,5 @@ class Country extends SymfonyConstraints\Country
 {
     use ValidatorPathTrait;
 
-    public $message = 'This value is not a valid country.';
+    public $message = 'invalid-country-code';
 }

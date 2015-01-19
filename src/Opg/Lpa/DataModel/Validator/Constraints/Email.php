@@ -35,6 +35,6 @@ class Email extends SymfonyConstraints\Email
         self::HOST_CHECK_FAILED_ERROR => 'HOST_CHECK_FAILED_ERROR',
     );
 
-    public $message = 'This value is not a valid email address.';
+    public $message = 'invalid-email-address';
 
 }

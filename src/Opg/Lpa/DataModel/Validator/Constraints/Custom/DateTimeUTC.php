@@ -6,6 +6,6 @@ use Symfony\Component\Validator\Constraint;
 class DateTimeUTC extends Constraint {
 
     public $notUtcMessage = 'timezone-not-utc';
-    public $notDateTimeMessage = 'not-datetime';
+    public $notDateTimeMessage = 'expected-type|DateTime';
 
 } // class

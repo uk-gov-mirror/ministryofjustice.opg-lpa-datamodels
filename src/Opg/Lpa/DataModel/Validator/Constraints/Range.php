@@ -37,6 +37,6 @@ class Range extends SymfonyConstraints\Range
 
     public $minMessage = 'must-be-greater-than-or-equal|{{ limit }}';
     public $maxMessage = 'must-be-less-than-or-equal|{{ limit }}';
-    public $invalidMessage = 'incorrect-type|number';
+    public $invalidMessage = 'expected-type|number';
 
 }

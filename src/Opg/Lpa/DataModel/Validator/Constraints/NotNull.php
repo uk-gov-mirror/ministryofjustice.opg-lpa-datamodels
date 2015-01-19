@@ -25,5 +25,5 @@ class NotNull extends SymfonyConstraints\NotNull
 {
     use ValidatorPathTrait;
 
-    public $message = 'This value should not be null.';
+    public $message = 'cannot-be-null';
 }

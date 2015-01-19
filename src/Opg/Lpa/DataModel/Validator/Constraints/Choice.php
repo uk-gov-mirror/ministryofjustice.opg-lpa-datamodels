@@ -25,32 +25,23 @@ class Choice extends SymfonyConstraints\Choice
 {
     use ValidatorPathTrait;
 
-    const NO_SUCH_CHOICE_ERROR = 1;
-    const TOO_FEW_ERROR = 2;
-    const TOO_MANY_ERROR = 3;
+    public $minMessage = 'minimum-number-of-values|{{ limit }}';
+    public $maxMessage = 'maximum-number-of-values|{{ limit }}';
 
-    protected static $errorNames = array(
-        self::NO_SUCH_CHOICE_ERROR => 'NO_SUCH_CHOICE_ERROR',
-        self::TOO_FEW_ERROR => 'TOO_FEW_ERROR',
-        self::TOO_MANY_ERROR => 'TOO_MANY_ERROR',
-    );
+    // Values are overridden in the constructor
+    public $message = 'invalid-value-selected';
+    public $multipleMessage = 'invalid-values-selected';
 
-    public $choices;
-    public $callback;
-    public $multiple = false;
-    public $strict = false;
-    public $min;
-    public $max;
-    public $message = 'The value you selected is not a valid choice.';
-    public $multipleMessage = 'One or more of the given values is invalid.';
-    public $minMessage = 'You must select at least {{ limit }} choice.|You must select at least {{ limit }} choices.';
-    public $maxMessage = 'You must select at most {{ limit }} choice.|You must select at most {{ limit }} choices.';
+    public function __construct($options = null){
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultOption()
-    {
-        return 'choices';
+        // Include the allowed values in the error message
+        if( isset($options['choices']) ){
+            $this->message = 'allowed-values|'.implode(',', $options['choices']);
+            $this->multipleMessage = 'allowed-values|'.implode(',', $options['choices']);
+        }
+
+        parent::__construct( $options );
     }
+
+
 }
