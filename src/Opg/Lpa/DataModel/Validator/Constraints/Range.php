@@ -12,7 +12,6 @@
 namespace Opg\Lpa\DataModel\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraints as SymfonyConstraints;
-use Symfony\Component\Validator\Exception\MissingOptionsException;
 
 /**
  * @Annotation
@@ -36,10 +35,8 @@ class Range extends SymfonyConstraints\Range
         self::BELOW_RANGE_ERROR => 'BELOW_RANGE_ERROR',
     );
 
-    public $minMessage = 'This value should be {{ limit }} or more.';
-    public $maxMessage = 'This value should be {{ limit }} or less.';
-    public $invalidMessage = 'This value should be a valid number.';
-    public $min;
-    public $max;
+    public $minMessage = 'must-be-greater-than-or-equal|{{ limit }}';
+    public $maxMessage = 'must-be-less-than-or-equal|{{ limit }}';
+    public $invalidMessage = 'incorrect-type|number';
 
 }
