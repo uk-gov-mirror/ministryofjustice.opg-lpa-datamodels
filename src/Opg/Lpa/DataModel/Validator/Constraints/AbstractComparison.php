@@ -23,29 +23,4 @@ abstract class AbstractComparison extends SymfonyConstraints\AbstractComparison
 {
     use ValidatorPathTrait;
 
-    public $message;
-    public $value;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($options = null)
-    {
-        if (is_array($options) && !isset($options['value'])) {
-            throw new ConstraintDefinitionException(sprintf(
-                'The %s constraint requires the "value" option to be set.',
-                get_class($this)
-            ));
-        }
-
-        parent::__construct($options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultOption()
-    {
-        return 'value';
-    }
 }

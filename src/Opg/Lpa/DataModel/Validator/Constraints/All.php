@@ -25,8 +25,6 @@ class All extends SymfonyConstraints\All
 {
     use ValidatorPathTrait;
 
-    public $constraints = array();
-
     public function getDefaultOption()
     {
         return 'constraints';

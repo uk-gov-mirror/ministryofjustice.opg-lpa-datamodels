@@ -70,15 +70,4 @@ class Ip extends SymfonyConstraints\Ip
 
     public $message = 'This is not a valid IP address.';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($options = null)
-    {
-        parent::__construct($options);
-
-        if (!in_array($this->version, self::$versions)) {
-            throw new ConstraintDefinitionException(sprintf('The option "version" must be one of "%s"', implode('", "', self::$versions)));
-        }
-    }
 }
