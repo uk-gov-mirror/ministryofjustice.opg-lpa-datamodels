@@ -3,7 +3,7 @@ LPA Data Model Validation
 
 This document contains an explanation of LPA (in)validation responses.
 
-Not Blank/Null
+Null/Not Blank
 ---------------
 If a value cannot be blank/null, you'll receive the response:
 
@@ -43,7 +43,7 @@ DateTime
 ---------
 All dates and times should be stored as a ``DateTime`` object with a UTC time zone. If they're not, you'll receive the response:
 
-``timezone-not-utc`` or ``expected-type|DateTime``
+``expected-type|DateTime`` or ``timezone-not-utc``
 
 
 Choice Values
