@@ -33,6 +33,16 @@ class Lpa extends AbstractData implements CompleteInterface {
     protected $updatedAt;
 
     /**
+     * @var \DateTime|null When the LPA was last updated AND it's status (at the moment in time) was complete.
+     */
+    protected $completedAt;
+
+    /**
+     * @var \DateTime|null DateTime the LPA was locked.
+     */
+    protected $lockedAt;
+
+    /**
      * @var string LPA's owner User identifier.
      */
     protected $user;
@@ -87,6 +97,14 @@ class Lpa extends AbstractData implements CompleteInterface {
             new Assert\Custom\DateTimeUTC,
         ]);
 
+        $metadata->addPropertyConstraints('completedAt', [
+            new Assert\Custom\DateTimeUTC,
+        ]);
+
+        $metadata->addPropertyConstraints('lockedAt', [
+            new Assert\Custom\DateTimeUTC,
+        ]);
+
         $metadata->addPropertyConstraints('user', [
             new Assert\NotBlank,
             new Assert\Type([ 'type' => 'xdigit' ]),
@@ -138,6 +156,8 @@ class Lpa extends AbstractData implements CompleteInterface {
         switch( $property ){
             case 'updatedAt':
             case 'createdAt':
+            case 'completedAt':
+            case 'lockedAt':
                 return ($v instanceof \DateTime || is_null($v)) ? $v : new \DateTime( $v );
             case 'payment':
                 return ($v instanceof Payment || is_null($v)) ? $v : new Payment( $v );
