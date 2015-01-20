@@ -10,14 +10,12 @@ If a value cannot be blank/null, you'll receive the response:
 - For Null: ``cannot-be-null``
 - For Blank: ``cannot-be-blank``
 
-It's also possible for one of two fields must not be null. In this instance you'll receive ``cannot-be-null``, however the path will refer to both fields. For example ``cannot-be-null`` with a path of ``address2/postcode`` means only one of address2 or postcode can be null.
-
-
+It's also possible that one of two fields must not be null. In this instance you'll receive ``cannot-be-null``, however the path will refer to both fields. For example ``cannot-be-null`` with a path of ``address2/postcode`` means only one of address2 or postcode must not be null.
 
 
 Type Validation
 ---------------
-If a supplied value is the incorrect type, you'll receive the response:
+If a supplied value is of the incorrect type, you'll receive the response:
 
 `expected-type|{type}`
 
@@ -29,10 +27,10 @@ where ``{type}`` is the expected data type or class. For example:
 
 Invalid value size (range or length)
 --------------------------------------
-If a supplied value is the too big or small, you'll receive the response:
+If a supplied value is the too big/long or small/short, you'll receive the response:
 
-- For too small: ``must-be-greater-than-or-equal|{limit}``
-- For too big: ``must-be-less-than-or-equal|{limit}``
+- For too small/short: ``must-be-greater-than-or-equal|{limit}``
+- For too big/long: ``must-be-less-than-or-equal|{limit}``
 
 if a string much be exactly _N_ characters long, an invalid value will result in:
 
