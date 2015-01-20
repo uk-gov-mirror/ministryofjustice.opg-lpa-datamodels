@@ -10,9 +10,7 @@ If a value cannot be blank/null, you'll receive the response:
 - For Null: ``cannot-be-null``
 - For Blank: ``cannot-be-blank``
 
-It's also possible for one of two fields must not be null. In this instance you'll receive ``cannot-be-null``, however the path will refer to both fields. For example ``cannot-be-null`` with a path of ``address2/postcode`` means only one of address2 or postcode can be null.
-
-
+It's also possible that one of two fields must not be null. In this instance you'll receive ``cannot-be-null``, however the path will refer to both fields. For example ``cannot-be-null`` with a path of ``address2/postcode`` means only one of address2 or postcode must not be null.
 
 
 Type Validation
