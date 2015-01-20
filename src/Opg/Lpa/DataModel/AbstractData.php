@@ -34,10 +34,10 @@ abstract class AbstractData implements AccessorInterface, JsonSerializable, Vali
      */
     public function __construct( $data = null ){
 
-        // If it's a string, assume it's JSON...
+        // If it's a string...
         if( is_string( $data ) ){
 
-            // If it's a string, assume it's JSON...
+            // Assume it's JSON.
             $data = json_decode( $data, true );
 
             // Throw an exception if it turns out to not be JSON...
@@ -45,7 +45,8 @@ abstract class AbstractData implements AccessorInterface, JsonSerializable, Vali
 
         } // if
 
-        // If it's (now) an array...
+
+        // If it's [now] an array...
         if( is_array($data) ){
 
             $this->populate( $data );
