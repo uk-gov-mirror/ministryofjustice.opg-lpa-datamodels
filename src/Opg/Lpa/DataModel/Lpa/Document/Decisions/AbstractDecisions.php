@@ -41,7 +41,7 @@ abstract class AbstractDecisions extends AbstractData {
             new Assert\Choice([ 'choices' => [
                 self::LPA_DECISION_HOW_DEPENDS,
                 self::LPA_DECISION_HOW_JOINTLY,
-                //self::LPA_DECISION_HOW_SINGLE_ATTORNEY, # TODO Deprecated
+                self::LPA_DECISION_HOW_SINGLE_ATTORNEY,
                 self::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY
             ] ]),
         ]);

@@ -169,6 +169,24 @@ class Document extends AbstractData {
             ])
         ]);
 
+        // Allow only N trust corporation(s) across primaryAttorneys and replacementAttorneys.
+        $metadata->addConstraint( new Assert\Callback(function ($object, ExecutionContextInterface $context){
+
+            $max = 1;
+            $attorneys = array_merge( $object->primaryAttorneys, $object->replacementAttorneys );
+
+            $attorneys = array_filter( $attorneys, function($attorney) {
+                return $attorney instanceof Attorneys\TrustCorporation;
+            });
+
+            if( count($attorneys) > $max ){
+                $context->buildViolation( "must-be-less-than-or-equal:{$max}" )
+                    ->setInvalidValue( count($attorneys) . " found" )
+                    ->atPath('primaryAttorneys/replacementAttorneys')->addViolation();
+            }
+
+        }));
+
         $metadata->addPropertyConstraints('peopleToNotify', [
             new Assert\Count( [ 'max' => 5 ] ),
             new Assert\All([
