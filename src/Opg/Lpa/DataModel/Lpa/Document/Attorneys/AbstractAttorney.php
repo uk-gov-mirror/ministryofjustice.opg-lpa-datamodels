@@ -55,6 +55,40 @@ abstract class AbstractAttorney extends AbstractData {
     //------------------------------------------------
 
     /**
+     * Instantiates a concrete instance of either Human or TrustCorporation
+     * depending on the data passed to it.
+     *
+     * @param string|array $data An array or JSON representing an Attorney
+     * @return Human|TrustCorporation
+     */
+    public static function factory( $data ){
+
+        // If it's a string...
+        if( is_string( $data ) ){
+
+            // Assume it's JSON.
+            $data = json_decode( $data, true );
+
+            // Throw an exception if it turns out to not be JSON...
+            if( is_null($data) ){ throw new \InvalidArgumentException('Invalid JSON passed to constructor'); }
+
+        } // if
+
+        switch ($data['type']) {
+            case 'human' :
+                return new Human( $data );
+            case 'trust' :
+                return new TrustCorporation( $data );
+        }
+
+        // error
+        throw new \InvalidArgumentException('Invalid attorney details passed');
+
+    } // function
+
+    //------------------------------------------------
+
+    /**
      * Map property values to their correct type.
      *
      * @param string $property string Property name
