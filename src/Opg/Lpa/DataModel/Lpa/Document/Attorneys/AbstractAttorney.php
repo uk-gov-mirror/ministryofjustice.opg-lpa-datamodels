@@ -74,15 +74,21 @@ abstract class AbstractAttorney extends AbstractData {
 
         } // if
 
+        // Based on type...
         switch ($data['type']) {
-            case 'human' :
-                return new Human( $data );
             case 'trust' :
                 return new TrustCorporation( $data );
+            case 'human' :
+                return new Human( $data );
         }
 
-        // error
-        throw new \InvalidArgumentException('Invalid attorney details passed');
+        // Otherwise check if there was a number passed...
+        if( isset($data['number']) ){
+            return new TrustCorporation( $data );
+        }
+
+        // else assume it's a human...
+        return new Human( $data );
 
     } // function
 
