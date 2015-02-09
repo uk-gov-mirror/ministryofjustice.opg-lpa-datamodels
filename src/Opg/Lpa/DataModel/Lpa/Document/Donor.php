@@ -106,6 +106,8 @@ class Donor extends AbstractData {
                 return ($v instanceof Elements\Dob) ? $v : new Elements\Dob( $v );
             case 'email':
                 return ($v instanceof Elements\EmailAddress) ? $v : new Elements\EmailAddress( $v );
+            case 'canSign':
+                return ( is_numeric($v) ) ? (bool)$v : $v;
         }
 
         // else...
