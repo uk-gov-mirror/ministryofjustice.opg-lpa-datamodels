@@ -23,11 +23,6 @@ use Symfony\Component\Validator\ConstraintViolationList;
  */
 abstract class AbstractData implements AccessorInterface, JsonSerializable, Validator\ValidatableInterface {
 
-    /**
-     * @var array List of all used validation groups.
-     */
-    private $validationGroups = array( 'Default', 'require-actor-ids' );
-
 
     /**
      * Builds and populates $this chunk of the LPA.
@@ -158,7 +153,7 @@ abstract class AbstractData implements AccessorInterface, JsonSerializable, Vali
      * @return ValidatorResponse
      */
     public function validateAllGroups(){
-        return $this->validate( array(), $this->validationGroups );
+        return $this->validate( array(), [ 'Default', 'require-actor-ids' ] );
     }
 
     /**
