@@ -67,6 +67,78 @@ class StateChecker {
     }
 
     //------------------------------------------------------------------------
+    // For Generation Checks
+
+    /**
+     * Can a LP1 currently be generated.
+     *
+     * @return bool
+     */
+    public function canGenerateLP1(){
+        return $this->isStateCreated();
+    }
+
+    /**
+     * Can a LP3 currently be generated.
+     *
+     * @return bool
+     */
+    public function canGenerateLP3(){
+        $lap = $this->getLpa();
+        return $this->isStateCreated() && !empty($lap->document->peopleToNotify);
+    }
+
+    /**
+     * Can a LPA120 currently be generated.
+     *
+     * @return bool
+     */
+    public function canGenerateLPA120(){
+
+        if( !$this->isStateCreated() ){
+            return false;
+        }
+
+        //---
+
+        $lap = $this->getLpa();
+
+        if( !($lap->payment instanceof Payment) ){
+            return false;
+        }
+
+        //---
+
+        $payment = $lap->payment;
+
+        // Return true if any of the following is true.
+        return $payment->reducedFeeReceivesBenefits || $payment->reducedFeeAwardedDamages
+                    || $payment->reducedFeeLowIncome || $payment->reducedFeeUniversalCredit;
+
+    } // function
+
+    //------------------------------------------------------------------------
+    // State Checks
+
+    /**
+     * Checks if the LPA is Created (from the perspective of the business)
+     *
+     * @return bool
+     */
+    public function isStateCreated(){
+        return $this->lpaHasCertificateProvider() && ($this->getLpa()->document->instruction !== null);
+    }
+
+    /**
+     * Checks if the LPA is Complete (from the perspective of the business)
+     *
+     * @return bool
+     */
+    public function isStateCompleted(){
+        return $this->paymentResolved();
+    }
+
+    //------------------------------------------------------------------------
     // Below are the functions copied from the front2 model.
 
     protected function paymentResolved()
