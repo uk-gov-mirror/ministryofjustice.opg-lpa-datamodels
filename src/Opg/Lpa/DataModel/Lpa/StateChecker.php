@@ -1,6 +1,8 @@
 <?php
 namespace Opg\Lpa\DataModel\Lpa;
 
+use InvalidArgumentException;
+
 use Opg\Lpa\DataModel\Lpa\Document\Document;
 use Opg\Lpa\DataModel\Lpa\Document\Donor;
 use Opg\Lpa\DataModel\Lpa\Document\Decisions\PrimaryAttorneyDecisions;
@@ -14,6 +16,13 @@ use Opg\Lpa\DataModel\Lpa\Payment\Payment;
 use Opg\Lpa\DataModel\Lpa\Document\Attorneys\TrustCorporation;
 
 
+/**
+ * Provides a library of methods for checking the state of
+ * an LPA object from a business domain perspective.
+ *
+ * Class StateChecker
+ * @package Opg\Lpa\DataModel\Lpa
+ */
 class StateChecker {
 
     /**
@@ -41,6 +50,20 @@ class StateChecker {
     public function setLpa(Lpa $lpa)
     {
         $this->lpa = $lpa;
+    }
+
+    /**
+     * Return the LPA.
+     *
+     * @return LPA
+     */
+    public function getLpa(){
+
+        if( !($this->lpa instanceof Lpa) ){
+            throw new InvalidArgumentException('No LPA has been set');
+        }
+
+        return $this->lpa;
     }
 
     //------------------------------------------------------------------------
@@ -345,4 +368,4 @@ class StateChecker {
         return $this->lpa->document instanceof Document;
     }
 
-}// class
+} // class
