@@ -121,12 +121,22 @@ class StateChecker {
     // State Checks
 
     /**
+     * Checks if the LPA has been started (from the perspective of the business)
+     *
+     * @return bool
+     */
+    public function isStateStarted(){
+        $lap = $this->getLpa();
+        return is_int( $this->id );
+    }
+
+    /**
      * Checks if the LPA is Created (from the perspective of the business)
      *
      * @return bool
      */
     public function isStateCreated(){
-        return $this->lpaHasCertificateProvider() && ($this->getLpa()->document->instruction !== null);
+        return $this->isStateStarted() && $this->lpaHasCertificateProvider() && ($this->getLpa()->document->instruction !== null);
     }
 
     /**
@@ -135,7 +145,7 @@ class StateChecker {
      * @return bool
      */
     public function isStateCompleted(){
-        return $this->paymentResolved();
+        return $this->isStateCreated() && $this->paymentResolved();
     }
 
     //------------------------------------------------------------------------
