@@ -5,7 +5,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\CountValidator as SymfonyCountValidator;
 
 /**
- * Count validator that validates boolean false as null.
+ * Changed CountValidator so that it's not applied if value is not an array.
  *
  * Class CountValidator
  * @package Opg\Lpa\DataModel\Validator\Constraints
@@ -14,8 +14,8 @@ class CountValidator extends SymfonyCountValidator {
 
     public function validate($value, Constraint $constraint){
 
-        if( $value === false ){
-            $value = null;
+        if( !is_array($value) ){
+            return;
         }
 
         parent::validate( $value, $constraint );
