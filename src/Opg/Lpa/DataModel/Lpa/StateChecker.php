@@ -135,7 +135,7 @@ class StateChecker {
      * @return bool
      */
     public function isStateCreated(){
-        return $this->isStateStarted() && $this->lpaHasCreated();
+        return $this->isStateStarted() && $this->lpaHasFinishedCreation();
     }
 
     /**
@@ -198,7 +198,7 @@ class StateChecker {
 
     protected function lpaHasApplicant()
     {
-        return ($this->lpaHasCreated() &&
+        return ($this->lpaHasFinishedCreation() &&
             ( ($this->lpa->document->whoIsRegistering == 'donor')
                 ||
                 ( is_array($this->lpa->document->whoIsRegistering)
@@ -209,7 +209,7 @@ class StateChecker {
         );
     }
 
-    protected function lpaHasCreated()
+    protected function lpaHasFinishedCreation()
     {
         return ($this->lpaHasCertificateProvider() &&
                 is_array($this->lpa->document->peopleToNotify) && 
