@@ -209,11 +209,26 @@ class StateChecker {
         );
     }
 
+    /**
+     * Lpa all required properties has value to qualify as an Instrument 
+     * 
+     * @return boolean
+     */
     protected function lpaHasFinishedCreation()
     {
         return ($this->lpaHasCertificateProvider() &&
                 is_array($this->lpa->document->peopleToNotify) && 
                 (($this->lpa->document->instruction!==null)||($this->lpa->document->preference!==null)));
+    }
+    
+    /**
+     * LPA Instrument is created and created date is set
+     * 
+     * @return boolean
+     */
+    protected function lpaHasCreated()
+    {
+        return ($this->lpaHasFinishedCreation() && ($this->lpa->createdAt!==null));
     }
     
     protected function routePeopleToNotifyHasBeenAccessed()
@@ -387,7 +402,7 @@ class StateChecker {
                 && ($this->lpa->document->primaryAttorneys[$index] instanceof AbstractAttorney));
         }
     }
-
+    
     protected function lpaHasTrustCorporation($whichGroup=null)
     {
         if($this->lpaHasWhenLpaStarts() || $this->lpaHasLifeSustaining()) {
