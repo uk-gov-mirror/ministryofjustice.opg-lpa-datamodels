@@ -135,7 +135,7 @@ class StateChecker {
      * @return bool
      */
     public function isStateCreated(){
-        return $this->isStateStarted() && $this->lpaHasCertificateProvider() && ($this->getLpa()->document->instruction !== null);
+        return $this->isStateStarted() && $this->lpaHasCreated();
     }
 
     /**
@@ -211,7 +211,9 @@ class StateChecker {
 
     protected function lpaHasCreated()
     {
-        return ($this->lpaHasCertificateProvider() && ($this->lpa->createdAt !== null));
+        return ($this->lpaHasCertificateProvider() &&
+                is_array($this->lpa->document->peopleToNotify) && 
+                (($this->lpa->document->instruction!==null)||($this->lpa->document->preference!==null)));
     }
     
     protected function routePeopleToNotifyHasBeenAccessed()
