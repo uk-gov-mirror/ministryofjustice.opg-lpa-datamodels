@@ -233,7 +233,7 @@ class StateChecker {
     
     protected function routePeopleToNotifyHasBeenAccessed()
     {
-        return count($this->lpa->document->peopleToNotify > 0) || (is_array($this->lpa->metadata) && array_key_exists('lpa-has-no-people-to-notify', $this->lpa->metadata) && ($this->lpa->metadata['lpa-has-no-people-to-notify'] == true));
+        return (count($this->lpa->document->peopleToNotify) > 0) || (is_array($this->lpa->metadata) && array_key_exists('lpa-has-no-people-to-notify', $this->lpa->metadata) && ($this->lpa->metadata['lpa-has-no-people-to-notify'] == true));
     }
     
     protected function lpaHasPeopleToNotify($index = null)
@@ -256,7 +256,7 @@ class StateChecker {
 
     protected function routeReplacementAttorneyHasBeenAccessed()
     {
-        return count($this->lpa->document->replacementAttorneys > 0) || (is_array($this->lpa->metadata) && array_key_exists('lpa-has-no-replacement-attorneys', $this->lpa->metadata) && ($this->lpa->metadata['lpa-has-no-replacement-attorneys'] == true));
+        return (count($this->lpa->document->replacementAttorneys) > 0) || (is_array($this->lpa->metadata) && array_key_exists('lpa-has-no-replacement-attorneys', $this->lpa->metadata) && ($this->lpa->metadata['lpa-has-no-replacement-attorneys'] == true));
     }
 
     protected function lpaHowReplacementAttorneysMakeDecisionHasValue()
