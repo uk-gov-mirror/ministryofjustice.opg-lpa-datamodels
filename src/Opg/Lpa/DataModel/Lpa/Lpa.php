@@ -15,7 +15,7 @@ use Opg\Lpa\DataModel\Validator\Constraints as Assert;
  * Class Lpa
  * @package Opg\Lpa\DataModel\Lpa
  */
-class Lpa extends AbstractData implements CompleteInterface {
+class Lpa extends AbstractData {
 
     /**
      * @var int The LPA identifier.
@@ -209,7 +209,7 @@ class Lpa extends AbstractData implements CompleteInterface {
 
         return $data;
     }
-    
+
     //------------------------------------------------
 
     /**
