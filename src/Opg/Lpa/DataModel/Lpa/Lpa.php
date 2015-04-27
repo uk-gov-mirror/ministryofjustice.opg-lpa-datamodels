@@ -209,20 +209,7 @@ class Lpa extends AbstractData implements CompleteInterface {
 
         return $data;
     }
-
-    /**
-     * Check whether the LPA document is complete and valid at the business level.
-     *
-     * @return bool
-     */
-    public function isComplete(){
-
-        throw new \RuntimeException('isComplete() is deprecated. Use an instance of StateChecker instead.');
-
-        return true;
-
-    } // function
-
+    
     //------------------------------------------------
 
     /**
