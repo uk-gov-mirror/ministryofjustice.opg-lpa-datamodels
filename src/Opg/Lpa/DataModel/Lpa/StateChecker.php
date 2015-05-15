@@ -203,9 +203,9 @@ class StateChecker {
             return false;
         }
         
-        return ((($lpa->reducedFeeReceivesBenefits) && ($lpa->reducedFeeAwardedDamages)) 
-                || ($lpa->reducedFeeUniversalCredit)
-                || ($lpa->reducedFeeLowIncome));
+        return ((($lpa->payment->reducedFeeReceivesBenefits) && ($lpa->payment->reducedFeeAwardedDamages)) 
+                || ($lpa->payment->reducedFeeUniversalCredit)
+                || ($lpa->payment->reducedFeeLowIncome));
     }
 
     protected function isWhoAreYouAnswered()
