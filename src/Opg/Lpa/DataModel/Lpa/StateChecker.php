@@ -196,15 +196,16 @@ class StateChecker {
      * 
      * @return boolean
      */
-    protected function isEligibleForFeeReduction()
+    public function isEligibleForFeeReduction()
     {
-        if(!($this->lpa->payment instanceof Payment)) {
+        $lpa = $this->getLpa();
+        if(!($lpa->payment instanceof Payment)) {
             return false;
         }
         
-        return ((($this->lpa->reducedFeeReceivesBenefits) && ($this->lpa->reducedFeeAwardedDamages)) 
-                || ($this->lpa->reducedFeeUniversalCredit)
-                || ($this->lpa->reducedFeeLowIncome));
+        return ((($lpa->reducedFeeReceivesBenefits) && ($lpa->reducedFeeAwardedDamages)) 
+                || ($lpa->reducedFeeUniversalCredit)
+                || ($lpa->reducedFeeLowIncome));
     }
 
     protected function isWhoAreYouAnswered()
