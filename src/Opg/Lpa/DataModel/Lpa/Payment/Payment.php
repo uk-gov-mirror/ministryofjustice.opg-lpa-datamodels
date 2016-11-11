@@ -138,8 +138,6 @@ class Payment extends AbstractData {
         switch( $property ){
             case 'date':
                 return ($v instanceof \DateTime || is_null($v)) ? $v : new \DateTime( $v );
-            case 'phone':
-                return ($v instanceof Elements\PhoneNumber) ? $v : new Elements\PhoneNumber( $v );
             case 'amount':
                 return ( !is_int( $v ) ) ? $v : (float)$v;
             case 'email':
