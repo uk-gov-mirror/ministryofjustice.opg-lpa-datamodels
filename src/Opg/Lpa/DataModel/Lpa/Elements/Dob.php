@@ -19,7 +19,7 @@ class Dob extends AbstractData
 {
 
     /**
-     * @var \DateTime A date of birth. The time component the DateTime object should be ignored.
+     * @var \DateTime A date of birth. The time component of the DateTime object should be ignored.
      */
     protected $date;
 
@@ -30,7 +30,7 @@ class Dob extends AbstractData
 
         // As there is only 1 property, include NotBlank as there is no point this object existing without it.
 
-        $lessThanOrEqualToToday=new Assert\LessThanOrEqual(['value' => new \DateTime('today')]);
+        $lessThanOrEqualToToday = new Assert\LessThanOrEqual(['value' => new \DateTime('today')]);
         $lessThanOrEqualToToday->message = "must-be-less-than-or-equal-to-today";
 
         $metadata->addPropertyConstraints('date', [
