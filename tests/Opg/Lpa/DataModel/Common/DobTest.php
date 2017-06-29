@@ -1,6 +1,8 @@
 <?php
 
-namespace Opg\Lpa\DataModel\Common;
+namespace OpgTest\Lpa\DataModel\Common;
+
+use Opg\Lpa\DataModel\Common\Dob;
 
 class DobTest extends \PHPUnit_Framework_TestCase
 {
