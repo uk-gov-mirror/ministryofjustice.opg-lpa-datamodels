@@ -63,15 +63,17 @@ class Dob extends AbstractData
                     }
 
                     if (count($dateArr) == 3) {
+                        //  Remove any leading zeros from the date components
+                        $dateArr[0] = ltrim($dateArr[0], '0');
+                        $dateArr[1] = ltrim($dateArr[1], '0');
+                        $dateArr[2] = ltrim($dateArr[2], '0');
+
                         //  Truncate the day value to lose any time data and try to create a DateTime object
                         $dateArr[2] = substr($dateArr[2], 0, 2);
 
                         //  If required add any leading zeros to the day and month
                         $dateArr[1] = str_pad($dateArr[1], 2, '0', STR_PAD_LEFT);
                         $dateArr[2] = str_pad($dateArr[2], 2, '0', STR_PAD_LEFT);
-
-                        //  Remove any leading zeros from the year
-                        $dateArr[0] = ltrim($dateArr[0], '0');
 
                         //  Format the string and date to the same format to ensure that it is valid
                         $dateFormat = 'Y-m-d H:i:s.uO';
