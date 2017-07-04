@@ -27,7 +27,7 @@ class Dob extends AbstractData
             return $v;
         }
 
-        if (is_string($v) && strlen($v) > 0) {
+        if (is_string($v)) {
             //  Split the array into components
             $timeIndex = strpos($v, 'T');
             $dateArr = explode('-', $v);

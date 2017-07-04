@@ -3,6 +3,8 @@
 namespace OpgTest\Lpa\DataModel\Common;
 
 use Opg\Lpa\DataModel\Common\Dob;
+use OpgTest\Lpa\DataModel\FixturesData;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class DobTest extends \PHPUnit_Framework_TestCase

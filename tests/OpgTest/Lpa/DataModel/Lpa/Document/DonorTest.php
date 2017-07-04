@@ -60,14 +60,4 @@ class DonorTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($errors['dob']);
         $this->assertNotNull($errors['canSign']);
     }
-
-    //TODO: Move to Elements tests
-    public function testToString()
-    {
-        $donor = FixturesData::getDonor();
-
-        $this->assertEquals('Hon Ayden Armstrong', '' . $donor->get('name'));
-        $this->assertEquals('562 Queen Street, Charlestown, Cornwall, England, EH9K 8UC', '' . $donor->get('address'));
-        $this->assertEquals('92zx2n1nk@wx.co.uk', '' . $donor->get('email'));
-    }
 }
