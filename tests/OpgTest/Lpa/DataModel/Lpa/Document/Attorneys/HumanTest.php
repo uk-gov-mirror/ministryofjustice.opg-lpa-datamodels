@@ -4,7 +4,6 @@ namespace OpgTest\Lpa\DataModel\Lpa\Document\Attorneys;
 
 use Opg\Lpa\DataModel\Lpa\Document\Attorneys\AbstractAttorney;
 use Opg\Lpa\DataModel\Lpa\Document\Attorneys\Human;
-use Opg\Lpa\DataModel\Lpa\Document\Attorneys\TrustCorporation;
 use OpgTest\Lpa\DataModel\FixturesData;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 

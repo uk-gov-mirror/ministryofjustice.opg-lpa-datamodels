@@ -1,0 +1,26 @@
+<?php
+
+namespace OpgTest\Lpa\DataModel\Lpa\Document\Decisions;
+
+use Opg\Lpa\DataModel\Lpa\Document\Decisions\ReplacementAttorneyDecisions;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+
+class ReplacementAttorneyDecisionsTest extends \PHPUnit_Framework_TestCase
+{
+    public function testLoadValidatorMetadata()
+    {
+        $metadata = new ClassMetadata(ReplacementAttorneyDecisions::class);
+
+        ReplacementAttorneyDecisions::loadValidatorMetadata($metadata);
+
+        $this->assertEquals(2, count($metadata->properties));
+        $this->assertNotNull($metadata->properties['when']);
+        $this->assertNotNull($metadata->properties['whenDetails']);
+        $whenMetadata = $metadata->getPropertyMetadata('when');
+        $this->assertEquals([
+            ReplacementAttorneyDecisions::LPA_DECISION_WHEN_FIRST,
+            ReplacementAttorneyDecisions::LPA_DECISION_WHEN_LAST,
+            ReplacementAttorneyDecisions::LPA_DECISION_WHEN_DEPENDS
+        ], $whenMetadata[0]->constraints[1]->choices);
+    }
+}
