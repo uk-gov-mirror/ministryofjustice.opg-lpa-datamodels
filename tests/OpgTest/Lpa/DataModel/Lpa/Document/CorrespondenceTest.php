@@ -47,7 +47,8 @@ class CorrespondenceTest extends \PHPUnit_Framework_TestCase
     {
         $correspondence = FixturesData::getCorrespondence();
 
-        $this->assertFalse($correspondence->validate()->hasErrors());
+        $validatorResponse = $correspondence->validate();
+        $this->assertFalse($validatorResponse->hasErrors());
     }
 
     public function testValidationFailed()
@@ -58,5 +59,8 @@ class CorrespondenceTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(3, count($errors));
+        $this->assertNotNull($errors['name/company']);
+        $this->assertNotNull($errors['who']);
+        $this->assertNotNull($errors['address']);
     }
 }

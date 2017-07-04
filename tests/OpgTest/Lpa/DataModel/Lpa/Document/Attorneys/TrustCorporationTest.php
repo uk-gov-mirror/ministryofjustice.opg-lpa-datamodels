@@ -3,7 +3,6 @@
 namespace OpgTest\Lpa\DataModel\Lpa\Document\Attorneys;
 
 use Opg\Lpa\DataModel\Lpa\Document\Attorneys\AbstractAttorney;
-use Opg\Lpa\DataModel\Lpa\Document\Attorneys\Human;
 use Opg\Lpa\DataModel\Lpa\Document\Attorneys\TrustCorporation;
 use OpgTest\Lpa\DataModel\FixturesData;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -35,7 +34,8 @@ class TrustCorporationTest extends \PHPUnit_Framework_TestCase
     {
         $trust = FixturesData::getAttorneyTrust();
 
-        $this->assertFalse($trust->validate()->hasErrors());
+        $validatorResponse = $trust->validate();
+        $this->assertFalse($validatorResponse->hasErrors());
     }
 
     public function testValidationFailed()
@@ -46,5 +46,7 @@ class TrustCorporationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(3, count($errors));
+        $this->assertNotNull($errors['name']);
+        $this->assertNotNull($errors['number']);
     }
 }

@@ -28,7 +28,8 @@ class PrimaryAttorneyDecisionsTest extends \PHPUnit_Framework_TestCase
     {
         $primaryAttorneyDecisions = FixturesData::getPrimaryAttorneyDecisions();
 
-        $this->assertFalse($primaryAttorneyDecisions->validate()->hasErrors());
+        $validatorResponse = $primaryAttorneyDecisions->validate();
+        $this->assertFalse($validatorResponse->hasErrors());
     }
 
     public function testValidationFailed()
@@ -40,5 +41,6 @@ class PrimaryAttorneyDecisionsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(1, count($errors));
+        $this->assertNotNull($errors['when']);
     }
 }

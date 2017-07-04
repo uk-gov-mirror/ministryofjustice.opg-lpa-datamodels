@@ -40,7 +40,8 @@ class CertificateProviderTest extends \PHPUnit_Framework_TestCase
     {
         $certificateProvider = FixturesData::getCertificateProvider();
 
-        $this->assertFalse($certificateProvider->validate()->hasErrors());
+        $validatorResponse = $certificateProvider->validate();
+        $this->assertFalse($validatorResponse->hasErrors());
     }
 
     public function testValidationFailed()
@@ -51,6 +52,8 @@ class CertificateProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(2, count($errors));
+        $this->assertNotNull($errors['name']);
+        $this->assertNotNull($errors['address']);
     }
 }
 

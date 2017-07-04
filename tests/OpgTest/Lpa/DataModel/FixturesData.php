@@ -75,6 +75,15 @@ class FixturesData
     }
 
     /**
+     * @return \Opg\Lpa\DataModel\Lpa\Document\Donor
+     */
+    public static function getDonor()
+    {
+        $lpa = self::getHwLpa();
+        return $lpa->get('document')->donor;
+    }
+
+    /**
      * @return \Opg\Lpa\DataModel\Lpa\Document\CertificateProvider
      */
     public static function getCertificateProvider()
@@ -108,5 +117,14 @@ class FixturesData
     {
         $lpa = self::getPfLpa();
         return $lpa->get('document')->replacementAttorneyDecisions;
+    }
+
+    /**
+     * @return \Opg\Lpa\DataModel\Lpa\Document\NotifiedPerson
+     */
+    public static function getNotifiedPerson()
+    {
+        $lpa = self::getHwLpa();
+        return $lpa->get('document')->peopleToNotify[0];
     }
 }
