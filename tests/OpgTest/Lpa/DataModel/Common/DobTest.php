@@ -105,7 +105,7 @@ class DobTest extends \PHPUnit_Framework_TestCase
 
     public function testMetadataMessageNotSpecified()
     {
-        $metadata = new ClassMetadata(get_class(new Dob()));
+        $metadata = new ClassMetadata(Dob::class);
         TestableDob::loadValidatorMetadata($metadata);
         $dateMetadata = $metadata->getPropertyMetadata('date');
         $this->assertEquals('must-be-less-than-or-equal:{{ compared_value }}', $dateMetadata[0]->constraints[2]->message);

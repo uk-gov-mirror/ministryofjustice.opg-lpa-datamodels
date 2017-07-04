@@ -2,14 +2,14 @@
 
 namespace OpgTest\Lpa\DataModel\Lpa;
 
-use Opg\Lpa\DataModel\Lpa\Lpa;
+use OpgTest\Lpa\DataModel\FixturesData;
 
 class ComparisonTest extends \PHPUnit_Framework_TestCase
 {
     public function testLpaIsEqual()
     {
-        $lpa = self::getPfLpa();
-        $comparisonLpa = self::getPfLpa();
+        $lpa = FixturesData::getPfLpa();
+        $comparisonLpa = FixturesData::getPfLpa();
 
         //Reference should be different
         $this->assertFalse($lpa === $comparisonLpa);
@@ -21,8 +21,8 @@ class ComparisonTest extends \PHPUnit_Framework_TestCase
 
     public function testLpaIsNotEqual()
     {
-        $lpa = self::getPfLpa();
-        $comparisonLpa = self::getPfLpa();
+        $lpa = FixturesData::getPfLpa();
+        $comparisonLpa = FixturesData::getPfLpa();
 
         $comparisonLpa->document->donor->name->first = "Edited";
 
@@ -37,8 +37,8 @@ class ComparisonTest extends \PHPUnit_Framework_TestCase
 
     public function testLpaIsNotEqualMetadata()
     {
-        $lpa = self::getPfLpa();
-        $comparisonLpa = self::getPfLpa();
+        $lpa = FixturesData::getPfLpa();
+        $comparisonLpa = FixturesData::getPfLpa();
 
         $comparisonLpa->metadata['analyticsReturnCount']++;
 
@@ -53,18 +53,13 @@ class ComparisonTest extends \PHPUnit_Framework_TestCase
 
     public function testLpaIsEqualIgnoringMetadata()
     {
-        $lpa = self::getPfLpa();
-        $comparisonLpa = self::getPfLpa();
+        $lpa = FixturesData::getPfLpa();
+        $comparisonLpa = FixturesData::getPfLpa();
 
         $comparisonLpa->metadata['analyticsReturnCount']++;
 
         $this->assertTrue($lpa->document == $comparisonLpa->document);
         $this->assertEquals($lpa->document, $comparisonLpa->document);
         $this->assertTrue($lpa->equalsIgnoreMetadata($comparisonLpa));
-    }
-
-    private function getPfLpa()
-    {
-        return new Lpa(file_get_contents(__DIR__ . '/../../../../fixtures/pf.json'));
     }
 }
