@@ -2,6 +2,8 @@
 
 namespace OpgTest\Lpa\DataModel;
 
+use Opg\Lpa\DataModel\Lpa\Document\Attorneys\AbstractAttorney;
+use Opg\Lpa\DataModel\Lpa\Document\Attorneys\Human;
 use Opg\Lpa\DataModel\Lpa\Lpa;
 
 /**
@@ -43,6 +45,7 @@ class FixturesData
         }
         return $json;
     }
+
     /*
      * Returns valid JSON for a Trust Attorney
      */
@@ -53,5 +56,57 @@ class FixturesData
             $json = str_replace('"type": "trust"', '"type": ""', $json);
         }
         return $json;
+    }
+
+    /**
+     * @return Human|\Opg\Lpa\DataModel\Lpa\Document\Attorneys\TrustCorporation
+     */
+    public static function getAttorneyHuman()
+    {
+        return AbstractAttorney::factory(self::getAttorneyHumanJson());
+    }
+
+    /**
+     * @return Human|\Opg\Lpa\DataModel\Lpa\Document\Attorneys\TrustCorporation
+     */
+    public static function getAttorneyTrust()
+    {
+        return AbstractAttorney::factory(self::getAttorneyTrustJson());
+    }
+
+    /**
+     * @return \Opg\Lpa\DataModel\Lpa\Document\CertificateProvider
+     */
+    public static function getCertificateProvider()
+    {
+        $lpa = self::getHwLpa();
+        return $lpa->get('document')->certificateProvider;
+    }
+
+    /**
+     * @return \Opg\Lpa\DataModel\Lpa\Document\Correspondence
+     */
+    public static function getCorrespondence()
+    {
+        $lpa = self::getPfLpa();
+        return $lpa->get('document')->correspondent;
+    }
+
+    /**
+     * @return \Opg\Lpa\DataModel\Lpa\Document\Decisions\PrimaryAttorneyDecisions
+     */
+    public static function getPrimaryAttorneyDecisions()
+    {
+        $lpa = self::getHwLpa();
+        return $lpa->get('document')->primaryAttorneyDecisions;
+    }
+
+    /**
+     * @return \Opg\Lpa\DataModel\Lpa\Document\Decisions\ReplacementAttorneyDecisions
+     */
+    public static function getReplacementAttorneyDecisions()
+    {
+        $lpa = self::getPfLpa();
+        return $lpa->get('document')->replacementAttorneyDecisions;
     }
 }

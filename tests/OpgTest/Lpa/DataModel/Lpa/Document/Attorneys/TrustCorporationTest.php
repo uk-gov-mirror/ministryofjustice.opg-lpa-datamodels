@@ -30,4 +30,21 @@ class TrustCorporationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('trust', $attorneyArray['type']);
     }
+
+    public function testValidation()
+    {
+        $trust = FixturesData::getAttorneyTrust();
+
+        $this->assertFalse($trust->validate()->hasErrors());
+    }
+
+    public function testValidationFailed()
+    {
+        $trustCorporation = new TrustCorporation();
+
+        $validatorResponse = $trustCorporation->validate();
+        $this->assertTrue($validatorResponse->hasErrors());
+        $errors = $validatorResponse->getArrayCopy();
+        $this->assertEquals(3, count($errors));
+    }
 }

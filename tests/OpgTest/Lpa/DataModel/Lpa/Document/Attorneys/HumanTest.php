@@ -42,4 +42,21 @@ class HumanTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('human', $attorneyArray['type']);
     }
+
+    public function testValidation()
+    {
+        $human = FixturesData::getAttorneyHuman();
+
+        $this->assertFalse($human->validate()->hasErrors());
+    }
+
+    public function testValidationFailed()
+    {
+        $human = new Human();
+
+        $validatorResponse = $human->validate();
+        $this->assertTrue($validatorResponse->hasErrors());
+        $errors = $validatorResponse->getArrayCopy();
+        $this->assertEquals(3, count($errors));
+    }
 }

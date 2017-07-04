@@ -3,6 +3,7 @@
 namespace OpgTest\Lpa\DataModel\Lpa\Document\Decisions;
 
 use Opg\Lpa\DataModel\Lpa\Document\Decisions\ReplacementAttorneyDecisions;
+use OpgTest\Lpa\DataModel\FixturesData;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class ReplacementAttorneyDecisionsTest extends \PHPUnit_Framework_TestCase
@@ -22,5 +23,23 @@ class ReplacementAttorneyDecisionsTest extends \PHPUnit_Framework_TestCase
             ReplacementAttorneyDecisions::LPA_DECISION_WHEN_LAST,
             ReplacementAttorneyDecisions::LPA_DECISION_WHEN_DEPENDS
         ], $whenMetadata[0]->constraints[1]->choices);
+    }
+
+    public function testValidation()
+    {
+        $replacementAttorneyDecisions = FixturesData::getReplacementAttorneyDecisions();
+
+        $this->assertFalse($replacementAttorneyDecisions->validate()->hasErrors());
+    }
+
+    public function testValidationFailed()
+    {
+        $replacementAttorneyDecisions = new ReplacementAttorneyDecisions();
+        $replacementAttorneyDecisions->set('when', 'incorrect');
+
+        $validatorResponse = $replacementAttorneyDecisions->validate();
+        $this->assertTrue($validatorResponse->hasErrors());
+        $errors = $validatorResponse->getArrayCopy();
+        $this->assertEquals(1, count($errors));
     }
 }

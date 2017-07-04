@@ -3,6 +3,7 @@
 namespace OpgTest\Lpa\DataModel\Lpa\Document\Decisions;
 
 use Opg\Lpa\DataModel\Lpa\Document\Decisions\PrimaryAttorneyDecisions;
+use OpgTest\Lpa\DataModel\FixturesData;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class PrimaryAttorneyDecisionsTest extends \PHPUnit_Framework_TestCase
@@ -21,5 +22,23 @@ class PrimaryAttorneyDecisionsTest extends \PHPUnit_Framework_TestCase
             PrimaryAttorneyDecisions::LPA_DECISION_WHEN_NOW,
             PrimaryAttorneyDecisions::LPA_DECISION_WHEN_NO_CAPACITY
         ], $whenMetadata[0]->constraints[1]->choices);
+    }
+
+    public function testValidation()
+    {
+        $primaryAttorneyDecisions = FixturesData::getPrimaryAttorneyDecisions();
+
+        $this->assertFalse($primaryAttorneyDecisions->validate()->hasErrors());
+    }
+
+    public function testValidationFailed()
+    {
+        $primaryAttorneyDecisions = new PrimaryAttorneyDecisions();
+        $primaryAttorneyDecisions->set('when', 'incorrect');
+
+        $validatorResponse = $primaryAttorneyDecisions->validate();
+        $this->assertTrue($validatorResponse->hasErrors());
+        $errors = $validatorResponse->getArrayCopy();
+        $this->assertEquals(1, count($errors));
     }
 }
