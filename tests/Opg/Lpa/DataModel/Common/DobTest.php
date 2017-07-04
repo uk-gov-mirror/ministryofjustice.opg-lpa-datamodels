@@ -3,6 +3,7 @@
 namespace OpgTest\Lpa\DataModel\Common;
 
 use Opg\Lpa\DataModel\Common\Dob;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class DobTest extends \PHPUnit_Framework_TestCase
 {
@@ -93,10 +94,31 @@ class DobTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $mapped);
     }
+
+    public function testMetadataMessageSpecified()
+    {
+        $metadata = new ClassMetadata(get_class(new Dob()));
+        TestableDob::loadValidatorMetadata($metadata, 'Error message');
+        $dateMetadata = $metadata->getPropertyMetadata('date');
+        $this->assertEquals('Error message', $dateMetadata[0]->constraints[2]->message);
+    }
+
+    public function testMetadataMessageNotSpecified()
+    {
+        $metadata = new ClassMetadata(get_class(new Dob()));
+        TestableDob::loadValidatorMetadata($metadata);
+        $dateMetadata = $metadata->getPropertyMetadata('date');
+        $this->assertEquals('must-be-less-than-or-equal:{{ compared_value }}', $dateMetadata[0]->constraints[2]->message);
+    }
 }
 
 class TestableDob extends Dob
 {
+    public static function loadValidatorMetadata(ClassMetadata $metadata, $message = null)
+    {
+        parent::loadValidatorMetadataCommon($metadata, $message);
+    }
+
     public function testMap($property, $v)
     {
         return parent::map($property, $v);
