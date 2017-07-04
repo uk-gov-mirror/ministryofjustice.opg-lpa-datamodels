@@ -1,6 +1,6 @@
 <?php
 
-namespace OpgTest\Lpa\DataModel\Lpa\Document\Elements;
+namespace OpgTest\Lpa\DataModel\Lpa\Elements;
 
 use Opg\Lpa\DataModel\Lpa\Elements\Address;
 use OpgTest\Lpa\DataModel\FixturesData;
