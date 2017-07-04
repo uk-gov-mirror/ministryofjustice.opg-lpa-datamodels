@@ -4,7 +4,7 @@ namespace OpgTest\Lpa\DataModel\Lpa;
 
 use OpgTest\Lpa\DataModel\FixturesData;
 
-class ComparisonTest extends \PHPUnit_Framework_TestCase
+class LpaTest extends \PHPUnit_Framework_TestCase
 {
     public function testLpaIsEqual()
     {
