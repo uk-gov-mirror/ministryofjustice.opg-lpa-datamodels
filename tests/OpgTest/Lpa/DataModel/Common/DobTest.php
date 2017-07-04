@@ -110,6 +110,15 @@ class DobTest extends \PHPUnit_Framework_TestCase
         $dateMetadata = $metadata->getPropertyMetadata('date');
         $this->assertEquals('must-be-less-than-or-equal:{{ compared_value }}', $dateMetadata[0]->constraints[2]->message);
     }
+
+    public function testMapIso8601()
+    {
+        $dob = new TestableDob();
+        $expected = new \DateTime('07-10-1948 00:00:00');
+        $mapped = $dob->testDateMap('1948-10-07T00:00:00.000Z');
+
+        $this->assertEquals($expected, $mapped);
+    }
 }
 
 class TestableDob extends Dob

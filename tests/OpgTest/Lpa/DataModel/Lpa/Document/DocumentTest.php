@@ -16,25 +16,32 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         Document::loadValidatorMetadata($metadata);
 
         $this->assertEquals(12, count($metadata->properties));
-        $this->assertNotNull($metadata->properties['id']);
-        $this->assertNotNull($metadata->properties['name']);
-        $this->assertNotNull($metadata->properties['address']);
+        $this->assertNotNull($metadata->properties['type']);
+        $this->assertNotNull($metadata->properties['donor']);
+        $this->assertNotNull($metadata->properties['whoIsRegistering']);
+        $this->assertNotNull($metadata->properties['primaryAttorneyDecisions']);
+        $this->assertNotNull($metadata->properties['replacementAttorneyDecisions']);
+        $this->assertNotNull($metadata->properties['correspondent']);
+        $this->assertNotNull($metadata->properties['instruction']);
+        $this->assertNotNull($metadata->properties['preference']);
+        $this->assertNotNull($metadata->properties['certificateProvider']);
+        $this->assertNotNull($metadata->properties['primaryAttorneys']);
+        $this->assertNotNull($metadata->properties['replacementAttorneys']);
+        $this->assertNotNull($metadata->properties['peopleToNotify']);
     }
 
     public function testMap()
     {
         $document = FixturesData::getHwLpa()->get('document');
 
-        $this->assertEquals(1, $document->get('id'));
-
-        $this->assertEquals('Miss', $document->get('name')->title);
-        $this->assertEquals('Elizabeth', $document->get('name')->first);
-        $this->assertEquals('Stout', $document->get('name')->last);
-
-        $this->assertEquals('747 Station Road', $document->get('address')->address1);
-        $this->assertEquals('Clayton le Moors', $document->get('address')->address2);
-        $this->assertEquals('Lancashire, England', $document->get('address')->address3);
-        $this->assertEquals('WN8A 8AQ', $document->get('address')->postcode);
+        $this->assertNotNull($document->get('donor'));
+        $this->assertNotNull($document->get('primaryAttorneyDecisions'));
+        $this->assertNotNull($document->get('replacementAttorneyDecisions'));
+        $this->assertNotNull($document->get('correspondent'));
+        $this->assertNotNull($document->get('certificateProvider'));
+        $this->assertNotNull($document->get('primaryAttorneys'));
+        $this->assertNotNull($document->get('replacementAttorneys'));
+        $this->assertNotNull($document->get('peopleToNotify'));
     }
 
     public function testValidation()
@@ -48,13 +55,13 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function testValidationFailed()
     {
         $document = new Document();
+        $document->set('type', 'incorrect');
 
         $validatorResponse = $document->validate();
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
-        $this->assertEquals(2, count($errors));
-        $this->assertNotNull($errors['name']);
-        $this->assertNotNull($errors['address']);
+        $this->assertEquals(1, count($errors));
+        $this->assertNotNull($errors['type']);
     }
 
     public function testGetPrimaryAttorneyById()

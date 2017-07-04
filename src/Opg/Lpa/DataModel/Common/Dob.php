@@ -28,6 +28,12 @@ class Dob extends AbstractData
         }
 
         if (is_string($v)) {
+            //  Try to parse from ISO-8601 format
+            $parsedDate = DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $v, new \DateTimeZone('UTC'));
+            if ($parsedDate instanceof DateTime) {
+                return $parsedDate;
+            }
+
             //  Split the array into components
             $timeIndex = strpos($v, 'T');
             $dateArr = explode('-', $v);
