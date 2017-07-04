@@ -35,4 +35,22 @@ class AbstractAttorneyTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(TrustCorporation::class, get_class($attorney));
     }
+
+    public function testFactoryTrustByNumber()
+    {
+        $data = FixturesData::getAttorneyTrustJson(true);
+
+        $attorney = AbstractAttorney::factory($data);
+
+        $this->assertEquals(TrustCorporation::class, get_class($attorney));
+    }
+
+    public function testFactoryHumanDefault()
+    {
+        $data = FixturesData::getAttorneyHumanJson(true);
+
+        $attorney = AbstractAttorney::factory($data);
+
+        $this->assertEquals(Human::class, get_class($attorney));
+    }
 }

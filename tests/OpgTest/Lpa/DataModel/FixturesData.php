@@ -35,15 +35,23 @@ class FixturesData
     /*
      * Returns valid JSON for a Human Attorney
      */
-    public static function getAttorneyHumanJson()
+    public static function getAttorneyHumanJson($remoteType = false)
     {
-        return file_get_contents(self::$fixturesPath . 'attorney-human.json');
+        $json = file_get_contents(self::$fixturesPath . 'attorney-human.json');
+        if ($remoteType) {
+            $json = str_replace('"type": "human"', '"type": ""', $json);
+        }
+        return $json;
     }
     /*
      * Returns valid JSON for a Trust Attorney
      */
-    public static function getAttorneyTrustJson()
+    public static function getAttorneyTrustJson($remoteType = false)
     {
-        return file_get_contents(self::$fixturesPath . 'attorney-trust.json');
+        $json = file_get_contents(self::$fixturesPath . 'attorney-trust.json');
+        if ($remoteType) {
+            $json = str_replace('"type": "trust"', '"type": ""', $json);
+        }
+        return $json;
     }
 }
