@@ -14,6 +14,16 @@ class FixturesData
 {
     private static $fixturesPath = __DIR__ . '/../../../fixtures/';
 
+    public static function getHwLpaJson()
+    {
+        return file_get_contents(self::$fixturesPath . 'hw.json');
+    }
+
+    public static function getPfLpaJson()
+    {
+        return file_get_contents(self::$fixturesPath . 'pf.json');
+    }
+
     /**
      * Returns a complete Heath and Welfare LPA
      *
@@ -21,7 +31,7 @@ class FixturesData
      */
     public static function getHwLpa()
     {
-        return new Lpa(file_get_contents(self::$fixturesPath . 'hw.json'));
+        return new Lpa(self::getHwLpaJson());
     }
 
     /**
@@ -31,16 +41,16 @@ class FixturesData
      */
     public static function getPfLpa()
     {
-        return new Lpa(file_get_contents(self::$fixturesPath . 'pf.json'));
+        return new Lpa(self::getPfLpaJson());
     }
 
     /*
      * Returns valid JSON for a Human Attorney
      */
-    public static function getAttorneyHumanJson($remoteType = false)
+    public static function getAttorneyHumanJson($removeType = false)
     {
         $json = file_get_contents(self::$fixturesPath . 'attorney-human.json');
-        if ($remoteType) {
+        if ($removeType) {
             $json = str_replace('"type": "human"', '"type": ""', $json);
         }
         return $json;
@@ -49,10 +59,10 @@ class FixturesData
     /*
      * Returns valid JSON for a Trust Attorney
      */
-    public static function getAttorneyTrustJson($remoteType = false)
+    public static function getAttorneyTrustJson($removeType = false)
     {
         $json = file_get_contents(self::$fixturesPath . 'attorney-trust.json');
-        if ($remoteType) {
+        if ($removeType) {
             $json = str_replace('"type": "trust"', '"type": ""', $json);
         }
         return $json;
@@ -61,17 +71,21 @@ class FixturesData
     /**
      * @return Human|\Opg\Lpa\DataModel\Lpa\Document\Attorneys\TrustCorporation
      */
-    public static function getAttorneyHuman()
+    public static function getAttorneyHuman($id = 3)
     {
-        return AbstractAttorney::factory(self::getAttorneyHumanJson());
+        $human = AbstractAttorney::factory(self::getAttorneyHumanJson());
+        $human->set('id', $id);
+        return $human;
     }
 
     /**
      * @return Human|\Opg\Lpa\DataModel\Lpa\Document\Attorneys\TrustCorporation
      */
-    public static function getAttorneyTrust()
+    public static function getAttorneyTrust($id = 4)
     {
-        return AbstractAttorney::factory(self::getAttorneyTrustJson());
+        $trustCorporation = AbstractAttorney::factory(self::getAttorneyTrustJson());
+        $trustCorporation->set('id', $id);
+        return $trustCorporation;
     }
 
     /**
@@ -126,5 +140,15 @@ class FixturesData
     {
         $lpa = self::getHwLpa();
         return $lpa->get('document')->peopleToNotify[0];
+    }
+
+    public static function generateRandomString($length) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }

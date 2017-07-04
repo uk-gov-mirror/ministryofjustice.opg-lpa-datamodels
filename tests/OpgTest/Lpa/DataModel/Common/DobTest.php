@@ -119,6 +119,23 @@ class DobTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $mapped);
     }
+
+    public function testMapMalformedIso8601()
+    {
+        $dob = new TestableDob();
+        $expected = new \DateTime('07-10-1948 00:00:00');
+        $mapped = $dob->testDateMap('1948-10-07T00:00:00.000');
+
+        $this->assertEquals($expected, $mapped);
+    }
+
+    public function testStringDateDoesNotMap()
+    {
+        $dob = new TestableDob();
+        $mapped = $dob->testDateMap('1st-Feb-1997');
+
+        $this->assertEquals('0', $mapped);
+    }
 }
 
 class TestableDob extends Dob
