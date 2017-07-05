@@ -5,6 +5,7 @@ namespace OpgTest\Lpa\DataModel;
 use Opg\Lpa\DataModel\Lpa\Document\Attorneys\AbstractAttorney;
 use Opg\Lpa\DataModel\Lpa\Document\Attorneys\Human;
 use Opg\Lpa\DataModel\Lpa\Lpa;
+use Opg\Lpa\DataModel\Lpa\Payment\Payment;
 use Opg\Lpa\DataModel\User\User;
 
 /**
@@ -161,5 +162,15 @@ class FixturesData
     public static function getUser()
     {
         return new User(self::getUserJson());
+    }
+
+    public static function getPaymentJson()
+    {
+        return file_get_contents(self::$fixturesPath . 'payment.json');
+    }
+
+    public static function getPayment()
+    {
+        return new Payment(self::getPaymentJson());
     }
 }
