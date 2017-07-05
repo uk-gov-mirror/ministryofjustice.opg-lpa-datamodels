@@ -3,8 +3,6 @@
 namespace OpgTest\Lpa\DataModel\Common;
 
 use Opg\Lpa\DataModel\Common\Dob;
-use OpgTest\Lpa\DataModel\FixturesData;
-use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class DobTest extends \PHPUnit_Framework_TestCase
@@ -138,12 +136,76 @@ class DobTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('0', $mapped);
     }
+
+    public function testValidation()
+    {
+        $dob = new TestableDob();
+        $dob->set('date', new \DateTime('07-10-1948 00:00:00'));
+        $dob->loadValidatorMetadata();
+
+        $validatorResponse = $dob->validate();
+        $this->assertFalse($validatorResponse->hasErrors());
+    }
+
+    public function testValidationFailed()
+    {
+        $dob = new TestableDob();
+        $dob->loadValidatorMetadata();
+
+        $validatorResponse = $dob->validate();
+        $this->assertTrue($validatorResponse->hasErrors());
+        $errors = $validatorResponse->getArrayCopy();
+        $this->assertEquals(1, count($errors));
+        $this->assertNotNull($errors['date']);
+    }
+
+    public function testValidationFailedInFuture()
+    {
+        $dob = new TestableDob();
+        $dob->loadValidatorMetadata();
+        $dob->set('date', new \DateTime('2199-01-01'));
+
+        $validatorResponse = $dob->validate();
+        $this->assertTrue($validatorResponse->hasErrors());
+        $errors = $validatorResponse->getArrayCopy();
+        $this->assertEquals(1, count($errors));
+        $this->assertNotNull($errors['date']);
+    }
+
+    public function testValidationFailedDateString()
+    {
+        $dob = new TestableDob();
+        $dob->loadValidatorMetadata();
+        $dob->set('date', 'Monday');
+
+        $validatorResponse = $dob->validate();
+        $this->assertTrue($validatorResponse->hasErrors());
+        $errors = $validatorResponse->getArrayCopy();
+        $this->assertEquals(1, count($errors));
+        $this->assertNotNull($errors['date']);
+    }
+
+    public function testValidationFailedNotUtc()
+    {
+        $dob = new TestableDob();
+        $dob->loadValidatorMetadata();
+        $dob->set('date', new \DateTime('07-10-1948 00:00:00', new \DateTimeZone('America/New_York')));
+
+        $validatorResponse = $dob->validate();
+        $this->assertTrue($validatorResponse->hasErrors());
+        $errors = $validatorResponse->getArrayCopy();
+        $this->assertEquals(1, count($errors));
+        $this->assertNotNull($errors['date']);
+    }
 }
 
 class TestableDob extends Dob
 {
-    public static function loadValidatorMetadata(ClassMetadata $metadata, $message = null)
+    public static function loadValidatorMetadata(ClassMetadata $metadata = null, $message = null)
     {
+        if($metadata === null) {
+            $metadata = new ClassMetadata(Dob::class);
+        }
         parent::loadValidatorMetadataCommon($metadata, $message);
     }
 

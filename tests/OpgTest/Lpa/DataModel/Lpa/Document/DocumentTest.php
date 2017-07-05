@@ -145,6 +145,18 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($errors['peopleToNotify']);
     }
 
+    public function testValidationPrimaryAttorneysDuplicateIdFailed()
+    {
+        $document = FixturesData::getPfLpa()->get('document');
+        $document->get('primaryAttorneys')[1]->set('id', 1);
+
+        $validatorResponse = $document->validate();
+        $this->assertTrue($validatorResponse->hasErrors());
+        $errors = $validatorResponse->getArrayCopy();
+        $this->assertEquals(1, count($errors));
+        $this->assertNotNull($errors['primaryAttorneys']);
+    }
+
     public function testGetPrimaryAttorneyById()
     {
         $document = new Document();
