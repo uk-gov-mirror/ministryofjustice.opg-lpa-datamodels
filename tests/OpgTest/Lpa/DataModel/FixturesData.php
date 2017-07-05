@@ -14,16 +14,16 @@ use Opg\Lpa\DataModel\User\User;
  */
 class FixturesData
 {
-    private static $fixturesPath = __DIR__ . '/../../../fixtures/';
+    private static $fixturesPath = '/../../../fixtures/';
 
     public static function getHwLpaJson()
     {
-        return file_get_contents(self::$fixturesPath . 'hw.json');
+        return file_get_contents(__DIR__ . self::$fixturesPath . 'hw.json');
     }
 
     public static function getPfLpaJson()
     {
-        return file_get_contents(self::$fixturesPath . 'pf.json');
+        return file_get_contents(__DIR__ . self::$fixturesPath . 'pf.json');
     }
 
     /**
@@ -51,7 +51,7 @@ class FixturesData
      */
     public static function getAttorneyHumanJson($removeType = false)
     {
-        $json = file_get_contents(self::$fixturesPath . 'attorney-human.json');
+        $json = file_get_contents(__DIR__ . self::$fixturesPath . 'attorney-human.json');
         if ($removeType) {
             $json = str_replace('"type": "human"', '"type": ""', $json);
         }
@@ -63,7 +63,7 @@ class FixturesData
      */
     public static function getAttorneyTrustJson($removeType = false)
     {
-        $json = file_get_contents(self::$fixturesPath . 'attorney-trust.json');
+        $json = file_get_contents(__DIR__ . self::$fixturesPath . 'attorney-trust.json');
         if ($removeType) {
             $json = str_replace('"type": "trust"', '"type": ""', $json);
         }
@@ -156,7 +156,7 @@ class FixturesData
 
     public static function getUserJson()
     {
-        return file_get_contents(self::$fixturesPath . 'user.json');
+        return file_get_contents(__DIR__ . self::$fixturesPath . 'user.json');
     }
 
     public static function getUser()
@@ -166,7 +166,7 @@ class FixturesData
 
     public static function getPaymentJson()
     {
-        return file_get_contents(self::$fixturesPath . 'payment.json');
+        return file_get_contents(__DIR__ . self::$fixturesPath . 'payment.json');
     }
 
     public static function getPayment()
