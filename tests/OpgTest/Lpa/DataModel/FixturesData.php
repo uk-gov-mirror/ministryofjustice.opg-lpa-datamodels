@@ -5,6 +5,7 @@ namespace OpgTest\Lpa\DataModel;
 use Opg\Lpa\DataModel\Lpa\Document\Attorneys\AbstractAttorney;
 use Opg\Lpa\DataModel\Lpa\Document\Attorneys\Human;
 use Opg\Lpa\DataModel\Lpa\Lpa;
+use Opg\Lpa\DataModel\User\User;
 
 /**
  * Class FixturesData returns complex test data
@@ -150,5 +151,15 @@ class FixturesData
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
+    }
+
+    public static function getUserJson()
+    {
+        return file_get_contents(self::$fixturesPath . 'user.json');
+    }
+
+    public static function getUser()
+    {
+        return new User(self::getUserJson());
     }
 }

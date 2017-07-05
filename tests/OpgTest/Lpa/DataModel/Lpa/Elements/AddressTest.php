@@ -35,4 +35,22 @@ class AddressTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($errors['address1']);
         $this->assertNotNull($errors['address2/postcode']);
     }
+
+    public function testValidationFailedLength()
+    {
+        $address = new Address();
+        $address->set('address1', FixturesData::generateRandomString(51));
+        $address->set('address2', FixturesData::generateRandomString(51));
+        $address->set('address3', FixturesData::generateRandomString(51));
+        $address->set('postcode', FixturesData::generateRandomString(9));
+
+        $validatorResponse = $address->validate();
+        $this->assertTrue($validatorResponse->hasErrors());
+        $errors = $validatorResponse->getArrayCopy();
+        $this->assertEquals(4, count($errors));
+        $this->assertNotNull($errors['address1']);
+        $this->assertNotNull($errors['address2']);
+        $this->assertNotNull($errors['address3']);
+        $this->assertNotNull($errors['postcode']);
+    }
 }
