@@ -2,10 +2,55 @@
 
 namespace OpgTest\Lpa\DataModel\Lpa;
 
+use Opg\Lpa\DataModel\Lpa\Lpa;
 use OpgTest\Lpa\DataModel\FixturesData;
 
 class LpaTest extends \PHPUnit_Framework_TestCase
 {
+    public function testValidation()
+    {
+        $lpa = FixturesData::getPfLpa();
+        $validatorResponse = $lpa->validate();
+        $this->assertFalse($validatorResponse->hasErrors());
+    }
+
+    public function testValidationFailed()
+    {
+        $lpa = new Lpa();
+        //This causes an exception in the validation routines when formatting the error message
+        $lpa->get('metadata')['test'] = FixturesData::generateRandomString(1048566);
+
+        $validatorResponse = $lpa->validate();
+        $this->assertTrue($validatorResponse->hasErrors());
+        $errors = $validatorResponse->getArrayCopy();
+        $this->assertEquals(7, count($errors));
+        $this->assertNotNull($errors['id']);
+        $this->assertNotNull($errors['startedAt']);
+        $this->assertNotNull($errors['updatedAt']);
+        $this->assertNotNull($errors['user']);
+        $this->assertNotNull($errors['whoAreYouAnswered']);
+        $this->assertNotNull($errors['locked']);
+        $this->assertNotNull($errors['metadata']);
+    }
+
+    public function testToMongoArray()
+    {
+        $lpa = FixturesData::getHwLpa();
+
+        $mongoArray = $lpa->toMongoArray();
+        $this->assertEquals($lpa->get('id'), $mongoArray['_id']);
+    }
+
+    public function testAbbreviatedToArray()
+    {
+        $lpa = FixturesData::getHwLpa();
+
+        $abbreviatedToArray = $lpa->abbreviatedToArray();
+        $this->assertEquals(10, count($abbreviatedToArray));
+        $this->assertEquals(2, count($abbreviatedToArray['document']));
+        $this->assertEquals(4, count($abbreviatedToArray['metadata']));
+    }
+
     public function testLpaIsEqual()
     {
         $lpa = FixturesData::getPfLpa();

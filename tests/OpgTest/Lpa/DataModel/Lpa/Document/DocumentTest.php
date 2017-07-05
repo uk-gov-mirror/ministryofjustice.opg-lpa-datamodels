@@ -133,6 +133,18 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($errors['whoIsRegistering']);
     }
 
+    public function testValidationMaxPeopleToNotifyFailed()
+    {
+        $document = FixturesData::getPfLpa()->get('document');
+        $document->set('peopleToNotify', [new NotifiedPerson(), new NotifiedPerson(), new NotifiedPerson(), new NotifiedPerson(), new NotifiedPerson(), new NotifiedPerson()]);
+
+        $validatorResponse = $document->validate();
+        $this->assertTrue($validatorResponse->hasErrors());
+        $errors = $validatorResponse->getArrayCopy();
+        //$this->assertEquals(1, count($errors));
+        $this->assertNotNull($errors['peopleToNotify']);
+    }
+
     public function testGetPrimaryAttorneyById()
     {
         $document = new Document();
