@@ -103,10 +103,6 @@ class StateChecker
 
         $lpa = $this->getLpa();
 
-        if (!$lpa->payment instanceof Payment) {
-            return false;
-        }
-
         return $this->isEligibleForFeeReduction();
     }
 
