@@ -13,8 +13,5 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
  */
 class Dob extends BaseDob
 {
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        parent::loadValidatorMetadataCommon($metadata, "must-be-less-than-or-equal-to-today");
-    }
+
 }

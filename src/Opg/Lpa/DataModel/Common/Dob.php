@@ -87,21 +87,16 @@ class Dob extends AbstractData
      */
     protected $date;
 
-    protected static function loadValidatorMetadataCommon(ClassMetadata $metadata, $message)
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
         // As there is only 1 property, include NotBlank as there is no point this object existing without it.
-        $lessThanOrEqualToToday = new Assert\LessThanOrEqual([
-            'value' => new \DateTime('today')
-        ]);
-
-        if ($message !== null) {
-            $lessThanOrEqualToToday->message = $message;
-        }
-
         $metadata->addPropertyConstraints('date', [
             new Assert\NotBlank,
             new Assert\Custom\DateTimeUTC,
-            $lessThanOrEqualToToday,
+            new Assert\LessThanOrEqual([
+                'value' => new \DateTime('today'),
+                'message' => 'must-be-less-than-or-equal-to-today'
+            ]),
         ]);
     }
 
