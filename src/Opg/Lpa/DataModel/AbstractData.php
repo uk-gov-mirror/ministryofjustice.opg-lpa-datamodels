@@ -247,6 +247,7 @@ abstract class AbstractData implements AccessorInterface, JsonSerializable, Vali
     /**
      * Returns $this as an array, propagating to all properties that implement AccessorInterface.
      *
+     * @param string $dateFormat
      * @return array
      */
     public function toArray($dateFormat = 'string')

@@ -2,7 +2,7 @@
 
 namespace OpgTest\Lpa\DataModel\User;
 
-use Opg\Lpa\DataModel\User\Dob;
+use Opg\Lpa\DataModel\Common\Dob;
 use OpgTest\Lpa\DataModel\FixturesData;
 use OpgTest\Lpa\DataModel\TestHelper;
 
@@ -11,7 +11,7 @@ class DobTest extends \PHPUnit_Framework_TestCase
     public function testValidation()
     {
         $user = FixturesData::getUser();
-        /* @var $dob \Opg\Lpa\DataModel\User\Dob */
+        /* @var $dob \Opg\Lpa\DataModel\Common\Dob */
         $dob = $user->get('dob');
 
         $validatorResponse = $dob->validate();
@@ -43,15 +43,5 @@ class DobTest extends \PHPUnit_Framework_TestCase
         TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['date']);
         $this->assertEquals('must-be-less-than-or-equal-to-today', $errors['date']['messages'][0]);
-    }
-
-    public function testStringDateDoesNotMap()
-    {
-        $dob = new TestableDob();
-
-        $message = 'Invalid date: 1st-Feb-1997. Date must exist and be in ISO-8601 format.';
-        $this->setExpectedException(\RuntimeException::class, $message);
-
-        $dob->testDateMap('1st-Feb-1997');
     }
 }

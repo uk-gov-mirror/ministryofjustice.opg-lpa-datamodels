@@ -2,6 +2,7 @@
 
 namespace Opg\Lpa\DataModel\Lpa\Document\Attorneys;
 
+use Opg\Lpa\DataModel\Common\Dob;
 use Opg\Lpa\DataModel\Lpa\Elements;
 use Opg\Lpa\DataModel\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Valid as ValidConstraintSymfony;
@@ -21,7 +22,7 @@ class Human extends AbstractAttorney
     protected $name;
 
     /**
-     * @var Elements\Dob Their date of birth.
+     * @var Dob Their date of birth.
      */
     protected $dob;
 
@@ -38,7 +39,7 @@ class Human extends AbstractAttorney
         $metadata->addPropertyConstraints('dob', [
             new Assert\NotBlank,
             new Assert\Type([
-                'type' => '\Opg\Lpa\DataModel\Lpa\Elements\Dob'
+                'type' => '\Opg\Lpa\DataModel\Common\Dob'
             ]),
             new ValidConstraintSymfony,
         ]);
@@ -57,13 +58,13 @@ class Human extends AbstractAttorney
             case 'name':
                 return ($v instanceof Elements\Name ? $v : new Elements\Name($v));
             case 'dob':
-                return ($v instanceof Elements\Dob ? $v : new Elements\Dob($v));
+                return ($v instanceof Dob ? $v : new Dob($v));
         }
 
         return parent::map($property, $v);
     }
 
-    public function toArray()
+    public function toArray($dateFormat = 'string')
     {
         return array_merge(parent::toArray(), [
             'type' => 'human'
