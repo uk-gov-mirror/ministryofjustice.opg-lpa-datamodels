@@ -27,6 +27,16 @@ class DobTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($errors['date']);
     }
 
+    public function testValidationFailedOnlyOneMessage()
+    {
+        $dob = new Dob();
+
+        $validatorResponse = $dob->validate();
+        $this->assertTrue($validatorResponse->hasErrors());
+        $errors = $validatorResponse->getArrayCopy();
+        $this->assertEquals(1, count($errors['date']['messages']));
+    }
+
     public function testValidationFailedInFuture()
     {
         $dob = new Dob();
