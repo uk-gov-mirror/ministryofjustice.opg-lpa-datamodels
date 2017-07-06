@@ -2,7 +2,7 @@
 
 namespace OpgTest\Lpa\DataModel\Lpa\Elements;
 
-use Opg\Lpa\DataModel\Lpa\Elements\Address;
+use Opg\Lpa\DataModel\Common\Address;
 use OpgTest\Lpa\DataModel\FixturesData;
 use OpgTest\Lpa\DataModel\TestHelper;
 
@@ -19,7 +19,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     public function testValidation()
     {
         $donor = FixturesData::getDonor();
-        /* @var $address \Opg\Lpa\DataModel\Lpa\Elements\Address */
+        /* @var $address \Opg\Lpa\DataModel\Common\Address */
         $address = $donor->get('address');
 
         $validatorResponse = $address->validate();

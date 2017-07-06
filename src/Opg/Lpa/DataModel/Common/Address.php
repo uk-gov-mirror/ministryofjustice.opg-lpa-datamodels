@@ -1,6 +1,6 @@
 <?php
 
-namespace Opg\Lpa\DataModel\Lpa\Elements;
+namespace Opg\Lpa\DataModel\Common;
 
 use Opg\Lpa\DataModel\AbstractData;
 use Opg\Lpa\DataModel\Validator\Constraints as Assert;

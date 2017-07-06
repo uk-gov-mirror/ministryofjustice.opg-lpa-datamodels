@@ -3,6 +3,7 @@
 namespace Opg\Lpa\DataModel\User;
 
 use Opg\Lpa\DataModel\AbstractData;
+use Opg\Lpa\DataModel\Common\Address;
 use Opg\Lpa\DataModel\Common\Dob;
 use Opg\Lpa\DataModel\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Valid as ValidConstraintSymfony;
@@ -83,7 +84,7 @@ class User extends AbstractData
 
         $metadata->addPropertyConstraints('address', [
             new Assert\Type([
-                'type' => '\Opg\Lpa\DataModel\User\Address'
+                'type' => '\Opg\Lpa\DataModel\Common\Address'
             ]),
             new ValidConstraintSymfony,
         ]);

@@ -3,6 +3,7 @@
 namespace Opg\Lpa\DataModel\Lpa\Document;
 
 use Opg\Lpa\DataModel\AbstractData;
+use Opg\Lpa\DataModel\Common\Address;
 use Opg\Lpa\DataModel\Lpa\Elements;
 use Opg\Lpa\DataModel\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Valid as ValidConstraintSymfony;
@@ -22,7 +23,7 @@ class CertificateProvider extends AbstractData
     protected $name;
 
     /**
-     * @var Elements\Address Their postal address.
+     * @var Address Their postal address.
      */
     protected $address;
 
@@ -39,7 +40,7 @@ class CertificateProvider extends AbstractData
         $metadata->addPropertyConstraints('address', [
             new Assert\NotBlank,
             new Assert\Type([
-                'type' => '\Opg\Lpa\DataModel\Lpa\Elements\Address'
+                'type' => '\Opg\Lpa\DataModel\Common\Address'
             ]),
             new ValidConstraintSymfony,
         ]);
@@ -58,7 +59,7 @@ class CertificateProvider extends AbstractData
             case 'name':
                 return ($v instanceof Elements\Name ? $v : new Elements\Name($v));
             case 'address':
-                return ($v instanceof Elements\Address ? $v : new Elements\Address($v));
+                return ($v instanceof Address ? $v : new Address($v));
         }
 
         return parent::map($property, $v);
