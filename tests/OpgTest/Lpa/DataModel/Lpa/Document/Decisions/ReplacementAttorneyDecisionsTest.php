@@ -28,7 +28,7 @@ class ReplacementAttorneyDecisionsTest extends \PHPUnit_Framework_TestCase
 
     public function testValidation()
     {
-        $replacementAttorneyDecisions = FixturesData::getReplacementAttorneyDecisions();
+        $replacementAttorneyDecisions = FixturesData::getReplacementAttorneyDecisions(FixturesData::getPfLpa());
 
         $validatorResponse = $replacementAttorneyDecisions->validate();
         $this->assertFalse($validatorResponse->hasErrors());

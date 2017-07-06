@@ -4,6 +4,9 @@ namespace OpgTest\Lpa\DataModel;
 
 use Opg\Lpa\DataModel\Lpa\Document\Attorneys\AbstractAttorney;
 use Opg\Lpa\DataModel\Lpa\Document\Attorneys\Human;
+use Opg\Lpa\DataModel\Lpa\Document\Decisions\PrimaryAttorneyDecisions;
+use Opg\Lpa\DataModel\Lpa\Document\Decisions\ReplacementAttorneyDecisions;
+use Opg\Lpa\DataModel\Lpa\Document\Document;
 use Opg\Lpa\DataModel\Lpa\Lpa;
 use Opg\Lpa\DataModel\Lpa\Payment\Payment;
 use Opg\Lpa\DataModel\User\User;
@@ -46,6 +49,49 @@ class FixturesData
         return new Lpa(self::getPfLpaJson());
     }
 
+    /**
+     * @return Document
+     */
+    public static function getHwLpaDocument()
+    {
+        return self::getHwLpa()->get('document');
+    }
+
+    /**
+     * @return Document
+     */
+    public static function getPfLpaDocument()
+    {
+        return self::getPfLpa()->get('document');
+    }
+
+    /**
+     * @param Document $document
+     * @return AbstractAttorney[]
+     */
+    public static function getPrimaryAttorneys($document)
+    {
+        return $document->get('primaryAttorneys');
+    }
+
+    /**
+     * @param Lpa $lpa
+     * @return PrimaryAttorneyDecisions
+     */
+    public static function getPrimaryAttorneyDecisions($lpa)
+    {
+        return $lpa->get('document')->get('primaryAttorneyDecisions');
+    }
+
+    /**
+     * @param Lpa $lpa
+     * @return ReplacementAttorneyDecisions
+     */
+    public static function getReplacementAttorneyDecisions($lpa)
+    {
+        return $lpa->get('document')->get('replacementAttorneyDecisions');
+    }
+
     /*
      * Returns valid JSON for a Human Attorney
      */
@@ -71,6 +117,7 @@ class FixturesData
     }
 
     /**
+     * @param int $id
      * @return Human|\Opg\Lpa\DataModel\Lpa\Document\Attorneys\TrustCorporation
      */
     public static function getAttorneyHuman($id = 3)
@@ -81,6 +128,7 @@ class FixturesData
     }
 
     /**
+     * @param int $id
      * @return Human|\Opg\Lpa\DataModel\Lpa\Document\Attorneys\TrustCorporation
      */
     public static function getAttorneyTrust($id = 4)
@@ -118,24 +166,6 @@ class FixturesData
     }
 
     /**
-     * @return \Opg\Lpa\DataModel\Lpa\Document\Decisions\PrimaryAttorneyDecisions
-     */
-    public static function getPrimaryAttorneyDecisions()
-    {
-        $lpa = self::getHwLpa();
-        return $lpa->get('document')->primaryAttorneyDecisions;
-    }
-
-    /**
-     * @return \Opg\Lpa\DataModel\Lpa\Document\Decisions\ReplacementAttorneyDecisions
-     */
-    public static function getReplacementAttorneyDecisions()
-    {
-        $lpa = self::getPfLpa();
-        return $lpa->get('document')->replacementAttorneyDecisions;
-    }
-
-    /**
      * @return \Opg\Lpa\DataModel\Lpa\Document\NotifiedPerson
      */
     public static function getNotifiedPerson()
@@ -144,7 +174,8 @@ class FixturesData
         return $lpa->get('document')->peopleToNotify[0];
     }
 
-    public static function generateRandomString($length) {
+    public static function generateRandomString($length)
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';

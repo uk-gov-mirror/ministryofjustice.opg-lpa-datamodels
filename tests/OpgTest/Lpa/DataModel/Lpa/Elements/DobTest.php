@@ -11,6 +11,7 @@ class DobTest extends \PHPUnit_Framework_TestCase
     public function testValidation()
     {
         $donor = FixturesData::getDonor();
+        /* @var $dob \Opg\Lpa\DataModel\Lpa\Elements\Dob */
         $dob = $donor->get('dob');
 
         $validatorResponse = $dob->validate();

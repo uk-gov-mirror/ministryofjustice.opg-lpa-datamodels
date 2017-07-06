@@ -11,6 +11,7 @@ class EmailAddressTest extends \PHPUnit_Framework_TestCase
     public function testValidation()
     {
         $donor = FixturesData::getDonor();
+        /* @var $email \Opg\Lpa\DataModel\Lpa\Elements\EmailAddress */
         $email = $donor->get('email');
 
         $validatorResponse = $email->validate();

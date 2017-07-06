@@ -27,7 +27,7 @@ class PrimaryAttorneyDecisionsTest extends \PHPUnit_Framework_TestCase
 
     public function testValidation()
     {
-        $primaryAttorneyDecisions = FixturesData::getPrimaryAttorneyDecisions();
+        $primaryAttorneyDecisions = FixturesData::getPrimaryAttorneyDecisions(FixturesData::getHwLpa());
 
         $validatorResponse = $primaryAttorneyDecisions->validate();
         $this->assertFalse($validatorResponse->hasErrors());

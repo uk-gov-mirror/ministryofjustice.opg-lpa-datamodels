@@ -11,6 +11,7 @@ class EmailAddressTest extends \PHPUnit_Framework_TestCase
     public function testValidation()
     {
         $user = FixturesData::getUser();
+        /* @var $email \Opg\Lpa\DataModel\User\EmailAddress */
         $email = $user->get('email');
 
         $validatorResponse = $email->validate();

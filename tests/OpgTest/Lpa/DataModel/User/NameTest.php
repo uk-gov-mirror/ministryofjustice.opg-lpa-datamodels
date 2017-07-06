@@ -11,6 +11,7 @@ class NameTest extends \PHPUnit_Framework_TestCase
     public function testValidation()
     {
         $user = FixturesData::getUser();
+        /* @var $name \Opg\Lpa\DataModel\User\Name */
         $name = $user->get('name');
 
         $validatorResponse = $name->validate();

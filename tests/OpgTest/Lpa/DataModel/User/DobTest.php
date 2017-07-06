@@ -11,6 +11,7 @@ class DobTest extends \PHPUnit_Framework_TestCase
     public function testValidation()
     {
         $user = FixturesData::getUser();
+        /* @var $dob \Opg\Lpa\DataModel\User\Dob */
         $dob = $user->get('dob');
 
         $validatorResponse = $dob->validate();
@@ -48,16 +49,9 @@ class DobTest extends \PHPUnit_Framework_TestCase
     {
         $dob = new TestableDob();
 
-        $this->setExpectedException(\RuntimeException::class, 'Invalid date: 1st-Feb-1997. Date must exist and be in ISO-8601 format.');
+        $message = 'Invalid date: 1st-Feb-1997. Date must exist and be in ISO-8601 format.';
+        $this->setExpectedException(\RuntimeException::class, $message);
 
         $dob->testDateMap('1st-Feb-1997');
-    }
-}
-
-class TestableDob extends Dob
-{
-    public function testDateMap($v)
-    {
-        return self::map('date', $v);
     }
 }

@@ -19,6 +19,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     public function testValidation()
     {
         $donor = FixturesData::getDonor();
+        /* @var $address \Opg\Lpa\DataModel\Lpa\Elements\Address */
         $address = $donor->get('address');
 
         $validatorResponse = $address->validate();

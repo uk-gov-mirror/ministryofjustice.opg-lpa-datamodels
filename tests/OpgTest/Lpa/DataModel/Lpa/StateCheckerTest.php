@@ -5,7 +5,6 @@ namespace OpgTest\Lpa\DataModel\Lpa;
 use Opg\Lpa\DataModel\Lpa\Document\Attorneys\TrustCorporation;
 use Opg\Lpa\DataModel\Lpa\Document\Decisions\AbstractDecisions;
 use Opg\Lpa\DataModel\Lpa\Document\Decisions\ReplacementAttorneyDecisions;
-use Opg\Lpa\DataModel\Lpa\Document\Document;
 use Opg\Lpa\DataModel\Lpa\Lpa;
 use Opg\Lpa\DataModel\Lpa\StateChecker;
 use OpgTest\Lpa\DataModel\FixturesData;
@@ -140,8 +139,10 @@ class StateCheckerTest extends \PHPUnit_Framework_TestCase
     public function testLpaHasFinishedCreationReplacementAttorneyStepInWhenLastPrimaryUnableAct()
     {
         $lpa = FixturesData::getPfLpa();
-        $lpa->get('document')->get('replacementAttorneyDecisions')->set('when', ReplacementAttorneyDecisions::LPA_DECISION_WHEN_LAST);
-        $lpa->get('document')->get('replacementAttorneyDecisions')->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY);
+        FixturesData::getReplacementAttorneyDecisions($lpa)
+            ->set('when', ReplacementAttorneyDecisions::LPA_DECISION_WHEN_LAST);
+        FixturesData::getReplacementAttorneyDecisions($lpa)
+            ->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY);
         $stateChecker = new TestableStateChecker($lpa);
         $this->assertTrue($stateChecker->testLpaHasFinishedCreation());
     }
@@ -149,8 +150,9 @@ class StateCheckerTest extends \PHPUnit_Framework_TestCase
     public function testLpaHasFinishedCreationPrimaryAttorneysMakeDecisionJointly()
     {
         $lpa = FixturesData::getPfLpa();
-        $lpa->get('document')->get('primaryAttorneyDecisions')->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY);
-        $lpa->get('document')->get('replacementAttorneyDecisions')->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY);
+        FixturesData::getPrimaryAttorneyDecisions($lpa)->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY);
+        FixturesData::getReplacementAttorneyDecisions($lpa)
+            ->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY);
         $stateChecker = new TestableStateChecker($lpa);
         $this->assertTrue($stateChecker->testLpaHasFinishedCreation());
     }
@@ -160,7 +162,8 @@ class StateCheckerTest extends \PHPUnit_Framework_TestCase
         $lpa = FixturesData::getPfLpa();
         //Set only one primary attorney
         $lpa->get('document')->set('primaryAttorneys', [$lpa->get('document')->get('primaryAttorneys')[0]]);
-        $lpa->get('document')->get('replacementAttorneyDecisions')->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY);
+        FixturesData::getReplacementAttorneyDecisions($lpa)
+            ->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY);
         $stateChecker = new TestableStateChecker($lpa);
         $this->assertTrue($stateChecker->testLpaHasFinishedCreation());
     }
@@ -189,7 +192,8 @@ class StateCheckerTest extends \PHPUnit_Framework_TestCase
     public function testLpaReplacementAttorneysMakeDecisionJointlyAndSeverally()
     {
         $lpa = FixturesData::getPfLpa();
-        $lpa->get('document')->get('replacementAttorneyDecisions')->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY);
+        FixturesData::getReplacementAttorneyDecisions($lpa)
+            ->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY);
         $stateChecker = new TestableStateChecker($lpa);
         $this->assertTrue($stateChecker->testLpaReplacementAttorneysMakeDecisionJointlyAndSeverally());
     }
@@ -197,7 +201,7 @@ class StateCheckerTest extends \PHPUnit_Framework_TestCase
     public function testLpaReplacementAttorneysMakeDecisionJointly()
     {
         $lpa = FixturesData::getPfLpa();
-        $lpa->get('document')->get('replacementAttorneyDecisions')->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY);
+        FixturesData::getReplacementAttorneyDecisions($lpa)->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY);
         $stateChecker = new TestableStateChecker($lpa);
         $this->assertTrue($stateChecker->testLpaReplacementAttorneysMakeDecisionJointly());
     }
@@ -205,7 +209,7 @@ class StateCheckerTest extends \PHPUnit_Framework_TestCase
     public function testLpaReplacementAttorneysMakeDecisionDepends()
     {
         $lpa = FixturesData::getPfLpa();
-        $lpa->get('document')->get('replacementAttorneyDecisions')->set('how', AbstractDecisions::LPA_DECISION_HOW_DEPENDS);
+        FixturesData::getReplacementAttorneyDecisions($lpa)->set('how', AbstractDecisions::LPA_DECISION_HOW_DEPENDS);
         $stateChecker = new TestableStateChecker($lpa);
         $this->assertTrue($stateChecker->testLpaReplacementAttorneysMakeDecisionDepends());
     }
@@ -213,8 +217,10 @@ class StateCheckerTest extends \PHPUnit_Framework_TestCase
     public function testLpaReplacementAttorneyStepInDepends()
     {
         $lpa = FixturesData::getPfLpa();
-        $lpa->get('document')->get('primaryAttorneyDecisions')->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY);
-        $lpa->get('document')->get('replacementAttorneyDecisions')->set('when', ReplacementAttorneyDecisions::LPA_DECISION_WHEN_DEPENDS);
+        FixturesData::getPrimaryAttorneyDecisions($lpa)
+            ->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY);
+        FixturesData::getReplacementAttorneyDecisions($lpa)
+            ->set('when', ReplacementAttorneyDecisions::LPA_DECISION_WHEN_DEPENDS);
         $stateChecker = new TestableStateChecker($lpa);
         $this->assertTrue($stateChecker->lpaReplacementAttorneyStepInDepends());
     }
@@ -222,8 +228,10 @@ class StateCheckerTest extends \PHPUnit_Framework_TestCase
     public function testLpaReplacementAttorneyStepInWhenLastPrimaryUnableAct()
     {
         $lpa = FixturesData::getPfLpa();
-        $lpa->get('document')->get('primaryAttorneyDecisions')->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY);
-        $lpa->get('document')->get('replacementAttorneyDecisions')->set('when', ReplacementAttorneyDecisions::LPA_DECISION_WHEN_LAST);
+        FixturesData::getPrimaryAttorneyDecisions($lpa)
+            ->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY);
+        FixturesData::getReplacementAttorneyDecisions($lpa)
+            ->set('when', ReplacementAttorneyDecisions::LPA_DECISION_WHEN_LAST);
         $stateChecker = new TestableStateChecker($lpa);
         $this->assertTrue($stateChecker->lpaReplacementAttorneyStepInWhenLastPrimaryUnableAct());
     }
@@ -231,8 +239,10 @@ class StateCheckerTest extends \PHPUnit_Framework_TestCase
     public function testLpaReplacementAttorneyStepInWhenFirstPrimaryUnableAct()
     {
         $lpa = FixturesData::getPfLpa();
-        $lpa->get('document')->get('primaryAttorneyDecisions')->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY);
-        $lpa->get('document')->get('replacementAttorneyDecisions')->set('when', ReplacementAttorneyDecisions::LPA_DECISION_WHEN_FIRST);
+        FixturesData::getPrimaryAttorneyDecisions($lpa)
+            ->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY);
+        FixturesData::getReplacementAttorneyDecisions($lpa)
+            ->set('when', ReplacementAttorneyDecisions::LPA_DECISION_WHEN_FIRST);
         $stateChecker = new TestableStateChecker($lpa);
         $this->assertTrue($stateChecker->lpaReplacementAttorneyStepInWhenFirstPrimaryUnableAct());
     }
@@ -254,7 +264,8 @@ class StateCheckerTest extends \PHPUnit_Framework_TestCase
     public function testLpaPrimaryAttorneysMakeDecisionJointlyAndSeverally()
     {
         $lpa = FixturesData::getPfLpa();
-        $lpa->get('document')->get('primaryAttorneyDecisions')->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY);
+        FixturesData::getPrimaryAttorneyDecisions($lpa)
+            ->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY_AND_SEVERALLY);
         $stateChecker = new StateChecker($lpa);
         $this->assertTrue($stateChecker->lpaPrimaryAttorneysMakeDecisionJointlyAndSeverally());
     }
@@ -262,7 +273,7 @@ class StateCheckerTest extends \PHPUnit_Framework_TestCase
     public function testLpaPrimaryAttorneysMakeDecisionJointly()
     {
         $lpa = FixturesData::getPfLpa();
-        $lpa->get('document')->get('primaryAttorneyDecisions')->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY);
+        FixturesData::getPrimaryAttorneyDecisions($lpa)->set('how', AbstractDecisions::LPA_DECISION_HOW_JOINTLY);
         $stateChecker = new StateChecker($lpa);
         $this->assertTrue($stateChecker->lpaPrimaryAttorneysMakeDecisionJointly());
     }
@@ -270,7 +281,7 @@ class StateCheckerTest extends \PHPUnit_Framework_TestCase
     public function testLpaPrimaryAttorneysMakeDecisionDepends()
     {
         $lpa = FixturesData::getPfLpa();
-        $lpa->get('document')->get('primaryAttorneyDecisions')->set('how', AbstractDecisions::LPA_DECISION_HOW_DEPENDS);
+        FixturesData::getPrimaryAttorneyDecisions($lpa)->set('how', AbstractDecisions::LPA_DECISION_HOW_DEPENDS);
         $stateChecker = new StateChecker($lpa);
         $this->assertTrue($stateChecker->lpaPrimaryAttorneysMakeDecisionDepends());
     }
@@ -322,108 +333,5 @@ class StateCheckerTest extends \PHPUnit_Framework_TestCase
         $stateChecker = new TestableStateChecker($lpa);
         $this->assertFalse($stateChecker->testLpaHasTrustCorporation('primary'));
         $this->assertTrue($stateChecker->testLpaHasTrustCorporation('replacement'));
-    }
-}
-
-class TestableStateChecker extends StateChecker
-{
-    public function testPaymentResolved()
-    {
-        return parent::paymentResolved();
-    }
-
-    public function testIsWhoAreYouAnswered()
-    {
-        return parent::isWhoAreYouAnswered();
-    }
-
-    public function testLpaHasCorrespondent()
-    {
-        return parent::lpaHasCorrespondent();
-    }
-
-    public function testLpaHasApplicant()
-    {
-        return parent::lpaHasApplicant();
-    }
-
-    public function testLpaHasFinishedCreation()
-    {
-        return parent::lpaHasFinishedCreation();
-    }
-
-    public function testLpaHasCreated()
-    {
-        return parent::lpaHasCreated();
-    }
-
-    public function testLpaHasPeopleToNotify($index = null)
-    {
-        return parent::lpaHasPeopleToNotify($index);
-    }
-
-    public function testLpaHasCertificateProvider()
-    {
-        return parent::lpaHasCertificateProvider();
-    }
-
-    public function testLpaHowReplacementAttorneysMakeDecisionHasValue()
-    {
-        return parent::lpaHowReplacementAttorneysMakeDecisionHasValue();
-    }
-
-    public function testLpaReplacementAttorneysMakeDecisionJointlyAndSeverally()
-    {
-        return parent::lpaReplacementAttorneysMakeDecisionJointlyAndSeverally();
-    }
-
-    public function testLpaReplacementAttorneysMakeDecisionJointly()
-    {
-        return parent::lpaReplacementAttorneysMakeDecisionJointly();
-    }
-
-    public function testLpaReplacementAttorneysMakeDecisionDepends()
-    {
-        return parent::lpaReplacementAttorneysMakeDecisionDepends();
-    }
-
-    public function testLpaHowPrimaryAttorneysMakeDecisionHasValue()
-    {
-        return parent::lpaHowPrimaryAttorneysMakeDecisionHasValue();
-    }
-
-    public function testLpaHasPrimaryAttorney($index = null)
-    {
-        return parent::lpaHasPrimaryAttorney($index);
-    }
-
-    public function testLpaHasTrustCorporation($whichGroup = null)
-    {
-        return parent::lpaHasTrustCorporation($whichGroup);
-    }
-
-    public function testLpaHasLifeSustaining()
-    {
-        return parent::lpaHasLifeSustaining();
-    }
-
-    public function testLpaHasWhenLpaStarts()
-    {
-        return parent::lpaHasWhenLpaStarts();
-    }
-
-    public function testLpaHasDonor()
-    {
-        return parent::lpaHasDonor();
-    }
-
-    public function testLpaHasType()
-    {
-        return parent::lpaHasType();
-    }
-
-    public function testLpaHasDocument()
-    {
-        return parent::lpaHasDocument();
     }
 }

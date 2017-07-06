@@ -2,13 +2,10 @@
 
 namespace OpgTest\Lpa\DataModel\Lpa\Document;
 
-use Opg\Lpa\DataModel\Lpa\Document\Attorneys\AbstractAttorney;
 use Opg\Lpa\DataModel\Lpa\Document\Attorneys\Human;
-use Opg\Lpa\DataModel\Lpa\Document\Attorneys\TrustCorporation;
 use Opg\Lpa\DataModel\Lpa\Document\Document;
 use Opg\Lpa\DataModel\Lpa\Document\NotifiedPerson;
 use OpgTest\Lpa\DataModel\FixturesData;
-use OpgTest\Lpa\DataModel\Lpa\Document\Attorneys\AbstractAttorneyTest;
 use OpgTest\Lpa\DataModel\TestHelper;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
@@ -60,7 +57,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
     public function testValidation()
     {
-        $document = FixturesData::getPfLpa()->get('document');
+        $document = FixturesData::getPfLpaDocument();
 
         $validatorResponse = $document->validate();
         $this->assertFalse($validatorResponse->hasErrors());
@@ -118,7 +115,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
     public function testValidationWhoIsRegistering()
     {
-        $document = FixturesData::getPfLpa()->get('document');
+        $document = FixturesData::getPfLpaDocument();
         $document->set('whoIsRegistering', [1]);
 
         $validatorResponse = $document->validate();
@@ -127,7 +124,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
     public function testValidationWhoIsRegisteringFailed()
     {
-        $document = FixturesData::getPfLpa()->get('document');
+        $document = FixturesData::getPfLpaDocument();
         $document->set('whoIsRegistering', [-1]);
 
         $validatorResponse = $document->validate();
@@ -140,8 +137,15 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
     public function testValidationMaxPeopleToNotifyFailed()
     {
-        $document = FixturesData::getPfLpa()->get('document');
-        $document->set('peopleToNotify', [new NotifiedPerson(), new NotifiedPerson(), new NotifiedPerson(), new NotifiedPerson(), new NotifiedPerson(), new NotifiedPerson()]);
+        $document = FixturesData::getPfLpaDocument();
+        $document->set('peopleToNotify', [
+            new NotifiedPerson(),
+            new NotifiedPerson(),
+            new NotifiedPerson(),
+            new NotifiedPerson(),
+            new NotifiedPerson(),
+            new NotifiedPerson()
+        ]);
 
         $validatorResponse = $document->validate();
         $this->assertTrue($validatorResponse->hasErrors());
@@ -153,8 +157,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
     public function testValidationPrimaryAttorneysDuplicateIdFailed()
     {
-        $document = FixturesData::getPfLpa()->get('document');
-        $document->get('primaryAttorneys')[1]->set('id', 1);
+        $document = FixturesData::getPfLpaDocument();
+        FixturesData::getPrimaryAttorneys($document)[1]->set('id', 1);
 
         $validatorResponse = $document->validate();
         $this->assertTrue($validatorResponse->hasErrors());
@@ -194,13 +198,5 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
         $attorney = $document->getReplacementAttorneyById(-1);
         $this->assertNull($attorney);
-    }
-}
-
-class TestableDocument extends Document
-{
-    public function testMap($property, $v)
-    {
-        return parent::map($property, $v);
     }
 }

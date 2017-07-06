@@ -58,11 +58,3 @@ class CertificateProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($errors['address']);
     }
 }
-
-class TestableCertificateProvider extends CertificateProvider
-{
-    public function testMap($property, $v)
-    {
-        return parent::map($property, $v);
-    }
-}
