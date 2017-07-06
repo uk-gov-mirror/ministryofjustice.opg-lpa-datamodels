@@ -3,6 +3,7 @@
 namespace Opg\Lpa\DataModel\Lpa\Document\Attorneys;
 
 use Opg\Lpa\DataModel\AbstractData;
+use Opg\Lpa\DataModel\Common\Address;
 use Opg\Lpa\DataModel\Lpa\Elements;
 use Opg\Lpa\DataModel\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Valid as ValidConstraintSymfony;
@@ -22,7 +23,7 @@ abstract class AbstractAttorney extends AbstractData
     protected $id;
 
     /**
-     * @var Elements\Address Their postal address.
+     * @var Address Their postal address.
      */
     protected $address;
 
@@ -47,7 +48,7 @@ abstract class AbstractAttorney extends AbstractData
         $metadata->addPropertyConstraints('address', [
             new Assert\NotBlank,
             new Assert\Type([
-                'type' => '\Opg\Lpa\DataModel\Lpa\Elements\Address'
+                'type' => '\Opg\Lpa\DataModel\Common\Address'
             ]),
             new ValidConstraintSymfony,
         ]);
@@ -108,7 +109,7 @@ abstract class AbstractAttorney extends AbstractData
     {
         switch ($property) {
             case 'address':
-                return ($v instanceof Elements\Address ? $v : new Elements\Address($v));
+                return ($v instanceof Address ? $v : new Address($v));
             case 'email':
                 return ($v instanceof Elements\EmailAddress ? $v : new Elements\EmailAddress($v));
         }

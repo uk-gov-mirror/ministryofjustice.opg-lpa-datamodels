@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Opg\Lpa\DataModel\Lpa\Elements;
+namespace spec\Opg\Lpa\DataModel\Common;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -10,7 +10,7 @@ class AddressSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Opg\Lpa\DataModel\Lpa\Elements\Address');
+        $this->shouldHaveType('Opg\Lpa\DataModel\Common\Address');
     }
     
     function it_will_reject_a_postcode_with_more_than_eight_chars()
@@ -21,13 +21,13 @@ class AddressSpec extends ObjectBehavior
             'address3' => '',
             'postcode' => '123456789'
         ]);
-        
+
         $this->validate(['postcode'])->getArrayCopy()->shouldBe([
-          "postcode" =>
-          [
-            "value" => "123456789",
-            "messages" => [ 0 => "must-be-less-than-or-equal:8" ],
-          ]
+            "postcode" =>
+                [
+                    "value" => "123456789",
+                    "messages" => [ 0 => "must-be-less-than-or-equal:8" ],
+                ]
         ]);
     }
     
