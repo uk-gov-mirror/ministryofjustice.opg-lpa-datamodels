@@ -3,6 +3,7 @@
 namespace OpgTest\Lpa\DataModel\Lpa\Elements;
 
 use Opg\Lpa\DataModel\Lpa\Elements\PhoneNumber;
+use OpgTest\Lpa\DataModel\TestHelper;
 
 class PhoneNumberTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,7 +24,7 @@ class PhoneNumberTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(1, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['number']);
-        $this->assertEquals(1, count($errors['number']['messages']));
     }
 }

@@ -4,6 +4,7 @@ namespace OpgTest\Lpa\DataModel\Lpa\Elements;
 
 use Opg\Lpa\DataModel\Lpa\Elements\Name;
 use OpgTest\Lpa\DataModel\FixturesData;
+use OpgTest\Lpa\DataModel\TestHelper;
 
 class NameTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,12 +28,10 @@ class NameTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(3, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['title']);
-        $this->assertEquals(1, count($errors['title']['messages']));
         $this->assertNotNull($errors['first']);
-        $this->assertEquals(1, count($errors['first']['messages']));
         $this->assertNotNull($errors['last']);
-        $this->assertEquals(1, count($errors['last']['messages']));
     }
 
     public function testToString()

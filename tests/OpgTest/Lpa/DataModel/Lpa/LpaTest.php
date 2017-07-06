@@ -4,6 +4,7 @@ namespace OpgTest\Lpa\DataModel\Lpa;
 
 use Opg\Lpa\DataModel\Lpa\Lpa;
 use OpgTest\Lpa\DataModel\FixturesData;
+use OpgTest\Lpa\DataModel\TestHelper;
 
 class LpaTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,6 +25,7 @@ class LpaTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(7, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['id']);
         $this->assertNotNull($errors['startedAt']);
         $this->assertNotNull($errors['updatedAt']);

@@ -9,6 +9,7 @@ use Opg\Lpa\DataModel\Lpa\Document\Document;
 use Opg\Lpa\DataModel\Lpa\Document\NotifiedPerson;
 use OpgTest\Lpa\DataModel\FixturesData;
 use OpgTest\Lpa\DataModel\Lpa\Document\Attorneys\AbstractAttorneyTest;
+use OpgTest\Lpa\DataModel\TestHelper;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class DocumentTest extends \PHPUnit_Framework_TestCase
@@ -78,6 +79,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(3, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['type']);
         $this->assertNotNull($errors['instruction']);
         $this->assertNotNull($errors['preference']);
@@ -94,6 +96,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(3, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['whoIsRegistering']);
         $this->assertNotNull($errors['instruction']);
         $this->assertNotNull($errors['preference']);
@@ -109,6 +112,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(1, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['primaryAttorneys/replacementAttorneys']);
     }
 
@@ -130,6 +134,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(1, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['whoIsRegistering']);
     }
 
@@ -142,6 +147,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         //$this->assertEquals(1, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['peopleToNotify']);
     }
 
@@ -154,6 +160,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(1, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['primaryAttorneys']);
     }
 

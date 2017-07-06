@@ -4,6 +4,7 @@ namespace OpgTest\Lpa\DataModel\Lpa\Document\Decisions;
 
 use Opg\Lpa\DataModel\Lpa\Document\Decisions\ReplacementAttorneyDecisions;
 use OpgTest\Lpa\DataModel\FixturesData;
+use OpgTest\Lpa\DataModel\TestHelper;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class ReplacementAttorneyDecisionsTest extends \PHPUnit_Framework_TestCase
@@ -42,6 +43,7 @@ class ReplacementAttorneyDecisionsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(1, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['when']);
     }
 }

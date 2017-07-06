@@ -4,6 +4,7 @@ namespace OpgTest\Lpa\DataModel\User;
 
 use Opg\Lpa\DataModel\User\Dob;
 use OpgTest\Lpa\DataModel\FixturesData;
+use OpgTest\Lpa\DataModel\TestHelper;
 
 class DobTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,18 +25,9 @@ class DobTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(1, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['date']);
         $this->assertEquals('cannot-be-blank', $errors['date']['messages'][0]);
-    }
-
-    public function testValidationFailedOnlyOneMessage()
-    {
-        $dob = new Dob();
-
-        $validatorResponse = $dob->validate();
-        $this->assertTrue($validatorResponse->hasErrors());
-        $errors = $validatorResponse->getArrayCopy();
-        $this->assertEquals(1, count($errors['date']['messages']));
     }
 
     public function testValidationFailedInFuture()
@@ -47,8 +39,8 @@ class DobTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(1, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['date']);
-        $this->assertEquals(1, count($errors['date']['messages']));
         $this->assertEquals('must-be-less-than-or-equal:Jul 6, 2017 12:00 AM', $errors['date']['messages'][0]);
     }
 

@@ -4,6 +4,7 @@ namespace OpgTest\Lpa\DataModel\Lpa\Document;
 
 use Opg\Lpa\DataModel\Lpa\Document\Correspondence;
 use OpgTest\Lpa\DataModel\FixturesData;
+use OpgTest\Lpa\DataModel\TestHelper;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class CorrespondenceTest extends \PHPUnit_Framework_TestCase
@@ -59,6 +60,7 @@ class CorrespondenceTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(3, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['name/company']);
         $this->assertNotNull($errors['who']);
         $this->assertNotNull($errors['address']);

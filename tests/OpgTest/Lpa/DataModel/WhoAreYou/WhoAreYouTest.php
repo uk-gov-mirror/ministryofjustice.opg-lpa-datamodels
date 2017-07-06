@@ -3,6 +3,7 @@
 namespace OpgTest\Lpa\DataModel\WhoAreYou;
 
 use Opg\Lpa\DataModel\WhoAreYou\WhoAreYou;
+use OpgTest\Lpa\DataModel\TestHelper;
 
 class WhoAreYouTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,6 +15,7 @@ class WhoAreYouTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(1, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['who']);
     }
 
@@ -26,6 +28,7 @@ class WhoAreYouTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(1, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['who']);
     }
 
@@ -40,6 +43,7 @@ class WhoAreYouTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(2, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['subquestion']);
         $this->assertNotNull($errors['qualifier']);
     }

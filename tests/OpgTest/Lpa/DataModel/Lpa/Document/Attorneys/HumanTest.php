@@ -5,6 +5,7 @@ namespace OpgTest\Lpa\DataModel\Lpa\Document\Attorneys;
 use Opg\Lpa\DataModel\Lpa\Document\Attorneys\AbstractAttorney;
 use Opg\Lpa\DataModel\Lpa\Document\Attorneys\Human;
 use OpgTest\Lpa\DataModel\FixturesData;
+use OpgTest\Lpa\DataModel\TestHelper;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class HumanTest extends \PHPUnit_Framework_TestCase
@@ -59,6 +60,7 @@ class HumanTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(3, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['address']);
         $this->assertNotNull($errors['name']);
         $this->assertNotNull($errors['dob']);

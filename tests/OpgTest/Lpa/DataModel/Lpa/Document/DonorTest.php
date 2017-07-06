@@ -4,6 +4,7 @@ namespace OpgTest\Lpa\DataModel\Lpa\Document;
 
 use Opg\Lpa\DataModel\Lpa\Document\Donor;
 use OpgTest\Lpa\DataModel\FixturesData;
+use OpgTest\Lpa\DataModel\TestHelper;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class DonorTest extends \PHPUnit_Framework_TestCase
@@ -55,6 +56,7 @@ class DonorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(4, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['name']);
         $this->assertNotNull($errors['address']);
         $this->assertNotNull($errors['dob']);

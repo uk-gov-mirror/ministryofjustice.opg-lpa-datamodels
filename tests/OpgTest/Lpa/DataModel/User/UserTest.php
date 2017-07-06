@@ -4,6 +4,7 @@ namespace OpgTest\Lpa\DataModel\User;
 
 use Opg\Lpa\DataModel\User\User;
 use OpgTest\Lpa\DataModel\FixturesData;
+use OpgTest\Lpa\DataModel\TestHelper;
 
 class UserTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,12 +24,10 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(3, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['id']);
-        $this->assertEquals(1, count($errors['id']['messages']));
         $this->assertNotNull($errors['createdAt']);
-        $this->assertEquals(1, count($errors['createdAt']['messages']));
         $this->assertNotNull($errors['updatedAt']);
-        $this->assertEquals(1, count($errors['updatedAt']['messages']));
     }
 
     public function testToMongoArray()

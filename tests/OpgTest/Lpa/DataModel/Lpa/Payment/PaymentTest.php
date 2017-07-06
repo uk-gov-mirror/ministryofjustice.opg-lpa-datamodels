@@ -4,6 +4,7 @@ namespace OpgTest\Lpa\DataModel\Lpa\Payment;
 
 use Opg\Lpa\DataModel\Lpa\Payment\Payment;
 use OpgTest\Lpa\DataModel\FixturesData;
+use OpgTest\Lpa\DataModel\TestHelper;
 
 class PaymentTest extends \PHPUnit_Framework_TestCase
 {
@@ -36,6 +37,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(4, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['method']);
         $this->assertNotNull($errors['amount']);
         $this->assertNotNull($errors['reference']);

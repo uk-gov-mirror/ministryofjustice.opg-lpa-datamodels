@@ -4,6 +4,7 @@ namespace OpgTest\Lpa\DataModel\User;
 
 use Opg\Lpa\DataModel\User\EmailAddress;
 use OpgTest\Lpa\DataModel\FixturesData;
+use OpgTest\Lpa\DataModel\TestHelper;
 
 class EmailAddressTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,8 +25,8 @@ class EmailAddressTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(1, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['address']);
-        $this->assertEquals(1, count($errors['address']['messages']));
     }
 
     public function testToString()
