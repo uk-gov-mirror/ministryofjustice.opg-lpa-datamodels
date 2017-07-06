@@ -14,11 +14,6 @@ use RuntimeException;
  */
 class Dob extends BaseDob
 {
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        self::loadValidatorMetadataCommon($metadata, null);
-    }
-
     /**
      * @param string $property string Property name
      * @param mixed $v mixed Value to map.

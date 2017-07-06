@@ -42,7 +42,7 @@ class DobTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($errors));
         TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['date']);
-        $this->assertEquals('must-be-less-than-or-equal:Jul 6, 2017 12:00 AM', $errors['date']['messages'][0]);
+        $this->assertEquals('must-be-less-than-or-equal-to-today', $errors['date']['messages'][0]);
     }
 
     public function testStringDateDoesNotMap()

@@ -29,6 +29,18 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     public function testValidationFailed()
     {
         $address = new Address();
+
+        $validatorResponse = $address->validate();
+        $this->assertTrue($validatorResponse->hasErrors());
+        $errors = $validatorResponse->getArrayCopy();
+        $this->assertEquals(2, count($errors));
+        $this->assertNotNull($errors['address1']);
+        $this->assertNotNull($errors['address2/postcode']);
+    }
+
+    public function testValidationFailedLength()
+    {
+        $address = new Address();
         $address->set('address1', FixturesData::generateRandomString(51));
         $address->set('address2', FixturesData::generateRandomString(51));
         $address->set('address3', FixturesData::generateRandomString(51));
