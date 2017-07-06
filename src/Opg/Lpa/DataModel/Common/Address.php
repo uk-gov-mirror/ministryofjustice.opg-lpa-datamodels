@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * Represents a postal address.
  *
  * Class Address
- * @package Opg\Lpa\DataModel\Lpa\Elements
+ * @package Opg\Lpa\DataModel\Common
  */
 class Address extends AbstractData
 {

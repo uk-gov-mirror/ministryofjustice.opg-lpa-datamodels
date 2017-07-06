@@ -2,7 +2,7 @@
 
 namespace OpgTest\Lpa\DataModel\Lpa\Elements;
 
-use Opg\Lpa\DataModel\Lpa\Elements\PhoneNumber;
+use Opg\Lpa\DataModel\Common\PhoneNumber;
 use OpgTest\Lpa\DataModel\TestHelper;
 
 class PhoneNumberTest extends \PHPUnit_Framework_TestCase

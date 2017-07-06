@@ -1,6 +1,6 @@
 <?php
 
-namespace Opg\Lpa\DataModel\Lpa\Elements;
+namespace Opg\Lpa\DataModel\Common;
 
 use Opg\Lpa\DataModel\AbstractData;
 use Opg\Lpa\DataModel\Validator\Constraints as Assert;
@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
  * Represents an email address.
  *
  * Class EmailAddress
- * @package Opg\Lpa\DataModel\Lpa\Elements
+ * @package Opg\Lpa\DataModel\Common
  */
 class EmailAddress extends AbstractData
 {

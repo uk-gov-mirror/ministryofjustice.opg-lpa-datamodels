@@ -2,7 +2,7 @@
 
 namespace OpgTest\Lpa\DataModel\User;
 
-use Opg\Lpa\DataModel\User\Name;
+use Opg\Lpa\DataModel\Common\Name;
 use OpgTest\Lpa\DataModel\FixturesData;
 use OpgTest\Lpa\DataModel\TestHelper;
 
@@ -11,7 +11,7 @@ class NameTest extends \PHPUnit_Framework_TestCase
     public function testValidation()
     {
         $user = FixturesData::getUser();
-        /* @var $name \Opg\Lpa\DataModel\User\Name */
+        /* @var $name \Opg\Lpa\DataModel\Common\Name */
         $name = $user->get('name');
 
         $validatorResponse = $name->validate();
