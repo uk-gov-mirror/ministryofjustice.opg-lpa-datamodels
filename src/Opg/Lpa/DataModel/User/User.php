@@ -3,6 +3,7 @@
 namespace Opg\Lpa\DataModel\User;
 
 use Opg\Lpa\DataModel\AbstractData;
+use Opg\Lpa\DataModel\Common\Dob;
 use Opg\Lpa\DataModel\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Valid as ValidConstraintSymfony;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -89,7 +90,7 @@ class User extends AbstractData
 
         $metadata->addPropertyConstraints('dob', [
             new Assert\Type([
-                'type' => '\Opg\Lpa\DataModel\User\Dob'
+                'type' => '\Opg\Lpa\DataModel\Common\Dob'
             ]),
             new ValidConstraintSymfony,
         ]);

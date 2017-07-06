@@ -3,6 +3,7 @@
 namespace Opg\Lpa\DataModel\Lpa\Document;
 
 use Opg\Lpa\DataModel\AbstractData;
+use Opg\Lpa\DataModel\Common\Dob;
 use Opg\Lpa\DataModel\Lpa\Elements;
 use Opg\Lpa\DataModel\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Valid as ValidConstraintSymfony;
@@ -32,7 +33,7 @@ class Donor extends AbstractData
     protected $address;
 
     /**
-     * @var Elements\Dob Their date of birth.
+     * @var Dob Their date of birth.
      */
     protected $dob;
 
@@ -77,7 +78,7 @@ class Donor extends AbstractData
         $metadata->addPropertyConstraints('dob', [
             new Assert\NotBlank,
             new Assert\Type([
-                'type' => '\Opg\Lpa\DataModel\Lpa\Elements\Dob'
+                'type' => '\Opg\Lpa\DataModel\Common\Dob'
             ]),
             new ValidConstraintSymfony,
         ]);
@@ -112,7 +113,7 @@ class Donor extends AbstractData
             case 'address':
                 return ($v instanceof Elements\Address ? $v : new Elements\Address($v));
             case 'dob':
-                return (($v instanceof Elements\Dob || is_null($v)) ? $v : new Elements\Dob($v));
+                return (($v instanceof Dob || is_null($v)) ? $v : new Dob($v));
             case 'email':
                 return (($v instanceof Elements\EmailAddress || is_null($v)) ? $v : new Elements\EmailAddress($v));
         }

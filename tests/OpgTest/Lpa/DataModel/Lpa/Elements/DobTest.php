@@ -2,7 +2,7 @@
 
 namespace OpgTest\Lpa\DataModel\Lpa\Elements;
 
-use Opg\Lpa\DataModel\Lpa\Elements\Dob;
+use Opg\Lpa\DataModel\Common\Dob;
 use OpgTest\Lpa\DataModel\FixturesData;
 use OpgTest\Lpa\DataModel\TestHelper;
 
@@ -11,7 +11,7 @@ class DobTest extends \PHPUnit_Framework_TestCase
     public function testValidation()
     {
         $donor = FixturesData::getDonor();
-        /* @var $dob \Opg\Lpa\DataModel\Lpa\Elements\Dob */
+        /* @var $dob \Opg\Lpa\DataModel\Common\Dob */
         $dob = $donor->get('dob');
 
         $validatorResponse = $dob->validate();
