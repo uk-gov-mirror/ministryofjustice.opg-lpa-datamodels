@@ -25,6 +25,7 @@ class EmailAddressTest extends \PHPUnit_Framework_TestCase
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(1, count($errors));
         $this->assertNotNull($errors['address']);
+        $this->assertEquals(1, count($errors['address']['messages']));
     }
 
     public function testToString()

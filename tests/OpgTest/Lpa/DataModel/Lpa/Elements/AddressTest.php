@@ -33,7 +33,9 @@ class AddressTest extends \PHPUnit_Framework_TestCase
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(2, count($errors));
         $this->assertNotNull($errors['address1']);
+        $this->assertEquals(1, count($errors['address1']['messages']));
         $this->assertNotNull($errors['address2/postcode']);
+        $this->assertEquals(1, count($errors['address2/postcode']['messages']));
     }
 
     public function testValidationFailedLength()
@@ -49,8 +51,12 @@ class AddressTest extends \PHPUnit_Framework_TestCase
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(4, count($errors));
         $this->assertNotNull($errors['address1']);
+        $this->assertEquals(1, count($errors['address1']['messages']));
         $this->assertNotNull($errors['address2']);
+        $this->assertEquals(1, count($errors['address2']['messages']));
         $this->assertNotNull($errors['address3']);
+        $this->assertEquals(1, count($errors['address3']['messages']));
         $this->assertNotNull($errors['postcode']);
+        $this->assertEquals(1, count($errors['postcode']['messages']));
     }
 }

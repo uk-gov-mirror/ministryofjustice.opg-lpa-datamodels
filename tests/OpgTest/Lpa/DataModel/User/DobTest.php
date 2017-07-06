@@ -25,6 +25,7 @@ class DobTest extends \PHPUnit_Framework_TestCase
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(1, count($errors));
         $this->assertNotNull($errors['date']);
+        $this->assertEquals('cannot-be-blank', $errors['date']['messages'][0]);
     }
 
     public function testValidationFailedOnlyOneMessage()
@@ -47,6 +48,8 @@ class DobTest extends \PHPUnit_Framework_TestCase
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(1, count($errors));
         $this->assertNotNull($errors['date']);
+        $this->assertEquals(1, count($errors['date']['messages']));
+        $this->assertEquals('must-be-less-than-or-equal:Jul 6, 2017 12:00 AM', $errors['date']['messages'][0]);
     }
 
     public function testStringDateDoesNotMap()

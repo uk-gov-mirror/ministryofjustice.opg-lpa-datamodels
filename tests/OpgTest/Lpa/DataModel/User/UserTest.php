@@ -24,8 +24,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(3, count($errors));
         $this->assertNotNull($errors['id']);
+        $this->assertEquals(1, count($errors['id']['messages']));
         $this->assertNotNull($errors['createdAt']);
+        $this->assertEquals(1, count($errors['createdAt']['messages']));
         $this->assertNotNull($errors['updatedAt']);
+        $this->assertEquals(1, count($errors['updatedAt']['messages']));
     }
 
     public function testToMongoArray()

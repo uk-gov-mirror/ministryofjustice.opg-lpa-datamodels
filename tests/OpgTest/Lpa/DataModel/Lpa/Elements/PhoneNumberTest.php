@@ -24,5 +24,6 @@ class PhoneNumberTest extends \PHPUnit_Framework_TestCase
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(1, count($errors));
         $this->assertNotNull($errors['number']);
+        $this->assertEquals(1, count($errors['number']['messages']));
     }
 }

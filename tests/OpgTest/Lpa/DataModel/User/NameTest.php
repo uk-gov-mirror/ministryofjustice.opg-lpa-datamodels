@@ -28,8 +28,11 @@ class NameTest extends \PHPUnit_Framework_TestCase
         $errors = $validatorResponse->getArrayCopy();
         $this->assertEquals(3, count($errors));
         $this->assertNotNull($errors['title']);
+        $this->assertEquals(1, count($errors['title']['messages']));
         $this->assertNotNull($errors['first']);
+        $this->assertEquals(1, count($errors['first']['messages']));
         $this->assertNotNull($errors['last']);
+        $this->assertEquals(1, count($errors['last']['messages']));
     }
 
     public function testToString()
