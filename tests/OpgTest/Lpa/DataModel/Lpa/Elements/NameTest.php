@@ -1,8 +1,8 @@
 <?php
 
-namespace OpgTest\Lpa\DataModel\Lpa\Elements;
+namespace OpgTest\Lpa\DataModel\Common;
 
-use Opg\Lpa\DataModel\Lpa\Elements\Name;
+use Opg\Lpa\DataModel\Common\Name;
 use OpgTest\Lpa\DataModel\FixturesData;
 use OpgTest\Lpa\DataModel\TestHelper;
 
@@ -11,7 +11,7 @@ class NameTest extends \PHPUnit_Framework_TestCase
     public function testValidation()
     {
         $donor = FixturesData::getDonor();
-        /* @var $name \Opg\Lpa\DataModel\Lpa\Elements\Name */
+        /* @var $name \Opg\Lpa\DataModel\Common\Name */
         $name = $donor->get('name');
 
         $validatorResponse = $name->validate();

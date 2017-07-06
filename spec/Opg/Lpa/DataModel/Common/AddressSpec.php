@@ -3,8 +3,6 @@
 namespace spec\Opg\Lpa\DataModel\Common;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Opg\Lpa\DataModel\Validator\ValidatorResponse;
 
 class AddressSpec extends ObjectBehavior
 {

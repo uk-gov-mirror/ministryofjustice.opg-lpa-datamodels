@@ -1,15 +1,14 @@
 <?php
 
-namespace spec\Opg\Lpa\DataModel\Lpa\Elements;
+namespace spec\Opg\Lpa\DataModel\Common;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class PhoneNumberSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Opg\Lpa\DataModel\Lpa\Elements\PhoneNumber');
+        $this->shouldHaveType('Opg\Lpa\DataModel\Common\PhoneNumber');
     }
     
     function it_will_accept_various_valid_formats()

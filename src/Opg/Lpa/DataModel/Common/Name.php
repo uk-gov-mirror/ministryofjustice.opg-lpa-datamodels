@@ -1,6 +1,6 @@
 <?php
 
-namespace Opg\Lpa\DataModel\User;
+namespace Opg\Lpa\DataModel\Common;
 
 use Opg\Lpa\DataModel\AbstractData;
 use Opg\Lpa\DataModel\Validator\Constraints as Assert;
@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
  * Represents a person's name.
  *
  * Class Name
- * @package Opg\Lpa\DataModel\Lpa\Elements
+ * @package Opg\Lpa\DataModel\Common
  */
 class Name extends AbstractData
 {
