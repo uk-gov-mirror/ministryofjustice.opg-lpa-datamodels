@@ -2,7 +2,7 @@
 
 namespace OpgTest\Lpa\DataModel\User;
 
-use Opg\Lpa\DataModel\User\EmailAddress;
+use Opg\Lpa\DataModel\Common\EmailAddress;
 use OpgTest\Lpa\DataModel\FixturesData;
 use OpgTest\Lpa\DataModel\TestHelper;
 
@@ -11,7 +11,7 @@ class EmailAddressTest extends \PHPUnit_Framework_TestCase
     public function testValidation()
     {
         $user = FixturesData::getUser();
-        /* @var $email \Opg\Lpa\DataModel\User\EmailAddress */
+        /* @var $email \Opg\Lpa\DataModel\Common\EmailAddress */
         $email = $user->get('email');
 
         $validatorResponse = $email->validate();

@@ -1,16 +1,18 @@
 <?php
 
-namespace Opg\Lpa\DataModel\User;
+namespace Opg\Lpa\DataModel\Common;
 
 use Opg\Lpa\DataModel\AbstractData;
 use Opg\Lpa\DataModel\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints\Callback as CallbackConstraintSymfony;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Represents a postal address.
  *
  * Class Address
- * @package Opg\Lpa\DataModel\Lpa\Elements
+ * @package Opg\Lpa\DataModel\Common
  */
 class Address extends AbstractData
 {
@@ -37,6 +39,7 @@ class Address extends AbstractData
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
         $metadata->addPropertyConstraints('address1', [
+            new Assert\NotBlank,
             new Assert\Type([
                 'type' => 'string'
             ]),
@@ -73,6 +76,13 @@ class Address extends AbstractData
                 'max' => 8
             ]),
         ]);
+
+        // We required either address2 OR postcode to be set for an address to be considered valid.
+        $metadata->addConstraint(new CallbackConstraintSymfony(function ($object, ExecutionContextInterface $context) {
+            if (empty($object->address2) && empty($object->postcode)) {
+                $context->buildViolation((new Assert\NotNull())->message)->atPath('address2/postcode')->addViolation();
+            }
+        }));
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace OpgTest\Lpa\DataModel\User;
 
-use Opg\Lpa\DataModel\User\Address;
+use Opg\Lpa\DataModel\Common\Address;
 use OpgTest\Lpa\DataModel\FixturesData;
 use OpgTest\Lpa\DataModel\TestHelper;
 
@@ -19,7 +19,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     public function testValidation()
     {
         $user = FixturesData::getUser();
-        /* @var $address \Opg\Lpa\DataModel\User\Address */
+        /* @var $address \Opg\Lpa\DataModel\Common\Address */
         $address = $user->get('address');
 
         $validatorResponse = $address->validate();
@@ -27,6 +27,18 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testValidationFailed()
+    {
+        $address = new Address();
+
+        $validatorResponse = $address->validate();
+        $this->assertTrue($validatorResponse->hasErrors());
+        $errors = $validatorResponse->getArrayCopy();
+        $this->assertEquals(2, count($errors));
+        $this->assertNotNull($errors['address1']);
+        $this->assertNotNull($errors['address2/postcode']);
+    }
+
+    public function testValidationFailedLength()
     {
         $address = new Address();
         $address->set('address1', FixturesData::generateRandomString(51));

@@ -96,22 +96,6 @@ class DobTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $mapped);
     }
 
-    public function testMetadataMessageSpecified()
-    {
-        $metadata = new ClassMetadata(get_class(new Dob()));
-        TestableDob::loadValidatorMetadata($metadata, 'Error message');
-        $dateMetadata = $metadata->getPropertyMetadata('date');
-        $this->assertEquals('Error message', $dateMetadata[0]->constraints[2]->message);
-    }
-
-    public function testMetadataMessageNotSpecified()
-    {
-        $metadata = new ClassMetadata(Dob::class);
-        TestableDob::loadValidatorMetadata($metadata);
-        $dateMetadata = $metadata->getPropertyMetadata('date');
-        $this->assertEquals('must-be-less-than-or-equal:{{ compared_value }}', $dateMetadata[0]->constraints[2]->message);
-    }
-
     public function testMapIso8601()
     {
         $dob = new TestableDob();
@@ -142,7 +126,6 @@ class DobTest extends \PHPUnit_Framework_TestCase
     {
         $dob = new TestableDob();
         $dob->set('date', new \DateTime('07-10-1948 00:00:00'));
-        $dob->loadValidatorMetadata();
 
         $validatorResponse = $dob->validate();
         $this->assertFalse($validatorResponse->hasErrors());
@@ -151,7 +134,6 @@ class DobTest extends \PHPUnit_Framework_TestCase
     public function testValidationFailed()
     {
         $dob = new TestableDob();
-        $dob->loadValidatorMetadata();
 
         $validatorResponse = $dob->validate();
         $this->assertTrue($validatorResponse->hasErrors());
@@ -159,12 +141,12 @@ class DobTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($errors));
         TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['date']);
+        $this->assertEquals('cannot-be-blank', $errors['date']['messages'][0]);
     }
 
     public function testValidationFailedInFuture()
     {
         $dob = new TestableDob();
-        $dob->loadValidatorMetadata();
         $dob->set('date', new \DateTime('2199-01-01'));
 
         $validatorResponse = $dob->validate();
@@ -173,12 +155,12 @@ class DobTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($errors));
         TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['date']);
+        $this->assertEquals('must-be-less-than-or-equal-to-today', $errors['date']['messages'][0]);
     }
 
     public function testValidationFailedDateString()
     {
         $dob = new TestableDob();
-        $dob->loadValidatorMetadata();
         $dob->set('date', 'Monday');
 
         $validatorResponse = $dob->validate();
@@ -187,12 +169,12 @@ class DobTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($errors));
         TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['date']);
+        $this->assertEquals('expected-type:DateTime', $errors['date']['messages'][0]);
     }
 
     public function testValidationFailedNotUtc()
     {
         $dob = new TestableDob();
-        $dob->loadValidatorMetadata();
         $dob->set('date', new \DateTime('07-10-1948 00:00:00', new \DateTimeZone('America/New_York')));
 
         $validatorResponse = $dob->validate();
@@ -201,5 +183,6 @@ class DobTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($errors));
         TestHelper::assertNoDuplicateErrorMessages($errors, $this);
         $this->assertNotNull($errors['date']);
+        $this->assertEquals('timezone-not-utc', $errors['date']['messages'][0]);
     }
 }
