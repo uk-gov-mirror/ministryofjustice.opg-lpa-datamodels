@@ -4,7 +4,7 @@
     "minimum-stability": "stable",
     "license": "MIT",
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.0.18",
         "symfony/validator": "2.6.*",
         "symfony/intl": "2.6.*",
         "egulias/email-validator": "1.2.*",
