@@ -4,7 +4,7 @@ namespace Opg\Lpa\DataModel\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraints as SymfonyConstraints;
 
-class Null extends SymfonyConstraints\Null
+class IsNull extends SymfonyConstraints\IsNull
 {
     use ValidatorPathTrait;
 
