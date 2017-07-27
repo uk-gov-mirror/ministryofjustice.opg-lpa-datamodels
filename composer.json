@@ -5,8 +5,8 @@
     "license": "MIT",
     "require": {
         "php": ">=7.0.18",
-        "symfony/validator": "2.6.*",
-        "symfony/intl": "2.6.*",
+        "symfony/validator": "2.7.*",
+        "symfony/intl": "2.7.*",
         "egulias/email-validator": "1.2.*",
         "mongodb/mongodb": "^1.1"
     },
