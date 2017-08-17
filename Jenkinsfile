@@ -34,6 +34,15 @@ pipeline {
             }
         }
 
+        stage('build') {
+            steps {
+                sh '''
+                    docker-compose down
+                    docker-compose build
+                '''
+            }
+        }
+
         stage('unit tests') {
             steps {
                 echo 'PHPUnit'
@@ -69,9 +78,7 @@ pipeline {
                 branch 'master' //Build master branch only
             }
             steps {
-                sh '''
-                    docker push "registry.service.opg.digital/opguk/opg-lpa-datamodels:${NEWTAG}"
-                '''
+                echo 'Possibly tag master?'
             }
         }
     }
