@@ -39,6 +39,7 @@ pipeline {
                 sh '''
                     docker-compose down
                     docker-compose build
+                    docker-compose run --rm --user `id -u` datamodels composer install
                 '''
             }
         }
@@ -47,7 +48,7 @@ pipeline {
             steps {
                 echo 'PHPUnit'
                 sh '''
-                    docker-compose run --rm --user `id -u` datamodels vendor/phpunit/phpunit/phpunit -c tests/phpunit.xml --log-junit unit_results.xml
+                    docker run -i --rm --user `id -u` -v $(pwd):/app registry.service.opg.digital/opguk/phpunit tests -c tests/phpunit.xml --log-junit unit_results.xml
                 '''
             }
             post {
@@ -61,7 +62,7 @@ pipeline {
             steps {
                 echo 'PHPUnit with coverage'
                 sh '''
-                    docker-compose run --rm --user `id -u` datamodels vendor/phpunit/phpunit/phpunit -c tests/phpunit.xml --coverage-clover tests/coverage/clover.xml --coverage-html tests/coverage/
+                    docker run -i --rm --user `id -u` -v $(pwd):/app registry.service.opg.digital/opguk/phpunit tests -c tests/phpunit.xml --coverage-clover tests/coverage/clover.xml --coverage-html tests/coverage/
                     echo 'Fixing coverage file paths due to running in container'
                     sed -i "s#<file name=\\"/app#<file name=\\"#" tests/coverage/clover.xml
                 '''
