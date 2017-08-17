@@ -39,7 +39,7 @@ pipeline {
                 sh '''
                     docker-compose down
                     docker-compose build
-                    docker-compose run --rm --user `id -u` datamodels composer install
+                    docker-compose run --rm --user `id -u` datamodels bash -c "cd /app;export COMPOSER_HOME='/tmp';composer install"
                 '''
             }
         }
