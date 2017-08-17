@@ -17,7 +17,6 @@ RUN pecl install mongodb-1.2.9 && \
 
 RUN  cd /tmp && curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 COPY composer.json /app/
-COPY composer.lock /app/
 WORKDIR /app
 USER app
 ENV  HOME /app
