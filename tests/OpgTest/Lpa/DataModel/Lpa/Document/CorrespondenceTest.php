@@ -59,9 +59,8 @@ class CorrespondenceTest extends \PHPUnit_Framework_TestCase
         $validatorResponse = $correspondence->validate();
         $this->assertTrue($validatorResponse->hasErrors());
         $errors = $validatorResponse->getArrayCopy();
-        $this->assertEquals(4, count($errors));
+        $this->assertEquals(3, count($errors));
         TestHelper::assertNoDuplicateErrorMessages($errors, $this);
-        $this->assertNotNull($errors['name']);
         $this->assertNotNull($errors['name/company']);
         $this->assertNotNull($errors['who']);
         $this->assertNotNull($errors['address']);
