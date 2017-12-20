@@ -141,7 +141,7 @@ class Address extends AbstractData
      * @param string $address2
      * @return $this
      */
-    public function setAddress2(string $address2): Address
+    public function setAddress2($address2): Address
     {
         $this->address2 = $address2;
 
@@ -160,7 +160,7 @@ class Address extends AbstractData
      * @param string $address3
      * @return $this
      */
-    public function setAddress3(string $address3): Address
+    public function setAddress3($address3): Address
     {
         $this->address3 = $address3;
 
@@ -179,7 +179,7 @@ class Address extends AbstractData
      * @param string $postcode
      * @return $this
      */
-    public function setPostcode(string $postcode): Address
+    public function setPostcode($postcode): Address
     {
         $this->postcode = $postcode;
 
