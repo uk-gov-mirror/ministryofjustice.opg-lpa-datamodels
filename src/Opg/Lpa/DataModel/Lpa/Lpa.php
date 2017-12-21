@@ -309,7 +309,7 @@ class Lpa extends AbstractData
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -318,7 +318,7 @@ class Lpa extends AbstractData
      * @param int $id
      * @return $this
      */
-    public function setId(int $id): Lpa
+    public function setId($id): Lpa
     {
         $this->id = $id;
 
