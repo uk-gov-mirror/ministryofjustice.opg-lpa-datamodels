@@ -412,7 +412,7 @@ class StateChecker
     private function howReplacementAttorneyMakeDecisionRequired()
     {
         return ($this->lpaHasMultipleReplacementAttorneys()
-            && $this->lpaReplacementAttorneyStepInWhenLastPrimaryUnableAct());
+            && (count($this->lpa->getDocument()->getPrimaryAttorneys()) == 1 || $this->lpaReplacementAttorneyStepInWhenLastPrimaryUnableAct()));
     }
 
     public function lpaHasMultipleReplacementAttorneys()
