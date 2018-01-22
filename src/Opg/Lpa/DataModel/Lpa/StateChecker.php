@@ -308,7 +308,7 @@ class StateChecker
                 return false;
             }
 
-            if ($this->lpaHasMultipleReplacementAttorneys() && !$this->lpaHowReplacementAttorneysMakeDecisionHasValue()) {
+            if ($this->lpaHasMultipleReplacementAttorneys() && $this->howReplacementAttorneyMakeDecisionRequired() && !$this->lpaHowReplacementAttorneysMakeDecisionHasValue()) {
                 return false;
             }
         }
@@ -401,6 +401,18 @@ class StateChecker
         return ($this->lpaHasReplacementAttorney()
             && $this->lpaHasMultiplePrimaryAttorneys()
             && $this->lpaPrimaryAttorneysMakeDecisionJointlyAndSeverally());
+    }
+
+    /**
+     * Simple function to indicate if the how the replacement attorny(s) make decisions question needs to be asked
+     * TODO - This could be more widely used in this class to simplify/refactor logic elsewhere
+     *
+     * @return bool
+     */
+    private function howReplacementAttorneyMakeDecisionRequired()
+    {
+        return ($this->lpaHasMultipleReplacementAttorneys()
+            && $this->lpaReplacementAttorneyStepInWhenLastPrimaryUnableAct());
     }
 
     public function lpaHasMultipleReplacementAttorneys()
