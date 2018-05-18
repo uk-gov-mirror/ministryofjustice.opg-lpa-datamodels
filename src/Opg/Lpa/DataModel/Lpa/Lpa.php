@@ -606,7 +606,7 @@ class Lpa extends AbstractData
      */
     public function hasDonor(): bool
     {
-        return $this->hasType() && $this->getDocument()->getDonor() instanceof Donor;
+        return $this->getDocument()->getDonor() instanceof Donor;
     }
 
     /**
@@ -614,9 +614,9 @@ class Lpa extends AbstractData
      */
     public function hasWhenLpaStarts(): bool
     {
-        return $this->hasDonor()
+        return $this->hasType()
             && $this->getDocument()->getType() == Document::LPA_TYPE_PF
-            && $this->getDocument()->getPrimaryAttorneyDecisions() instanceof PrimaryAttorneyDecisions
+            && $this->hasPrimaryAttorneyDecisions()
             && in_array($this->getDocument()->getPrimaryAttorneyDecisions()->getWhen(), [
                 PrimaryAttorneyDecisions::LPA_DECISION_WHEN_NO_CAPACITY,
                 PrimaryAttorneyDecisions::LPA_DECISION_WHEN_NOW
@@ -628,9 +628,9 @@ class Lpa extends AbstractData
      */
     public function hasLifeSustaining(): bool
     {
-        return $this->hasDonor()
+        return $this->hasType()
             && $this->getDocument()->getType() == Document::LPA_TYPE_HW
-            && $this->getDocument()->getPrimaryAttorneyDecisions() instanceof PrimaryAttorneyDecisions
+            && $this->hasPrimaryAttorneyDecisions()
             && is_bool($this->getDocument()->getPrimaryAttorneyDecisions()->isCanSustainLife());
     }
 
@@ -640,7 +640,7 @@ class Lpa extends AbstractData
      */
     public function hasPrimaryAttorney(?int $index = null): bool
     {
-        if ($this->hasWhenLpaStarts() || $this->hasLifeSustaining()) {
+        if ($this->hasDocument()) {
             if ($index === null) {
                 return count($this->getDocument()->getPrimaryAttorneys()) > 0;
             } else {
@@ -658,6 +658,15 @@ class Lpa extends AbstractData
     public function hasMultiplePrimaryAttorneys(): bool
     {
         return $this->hasPrimaryAttorney() && count($this->getDocument()->getPrimaryAttorneys()) > 1;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasPrimaryAttorneyDecisions(): bool
+    {
+        return $this->hasDocument()
+            && $this->getDocument()->getPrimaryAttorneyDecisions() instanceof PrimaryAttorneyDecisions;
     }
 
     /**
@@ -692,7 +701,7 @@ class Lpa extends AbstractData
      */
     public function isHowPrimaryAttorneysMakeDecisionHasValue(?string $valueToCheck = null): bool
     {
-        if ($this->hasMultiplePrimaryAttorneys()) {
+        if ($this->hasDocument()) {
             $decisions = $this->getDocument()->getPrimaryAttorneyDecisions();
 
             if ($decisions instanceof AbstractDecisions) {
@@ -718,7 +727,7 @@ class Lpa extends AbstractData
      */
     public function hasReplacementAttorney(?int $index = null): bool
     {
-        if ($this->isPrimaryAttorneysAndDecisionsSatisfied()) {
+        if ($this->hasDocument()) {
             $replacementAttorneys = $this->getDocument()->getReplacementAttorneys();
 
             if (is_array($replacementAttorneys)) {
@@ -740,19 +749,6 @@ class Lpa extends AbstractData
     public function hasMultipleReplacementAttorneys(): bool
     {
         return ($this->hasReplacementAttorney() && count($this->getDocument()->getReplacementAttorneys()) > 1);
-    }
-
-    /**
-     * Simple function to indicate if the when replacement attorney(s) step in question needs to be asked
-     * TODO - This could be more widely used in this class to simplify/refactor logic elsewhere
-     *
-     * @return bool
-     */
-    public function isWhenReplacementAttorneyStepInRequired(): bool
-    {
-        return ($this->hasReplacementAttorney()
-            && $this->hasMultiplePrimaryAttorneys()
-            && $this->isHowPrimaryAttorneysMakeDecisionJointlyAndSeverally());
     }
 
     /**
@@ -785,7 +781,7 @@ class Lpa extends AbstractData
      */
     public function isWhenReplacementAttorneyStepInHasValue(?string $valueToCheck = null): bool
     {
-        if ($this->isWhenReplacementAttorneyStepInRequired()) {
+        if ($this->hasDocument()) {
             $decisions = $this->getDocument()->getReplacementAttorneyDecisions();
 
             if ($decisions instanceof AbstractDecisions) {
@@ -803,20 +799,6 @@ class Lpa extends AbstractData
         }
 
         return false;
-    }
-
-    /**
-     * Simple function to indicate if the how the replacement attorney(s) make decisions question needs to be asked
-     * TODO - This could be more widely used in this class to simplify/refactor logic elsewhere
-     *
-     * @return bool
-     */
-    public function isHowReplacementAttorneyMakeDecisionRequired(): bool
-    {
-        return ($this->hasMultipleReplacementAttorneys()
-            && (count($this->getDocument()->getPrimaryAttorneys()) == 1
-                || $this->isHowPrimaryAttorneysMakeDecisionJointly()
-                || $this->isWhenReplacementAttorneyStepInWhenLastPrimaryUnableAct()));
     }
 
     /**
@@ -872,34 +854,12 @@ class Lpa extends AbstractData
     }
 
     /**
-     * Simple function to reflect if the replacement attorney(s) have been selected with their decisions
-     * TODO - This could be more widely used in this class to simplify/refactor logic elsewhere
-     *
-     * @return bool
-     */
-    public function isReplacementAttorneysAndDecisionsSatisfied(): bool
-    {
-        if ($this->hasReplacementAttorney()) {
-            if ($this->isWhenReplacementAttorneyStepInRequired() && !$this->isWhenReplacementAttorneyStepInHasValue()) {
-                return false;
-            }
-
-            if ($this->hasMultipleReplacementAttorneys() && $this->isHowReplacementAttorneyMakeDecisionRequired()
-                && !$this->isHowReplacementAttorneysMakeDecisionHasValue()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * @param null|string $whichGroup
      * @return bool
      */
     public function hasTrustCorporation(?string $whichGroup = null): bool
     {
-        if ($this->hasWhenLpaStarts() || $this->hasLifeSustaining()) {
+        if ($this->hasDocument()) {
             //  By default we will check all the attorneys
             $primaryAttorneys = $this->getDocument()->getPrimaryAttorneys();
             $replacementAttorneys = $this->getDocument()->getReplacementAttorneys();
@@ -922,32 +882,11 @@ class Lpa extends AbstractData
     }
 
     /**
-     * Simple function to reflect if the primary attorney(s) have been selected with their decisions
-     * TODO - This could be more widely used in this class to simplify/refactor logic elsewhere
-     *
-     * @return bool
-     */
-    public function isPrimaryAttorneysAndDecisionsSatisfied()
-    {
-        if ($this->hasPrimaryAttorney()) {
-            if ($this->hasMultiplePrimaryAttorneys()) {
-                return $this->isHowPrimaryAttorneysMakeDecisionHasValue();
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * @return bool
      */
     public function hasCertificateProvider(): bool
     {
-        return ($this->isPrimaryAttorneysAndDecisionsSatisfied()
-            && $this->isReplacementAttorneysAndDecisionsSatisfied()
-            && $this->getDocument()->getCertificateProvider() instanceof CertificateProvider);
+        return ($this->hasDocument() && $this->getDocument()->getCertificateProvider() instanceof CertificateProvider);
     }
 
     /**
@@ -955,20 +894,7 @@ class Lpa extends AbstractData
      */
     public function hasCertificateProviderSkipped(): bool
     {
-        return ($this->isPrimaryAttorneysAndDecisionsSatisfied()
-            && $this->isReplacementAttorneysAndDecisionsSatisfied()
-            && array_key_exists(Lpa::CERTIFICATE_PROVIDER_SKIPPED, $this->getMetadata()));
-    }
-
-    /**
-     * Simple function to reflect if the certificate provider question has been answered
-     * IMPORTANT! - This will returned true if the certificate provider was provided OR if the question was skipped
-     *
-     * @return bool
-     */
-    public function isCertificateProviderSatisfied(): bool
-    {
-        return ($this->hasCertificateProvider() || $this->hasCertificateProviderSkipped());
+        return ($this->hasDocument() && array_key_exists(Lpa::CERTIFICATE_PROVIDER_SKIPPED, $this->getMetadata()));
     }
 
     /**
@@ -976,7 +902,7 @@ class Lpa extends AbstractData
      */
     public function hasCorrespondent(): bool
     {
-        return ($this->hasApplicant() && $this->getDocument()->getCorrespondent() instanceof Correspondence);
+        return ($this->hasDocument() && $this->getDocument()->getCorrespondent() instanceof Correspondence);
     }
 
     /**
@@ -985,7 +911,7 @@ class Lpa extends AbstractData
      */
     public function hasPeopleToNotify(?int $index = null): bool
     {
-        if ($this->isCertificateProviderSatisfied()) {
+        if ($this->hasDocument()) {
             $peopleToNotify = $this->getDocument()->getPeopleToNotify();
 
             if (count($peopleToNotify) > 0) {
@@ -1001,25 +927,11 @@ class Lpa extends AbstractData
     }
 
     /**
-     * Simple function to reflect if the people to notify question has been answered
-     * IMPORTANT! - If the metadata answered flag has been set it is important to confirm again that the
-     * certificate provider has been satisfied
-     *
-     * @return bool
-     */
-    public function isPeopleToNotifySatisfied(): bool
-    {
-        return ((array_key_exists(Lpa::PEOPLE_TO_NOTIFY_CONFIRMED, $this->getMetadata())
-                && $this->isCertificateProviderSatisfied())
-            || $this->hasPeopleToNotify());
-    }
-
-    /**
      * @return bool
      */
     public function hasInstructionOrPreference(): bool
     {
-        return ($this->isPeopleToNotifySatisfied()
+        return ($this->hasDocument()
             && (!is_null($this->getDocument()->getInstruction()) || !is_null($this->getDocument()->getPreference())));
     }
 
@@ -1028,7 +940,7 @@ class Lpa extends AbstractData
      */
     public function hasApplicant(): bool
     {
-        return ($this->hasInstructionOrPreference() && ($this->getDocument()->getWhoIsRegistering() == 'donor'
+        return ($this->hasDocument() && ($this->getDocument()->getWhoIsRegistering() == 'donor'
                 || (is_array($this->getDocument()->getWhoIsRegistering())
                     && count($this->getDocument()->getWhoIsRegistering()) > 0)));
     }
