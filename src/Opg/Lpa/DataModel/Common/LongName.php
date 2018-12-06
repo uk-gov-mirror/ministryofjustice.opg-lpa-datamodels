@@ -40,7 +40,6 @@ class LongName extends AbstractData
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
         $metadata->addPropertyConstraints('title', [
-            new Assert\NotBlank,
             new Assert\Type([
                 'type' => 'string'
             ]),
