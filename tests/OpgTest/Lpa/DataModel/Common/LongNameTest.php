@@ -36,6 +36,36 @@ class LongNameTest extends TestCase
         $this->assertNotNull($errors['last']);
     }
 
+    public function testValidationTitleCanBeNull()
+    {
+        // Title can now be null, indicating the user choose not to specify.
+
+        $name = new LongName();
+        $name->set('title', null);
+        $name->set('first', FixturesData::generateRandomString(LongName::FIRST_NAME_MAX_LENGTH));
+        $name->set('last', FixturesData::generateRandomString(LongName::LAST_NAME_MAX_LENGTH));
+
+        $validatorResponse = $name->validate();
+        $this->assertFalse($validatorResponse->hasErrors());
+    }
+
+    public function testValidationTitleCanNotBeEmpty()
+    {
+        // Title cannot be an empty string, it must have a value, or be null.
+
+        $name = new LongName();
+        $name->set('title', '');
+        $name->set('first', FixturesData::generateRandomString(LongName::FIRST_NAME_MAX_LENGTH));
+        $name->set('last', FixturesData::generateRandomString(LongName::LAST_NAME_MAX_LENGTH));
+
+        $validatorResponse = $name->validate();
+        $this->assertTrue($validatorResponse->hasErrors());
+        $errors = $validatorResponse->getArrayCopy();
+        $this->assertEquals(1, count($errors));
+        TestHelper::assertNoDuplicateErrorMessages($errors, $this);
+        $this->assertNotNull($errors['title']);
+    }
+
     public function testToString()
     {
         $donor = FixturesData::getDonor();
