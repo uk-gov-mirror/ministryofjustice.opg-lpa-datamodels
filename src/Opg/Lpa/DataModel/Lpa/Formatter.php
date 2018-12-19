@@ -28,4 +28,41 @@ class Formatter
 
         return trim(chunk_split('A' . sprintf("%011d", $value), 4, ' '));
     }
+
+    /**
+     * Formats either a set of passed instructions or preferences, ready to be output into the PDF.
+     *
+     * @param string $text The text to be formatted
+     * @param int $fullWidthNumberOfChars The number of characters that can fit on a single line.
+     * @return string
+     */
+    public static function flattenInstructionsOrPreferences(string $text, int $fullWidthNumberOfChars) : string
+    {
+        $content = '';
+
+        foreach (explode("\r\n", trim($text)) as $contentLine) {
+            $content .= wordwrap($contentLine, $fullWidthNumberOfChars, "\r\n", false);
+            $content .= "\r\n";
+        }
+
+        $paragraphs = explode("\r\n", $content);
+
+        for ($i = 0; $i < count($paragraphs); $i++) {
+            $paragraphs[$i] = trim($paragraphs[$i]);
+
+            if (strlen($paragraphs[$i]) == 0) {
+                unset($paragraphs[$i]);
+            } else {
+                // calculate how many space chars to be appended to replace the new line in this paragraph.
+                if (strlen($paragraphs[$i]) % $fullWidthNumberOfChars) {
+                    $noOfSpaces = $fullWidthNumberOfChars - strlen($paragraphs[$i]) % $fullWidthNumberOfChars;
+                    if ($noOfSpaces > 0) {
+                        $paragraphs[$i] .= str_repeat(" ", $noOfSpaces);
+                    }
+                }
+            }
+        }
+
+        return implode("\r\n", $paragraphs);
+    }
 }
