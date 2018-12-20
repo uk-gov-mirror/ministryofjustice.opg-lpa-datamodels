@@ -27,7 +27,6 @@ class Formatter
      * Formats either a set of passed instructions or preferences, ready to be output into the PDF.
      *
      * @param string $text The text to be formatted
-     * @param int SELF::INSTRUCTIONS_PREFERENCES_ROW_WIDTH The number of characters that can fit on a single line.
      * @return string
      */
     public static function flattenInstructionsOrPreferences(string $text) : string
