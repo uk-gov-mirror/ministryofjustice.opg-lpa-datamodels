@@ -40,6 +40,7 @@ class Lpa extends AbstractData
     const APPLY_FOR_FEE_REDUCTION = 'apply-for-fee-reduction';
     const INSTRUCTION_CONFIRMED = 'instruction-confirmed';
     const ANALYTICS_RETURN_COUNT = 'analyticsReturnCount';
+    const PROCESSING_STATUS = 'processing-status';
 
     /**
      * @var int The LPA identifier.
