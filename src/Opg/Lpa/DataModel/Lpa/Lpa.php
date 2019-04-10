@@ -43,6 +43,13 @@ class Lpa extends AbstractData
     const SIRIUS_PROCESSING_STATUS = 'sirius-processing-status';
 
     /**
+     * LPA naming of Sirius processing status
+     */
+    const SIRIUS_PROCESSING_STATUS_RECEIVED = 'Received';
+    const SIRIUS_PROCESSING_STATUS_CHECKING = 'Checking';
+    const SIRIUS_PROCESSING_STATUS_RETURNED = 'Returned';
+    
+    /**
      * @var int The LPA identifier.
      */
     protected $id;
