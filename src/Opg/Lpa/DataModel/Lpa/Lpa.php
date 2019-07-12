@@ -41,6 +41,7 @@ class Lpa extends AbstractData
     const INSTRUCTION_CONFIRMED = 'instruction-confirmed';
     const ANALYTICS_RETURN_COUNT = 'analyticsReturnCount';
     const SIRIUS_PROCESSING_STATUS = 'sirius-processing-status';
+    const APPLICATION_REJECTED_DATE = 'application-rejected-date';
 
     /**
      * LPA naming of Sirius processing status
