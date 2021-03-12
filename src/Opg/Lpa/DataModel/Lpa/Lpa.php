@@ -44,6 +44,8 @@ class Lpa extends AbstractData
     const APPLICATION_REJECTED_DATE = 'application-rejected-date';
     const APPLICATION_RECEIPT_DATE = 'application-receipt-date';
     const APPLICATION_REGISTRATION_DATE = 'application-registration-date';
+    const APPLICATION_INVALID_DATE = 'application-invalid-date';
+    const APPLICATION_WITHDRAWN_DATE = 'application-withdrawn-date';
 
 
     /**
@@ -52,7 +54,7 @@ class Lpa extends AbstractData
     const SIRIUS_PROCESSING_STATUS_RECEIVED = 'Received';
     const SIRIUS_PROCESSING_STATUS_CHECKING = 'Checking';
     const SIRIUS_PROCESSING_STATUS_RETURNED = 'Returned';
-    
+
     /**
      * @var int The LPA identifier.
      */
