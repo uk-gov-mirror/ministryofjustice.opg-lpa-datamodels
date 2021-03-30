@@ -122,7 +122,7 @@ abstract class AbstractData implements AccessorInterface, JsonSerializable, Vali
         }
 
         //  If this value has a toDateTime method then call that here
-        if (method_exists($value, 'toDateTime')) {
+        if ((is_string($value) || is_object($value)) && method_exists($value, 'toDateTime')) {
             $value = $value->toDateTime();
         }
 
